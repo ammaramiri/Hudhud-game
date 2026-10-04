@@ -57,3 +57,8 @@
 }
 @media(max-width:760px) and (max-height:650px){.opening-content{gap:10px}.opening-scene{background-position:center -35dvh}.opening-brand img{height:65px}}
 #world-return{position:absolute;top:calc(82px + env(safe-area-inset-top));right:12px;max-width:calc(100% - 24px);min-height:48px;padding:7px 16px;background:#FFF7E9;color:#3A2E2A;border:2px solid #3A2E2A;border-radius:17px;font-size:18px;font-weight:700;box-shadow:0 3px 0 #3A2E2A33;z-index:5}
+
+/* 0.8: one direct garden return; camera recovery only after panning. */
+#world-recenter{width:auto;min-width:48px;max-width:calc(100vw - 28px);height:auto;min-height:48px;padding:8px 13px;border-radius:17px;display:flex;gap:8px;align-items:center;font-size:16px;font-weight:700;line-height:1.2}
+#world-recenter svg{width:24px;height:24px;flex:none}
+#world-recenter[hidden],#world-go[hidden]{display:none!important}
