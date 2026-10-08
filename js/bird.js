@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
-const KEY='hudhud-bird-v1',assets=['garden.png','sprites.png','garden-filled.png'];
+const KEY='hudhud-bird-v1',assets=['garden.webp','sprites.webp','garden-filled.webp'];
 const texts={
 ar:{title:'اسقِ العصفور',garden:'الحديقة',fill:'املأ الوعاء',tap:'المس الوعاء',pour:'ينساب الماء…',drink:'يشرب العصفور…',kind:'نرحم الحيوانات ونعتني بها',again:'مرة أخرى',back:'العودة إلى الحديقة',loading:'لحظة…',retry:'أعد المحاولة',jug:'إبريق الماء',bowl:'وعاء الماء',save:'تعذّر الحفظ على هذا الجهاز'},
 de:{title:'Wasser für den Spatz',garden:'Garten',fill:'Fülle die Schale',tap:'Tippe auf die Schale',pour:'Das Wasser fließt…',drink:'Der Spatz trinkt…',kind:'Wir sind barmherzig zu Tieren und kümmern uns um sie.',again:'Noch einmal',back:'Zurück zum Garten',loading:'Einen Moment…',retry:'Erneut versuchen',jug:'Wasserkrug',bowl:'Wasserschale',save:'Speichern auf diesem Gerät nicht möglich'},

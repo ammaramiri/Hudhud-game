@@ -1,7 +1,7 @@
 #bird-dialog{box-sizing:border-box;position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow:hidden;background:#fff7e9;color:#3a2e2a;font-family:inherit}
 #bird-dialog [hidden]{display:none!important}#bird-dialog::backdrop{background:#fff7e9}
 #bird-dialog button{font:inherit;color:#3a2e2a;cursor:pointer;touch-action:manipulation}#bird-dialog button:focus-visible{outline:4px solid #ff8c42;outline-offset:4px}
-#bird-dialog .bird-canvas{position:absolute;width:min(100vw,56.25dvh);height:min(177.778vw,100dvh);left:50%;top:50%;transform:translate(-50%,-50%);background:url('../assets/bird/garden.png') center/100% 100% no-repeat}
+#bird-dialog .bird-canvas{position:absolute;width:min(100vw,56.25dvh);height:min(177.778vw,100dvh);left:50%;top:50%;transform:translate(-50%,-50%);background:url('../assets/bird/garden.webp') center/100% 100% no-repeat}
 #bird-dialog .bird-header{position:absolute;top:max(10px,env(safe-area-inset-top));left:4%;right:4%;display:flex;flex-direction:column;align-items:center;gap:9px;pointer-events:none}
 #bird-dialog .bird-back{align-self:flex-start;pointer-events:auto;background:#fff7e9;border:2px solid #3a2e2a;border-radius:20px;min-height:48px;padding:6px 15px;font-size:16px}
 #bird-dialog h2{font-size:clamp(23px,6vw,36px);line-height:1.2;background:#fff7e9;margin:0;padding:12px 22px;border-radius:24px;text-align:center}
@@ -10,12 +10,12 @@
 #bird-dialog .bird-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;pointer-events:auto}#bird-dialog .bird-actions button{min-height:48px;border:2px solid #3a2e2a;background:#ff8c42;border-radius:18px;padding:8px 18px;font-weight:700}#bird-dialog .bird-actions .bird-again{background:#fff7e9}
 #bird-dialog .bird-save{background:#fff7e9;padding:4px 10px;border-radius:10px;margin:0;font-size:13px}
 #bird-dialog .bird-bowl{position:absolute;left:12%;top:48%;width:76%;height:20%;border:0;background:transparent;border-radius:50%;z-index:4}
-#bird-dialog .bird-water{position:absolute;inset:0;background:url('../assets/bird/garden-filled.png') center/100% 100% no-repeat;opacity:0;transition:opacity 2.4s .5s;z-index:1}
+#bird-dialog .bird-water{position:absolute;inset:0;background:url('../assets/bird/garden-filled.webp') center/100% 100% no-repeat;opacity:0;transition:opacity 2.4s .5s;z-index:1}
 #bird-dialog .bird-sparrow{position:absolute;left:35%;top:41%;width:22.222%;height:25%;z-index:3}
-#bird-dialog .bird-sparrow span{position:absolute;inset:0;background-image:url('../assets/bird/sprites.png');background-size:300% 100%;background-repeat:no-repeat;transition:opacity .35s}
+#bird-dialog .bird-sparrow span{position:absolute;inset:0;background-image:url('../assets/bird/sprites.webp');background-size:300% 100%;background-repeat:no-repeat;transition:opacity .35s}
 #bird-dialog .bird-upright{background-position:0 0}#bird-dialog .bird-drinking{background-position:50% 0;opacity:0}
 #bird-dialog .bird-jug{position:absolute;left:55%;top:56%;width:40%;height:45%;border:0;background:none;padding:0;z-index:5;touch-action:none;transform-origin:35% 50%;transition:left .45s,top .45s,transform .45s}
-#bird-dialog .bird-jug span{display:block;width:100%;height:100%;background:url('../assets/bird/sprites.png') 100% 0/300% 100% no-repeat;pointer-events:none}
+#bird-dialog .bird-jug span{display:block;width:100%;height:100%;background:url('../assets/bird/sprites.webp') 100% 0/300% 100% no-repeat;pointer-events:none}
 #bird-dialog .bird-jug[aria-pressed=true]{filter:drop-shadow(0 0 7px #ff8c42)}#bird-dialog .bird-jug:disabled{opacity:1;cursor:default}
 #bird-dialog .bird-stream{position:absolute;inset:0;width:100%;height:100%;opacity:0;z-index:6;pointer-events:none;overflow:visible}
 #bird-dialog .bird-flow{fill:none;stroke:#a8e5e6;stroke-width:3.5;stroke-linecap:round}
