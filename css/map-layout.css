@@ -15,3 +15,12 @@
 #world-screen #world-hotspot,#world-screen #world-bird-hotspot,#world-screen #world-sky-hotspot{width:58px;height:58px;min-height:58px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:29px;border:2px solid #3A2E2A;background:#FFF7E9;box-shadow:0 3px 0 #3A2E2A33;transform:translate(-50%,-100%)}
 #world-screen #world-bird-hotspot[hidden],#world-screen #world-sky-hotspot[hidden]{display:none}
 #world-stage button[data-complete=true]:after{content:'✓';position:absolute;right:-6px;top:-5px;border:1px solid #3A2E2A;background:#2CC5B8;color:#3A2E2A;border-radius:50%;font-size:16px;line-height:23px;width:23px;height:23px}
+
+/* One shared pin design for all activities; no emoji or activity icons. */
+#world-screen #world-hotspot,#world-screen #world-bird-hotspot,#world-screen #world-sky-hotspot{width:58px;height:58px;border-radius:50% 50% 50% 12%;background:linear-gradient(145deg,#ffb66f,#FF8C42);border:3px solid #FFF7E9;box-shadow:0 3px 0 #9a542b,0 5px 10px #3a2e2a33;transform:translate(-50%,-100%) rotate(-45deg)}
+.map-pin-core{display:block;width:20px;height:20px;border-radius:50%;background:#FFF7E9;box-shadow:inset 0 2px 2px #3a2e2a22}
+#world-stage button[data-complete=true]:after{transform:rotate(45deg);top:1px;right:-9px;border:2px solid #FFF7E9;font-weight:800}
+#world-screen #world-gate-hotspot{position:absolute;z-index:5;transform:translate(-50%,-100%);min-height:56px;max-width:250px;padding:9px 17px;border:2px solid #3A2E2A;border-radius:16px;background:#FFF7E9;color:#3A2E2A;font:inherit;font-size:19px;font-weight:800;line-height:1.25;box-shadow:0 3px 0 #3a2e2a33}
+#world-screen #world-gate-hotspot[hidden]{display:none}
+
+#world-walk-sprite{display:none;position:absolute;inset:0;background-size:800% 500%;background-repeat:no-repeat}#world-avatar.smooth-ready #world-avatar-image{visibility:hidden}#world-avatar.smooth-ready #world-walk-sprite{display:block}#world-avatar.smooth-ready{width:94px;height:141px}@media(min-width:900px){#world-avatar.smooth-ready{width:110px;height:165px}}
