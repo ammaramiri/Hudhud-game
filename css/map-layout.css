@@ -1,0 +1,17 @@
+/* HUDHUD 0.14: map chrome occupies its own rows, never covers the map. */
+#world-screen{display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:#FFF7E9}
+#world-screen[hidden]{display:none!important}
+#world-screen .world-top{position:relative;inset:auto;grid-row:1;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:calc(5px + env(safe-area-inset-top)) 8px 5px;gap:6px;background:#FFF7E9;border-bottom:1px solid #dfcfb7;direction:inherit;pointer-events:auto}
+#world-screen .world-heading{background:none;padding:0 3px;border-radius:0;line-height:1.2}
+#world-screen .world-heading strong{font-size:18px}
+#world-screen .world-top button{width:44px;height:44px;min-height:44px;flex-shrink:0;border-radius:13px;font-size:21px;border-width:1.5px;box-shadow:none}
+#world-screen #world-return{position:static;max-width:none;width:auto;padding:0 10px;font-size:15px;order:4}
+#world-screen #world-return[hidden]{display:none}
+#world-screen #world-view{position:relative;inset:auto;grid-row:2;min-height:0;width:100%}
+#world-screen .world-bottom{position:relative;inset:auto;grid-row:3;width:100%;max-width:none;margin:0;box-sizing:border-box;min-height:calc(62px + env(safe-area-inset-bottom));padding:5px 10px calc(7px + env(safe-area-inset-bottom));background:#FFF7E9;border-top:1px solid #dfcfb7;display:flex;align-items:center;justify-content:center;gap:0;pointer-events:auto}
+#world-screen #world-go{width:min(100%,340px);min-height:48px;font-size:18px;border-width:2px;border-radius:15px;box-shadow:0 2px 0 #3A2E2A;padding:5px 14px}
+#world-screen #world-hint{font-size:14px;line-height:1.25;background:none;padding:0;margin:0;max-width:100%}
+#world-screen #world-hint[hidden]{display:none!important}
+#world-screen #world-hotspot,#world-screen #world-bird-hotspot,#world-screen #world-sky-hotspot{width:58px;height:58px;min-height:58px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:29px;border:2px solid #3A2E2A;background:#FFF7E9;box-shadow:0 3px 0 #3A2E2A33;transform:translate(-50%,-100%)}
+#world-screen #world-bird-hotspot[hidden],#world-screen #world-sky-hotspot[hidden]{display:none}
+#world-stage button[data-complete=true]:after{content:'✓';position:absolute;right:-6px;top:-5px;border:1px solid #3A2E2A;background:#2CC5B8;color:#3A2E2A;border-radius:50%;font-size:16px;line-height:23px;width:23px;height:23px}
