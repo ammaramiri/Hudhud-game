@@ -24,3 +24,8 @@
 #world-screen #world-gate-hotspot[hidden]{display:none}
 
 #world-walk-sprite{display:none;position:absolute;inset:0;background-size:800% 500%;background-repeat:no-repeat}#world-avatar.smooth-ready #world-avatar-image{visibility:hidden}#world-avatar.smooth-ready #world-walk-sprite{display:block}#world-avatar.smooth-ready{width:94px;height:141px}@media(min-width:900px){#world-avatar.smooth-ready{width:110px;height:165px}}
+
+
+/* Garden hub v0.17.0: region markers only; activities remain archived. */
+#world-screen #world-hotspot[hidden],#world-screen .garden-region-marker[hidden]{display:none!important}
+#world-screen .garden-region-marker{position:absolute;z-index:4;width:58px;height:58px;padding:0;display:grid;place-items:center;border-radius:50% 50% 50% 12%;background:linear-gradient(145deg,#ffb66f,#FF8C42);border:3px solid #FFF7E9;box-shadow:0 3px 0 #9a542b,0 5px 10px #3a2e2a33;transform:translate(-50%,-100%) rotate(-45deg);cursor:pointer}
