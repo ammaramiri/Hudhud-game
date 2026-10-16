@@ -8,3 +8,10 @@
 @media(prefers-reduced-motion:reduce){.g04-dialog *{animation:none!important;transition:none!important}.g04-clay-before{display:none}}
 
 @media(orientation:landscape){.g04-clay{aspect-ratio:3}.g04-clay-frame,.g04-clay-before{background-image:url("../assets/g04/clay-stages-wide-v2.webp")}}
+
+
+/* 0.18.2: real leg-free tabletop image in tray and assembly, not a crop of a complete table. */
+.g04-piece-tabletop{background-image:url('../assets/g04/tabletop-v3.webp');background-size:100% auto;background-position:center top}
+.g04-table-art{mix-blend-mode:normal}
+.g04-table-layer,.g04-table-full{mix-blend-mode:multiply}
+.g04-table-layer[data-part="0"]{clip-path:none;z-index:2}
