@@ -1,0 +1,41 @@
+'use strict';
+/* HUDHUD navigation contract: feet travel only on authored connected floor lanes.
+ * All inputs use this graph. Portals are graph endpoints, never building centres.
+ * Occluders reuse map pixels through vector clips; their holes stay transparent.
+ * Coordinates refer to the 1536 x 1024 world, independent of camera/viewport.
+ */
+(()=>{
+const layouts={
+ world:{nodes:{home:[262,671],south:[595,813],play:[1080,738],gardenFront:[1340,507],garden:[1355,450],school:[1016,291],mosqueJunction:[602,278],mosqueApproach:[490,295],mosque:[490,275],library:[272,437],tree:[453,473],plaza:[762,489]},edges:[['home','south'],['south','play'],['play','gardenFront'],['gardenFront','garden'],['gardenFront','school'],['school','mosqueJunction'],['mosqueJunction','mosqueApproach'],['mosqueApproach','mosque'],['mosqueJunction','library'],['library','tree'],['tree','plaza'],['plaza','gardenFront'],['south','plaza']],arrival:'gardenFront'},
+ garden:{nodes:{gate:[770,950],entry:[770,805],lower:[770,680],bottom:[770,515],left:[660,445],upper:[770,370],right:[885,445],orchardTurn:[590,340],orchardFront:[500,295],orchard:[480,220],waterTurn:[1040,375],water:[1285,365],lookoutTurn:[450,640],lookoutSteps:[310,590],lookout:[280,535],sharedTurn:[1080,670],shared:[1135,625]},edges:[['gate','entry'],['entry','lower'],['lower','bottom'],['bottom','left'],['left','upper'],['upper','right'],['right','bottom'],['left','orchardTurn'],['orchardTurn','orchardFront'],['orchardFront','orchard'],['right','waterTurn'],['waterTurn','water'],['lower','lookoutTurn'],['lookoutTurn','lookoutSteps'],['lookoutSteps','lookout'],['lower','sharedTurn'],['sharedTurn','shared']],arrival:'entry'},
+ orchard:{nodes:{gate:[770,990],entry:[770,915],gateInside:[770,755],center:[770,710],west:[520,650],g04:[365,705],westBend:[510,575],northwest:[605,430],g01Approach:[510,325],g01:[425,315],northeast:[900,425],g02Front:[1100,355],g02:[1110,310],eastUpper:[965,510],east:[950,650],g03Front:[1040,755],g03:[1210,780]},edges:[['gate','entry'],['entry','gateInside'],['gateInside','center'],['center','west'],['west','g04'],['west','westBend'],['westBend','northwest'],['northwest','g01Approach'],['g01Approach','g01'],['northwest','northeast'],['northeast','g02Front'],['g02Front','g02'],['northeast','eastUpper'],['eastUpper','east'],['east','center'],['east','g03Front'],['g03Front','g03']],arrival:'gateInside'},
+ mosque:{nodes:{gate:[770,970],entry:[770,810],doorFront:[770,750],door:[770,655],doorInside:[770,565],center:[770,490],m1:[620,795],m3:[780,360],left:[480,350],wuduBack:[365,350],wuduDoor:[360,435],wuduInside:[355,495],m2:[280,570],right:[1010,450],learnDoor:[1095,500],learnInside:[1160,550],m4:[1270,550],roomBack:[1320,460],seasonDoor:[1320,390],seasonInside:[1320,325],seasonSide:[1440,320],m5:[1440,235]},edges:[['gate','entry'],['entry','doorFront'],['entry','m1'],['doorFront','door'],['door','doorInside'],['doorInside','center'],['center','m3'],['m3','left'],['left','wuduBack'],['wuduBack','wuduDoor'],['wuduDoor','wuduInside'],['wuduInside','m2'],['center','right'],['right','learnDoor'],['learnDoor','learnInside'],['learnInside','m4'],['m4','roomBack'],['roomBack','seasonDoor'],['seasonDoor','seasonInside'],['seasonInside','seasonSide'],['seasonSide','m5']],arrival:'entry'},
+ wudu:{nodes:{gate:[770,1000],entry:[770,965],gateInside:[770,735],center:[770,550],left:[460,420],m04:[360,410],upper:[770,360],m05:[770,305],right:[1105,380],m06:[1200,365],lowerRight:[980,755],rightOpening:[1100,765],m07:[1210,735],lowerLeft:[565,755],leftOpening:[420,750],m08:[310,735]},edges:[['gate','entry'],['entry','gateInside'],['gateInside','center'],['center','left'],['left','m04'],['center','upper'],['upper','m05'],['center','right'],['right','m06'],['gateInside','lowerRight'],['lowerRight','rightOpening'],['rightOpening','m07'],['gateInside','lowerLeft'],['lowerLeft','leftOpening'],['leftOpening','m08']],arrival:'gateInside'}
+};
+// Baselines describe which side of a wall the feet occupy. The silhouette itself
+// masks only the overlapping pixels, never fades or hides the entire character.
+const masks={
+ world:[{id:'garden-arch',line:[[1260,493],[1440,493]],d:'M1260 395 Q1345 355 1440 399 L1440 493 L1400 493 L1400 420 Q1355 393 1318 421 L1318 487 L1260 487 Z'}],
+ garden:[{id:'orchard-arbor',line:[[390,265],[565,265]],d:'M391 264 L397 157 Q420 91 478 94 Q530 95 553 150 L557 251 L536 251 L531 151 Q505 116 475 116 Q435 116 418 158 L416 264 Z'},
+ {id:'entry-left',line:[[0,910],[690,890]],d:'M0 670 L70 735 L252 795 L531 788 L628 741 L690 740 L690 884 L536 912 L230 906 L0 794 Z'},
+ {id:'entry-right',line:[[860,890],[1536,870]],d:'M859 740 L919 740 L1003 770 L1260 804 L1536 710 L1536 880 L1210 913 L918 913 L859 883 Z'}],
+ orchard:[{id:'entry-arbor',line:[[615,937],[908,937]],d:'M618 805 Q770 738 907 802 L907 826 L889 826 L889 931 L854 933 L854 821 Q770 788 672 823 L672 931 L637 931 L637 825 L618 825 Z'},
+ {id:'vegetable-left-gate',line:[[1018,343],[1064,343]],d:'M1018 278 L1064 283 L1060 342 L1018 330 Z'},
+ {id:'vegetable-right-gate',line:[[1175,350],[1227,350]],d:'M1175 275 L1227 287 L1227 350 L1178 334 Z'}],
+ mosque:[{id:'main-arch',line:[[470,738],[1082,738]],d:'M470 541 L624 541 L627 515 L715 515 Q773 478 836 515 L927 515 L929 541 L1082 541 L1082 738 L865 738 L865 633 Q853 599 777 573 Q705 600 696 634 L696 738 L470 738 Z'},
+ {id:'wudu-arch',line:[[295,468],[439,468]],d:'M295 304 L398 304 L438 400 L438 480 L389 464 L389 388 Q379 361 350 349 Q323 365 325 391 L325 468 L295 468 Z'},
+ {id:'wudu-side-wall',line:[[398,420],[514,560]],d:'M398 306 L438 398 L488 409 L527 468 L527 551 L479 559 L438 486 L398 459 Z'},
+ {id:'learning-door',line:[[1043,552],[1132,552]],d:'M1053 426 L1112 370 L1149 348 L1149 466 L1120 502 L1118 446 Q1107 418 1091 448 L1077 536 L1043 552 Z'},
+ {id:'seasons-arch',line:[[1158,470],[1495,470]],d:'M1158 321 L1180 306 L1210 307 L1214 325 L1495 325 L1495 470 L1452 470 L1452 406 Q1445 356 1316 356 Q1193 357 1184 406 L1184 470 L1158 470 Z'}],
+ wudu:[{id:'entry-arch',line:[[508,969],[1020,969]],d:'M508 744 L565 744 L620 736 L764 681 L910 736 L968 736 L1020 746 L1020 969 L872 956 L872 853 Q866 807 762 761 Q655 809 652 853 L652 956 L508 969 Z'},
+ {id:'left-divider',line:[[184,470],[520,715]],d:'M183 369 Q337 394 486 531 L520 547 L520 692 L486 715 L459 699 L459 575 Q312 480 183 459 Z'},
+ {id:'right-divider',line:[[1012,715],[1303,452]],d:'M1012 547 L1045 526 Q1140 419 1303 357 L1320 382 L1320 452 Q1158 490 1074 578 L1074 695 L1045 715 L1012 694 Z'}]
+};
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+function nearest(map,p){let best=null;map.edges.forEach(([a,b],i)=>{const A=map.nodes[a],B=map.nodes[b],dx=B[0]-A[0],dy=B[1]-A[1],u=Math.max(0,Math.min(1,((p[0]-A[0])*dx+(p[1]-A[1])*dy)/(dx*dx+dy*dy))),q=[A[0]+u*dx,A[1]+u*dy],d=dist(q,p);if(!best||d<best.d)best={a,b,p:q,d,i};});return best;}
+function path(map,from,to){const s=nearest(map,from),e=nearest(map,to);if(!s||!e)return[];const nodes={...map.nodes,S:s.p,T:e.p},adj=Object.fromEntries(Object.keys(nodes).map(k=>[k,[]]));const link=(a,b)=>{const d=dist(nodes[a],nodes[b]);adj[a].push([b,d]);adj[b].push([a,d]);};map.edges.forEach(([a,b])=>link(a,b));link('S',s.a);link('S',s.b);link('T',e.a);link('T',e.b);if(s.i===e.i)link('S','T');const ds={S:0},prev={},q=new Set(Object.keys(nodes));while(q.size){let u=null;for(const k of q)if(u===null||(ds[k]??Infinity)<(ds[u]??Infinity))u=k;if(!Number.isFinite(ds[u]))return[];q.delete(u);if(u==='T')break;for(const[v,d]of adj[u])if(ds[u]+d<(ds[v]??Infinity)){ds[v]=ds[u]+d;prev[v]=u;}}const out=[];let u='T';while(u!=='S'){if(!u)return[];out.unshift([...nodes[u]]);u=prev[u];}return out;}
+function behind(mask,p){const[a,b]=mask.line;const y=a[1]+(b[1]-a[1])*(p[0]-a[0])/(b[0]-a[0]);return p[1]<y;}
+function configure(maps){for(const[name,map]of Object.entries(maps)){if(!layouts[name])throw Error('Missing navigation layout: '+name);Object.assign(map,layouts[name]);for(const[a,b]of map.edges)if(!map.nodes[a]||!map.nodes[b]||dist(map.nodes[a],map.nodes[b])<.01)throw Error('Invalid floor lane: '+name);}}
+function depthScale(scene,y){const depth=Math.max(0,Math.min(1,y/1024));return scene==='world'?.40+.35*depth:.48+.44*depth;}
+window.HUDHUDNavigation={version:1,layouts,masks,nearest,path,behind,configure,depthScale};
+})();
