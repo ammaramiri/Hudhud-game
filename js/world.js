@@ -136,7 +136,7 @@ function updateContextBase(){const key=nearbyPlace(),button=$('world-go'),hint=$
 
 
 function openM04(){window.HUDHUDM04.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
-function openH06(){window.HUDHUDH06.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
+function openH06(){window.HUDHUDH06.open({lang,onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
 const mosqueEntry=document.createElement('button');mosqueEntry.type='button';mosqueEntry.className='mosque-stage-marker';mosqueEntry.onclick=()=>travel('mosque');$('world-stage').append(mosqueEntry);
 const mosqueMarkers=[];for(const area of Object.keys(mosqueKeys)){for(const key of mosqueKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker'+(['m2','m04'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);mosqueMarkers.push(b);}}
 const homeEntry=document.createElement('button');homeEntry.type='button';homeEntry.className='mosque-stage-marker';homeEntry.id='home-entry';homeEntry.onclick=()=>travel('home');$('world-stage').append(homeEntry);
