@@ -43,7 +43,15 @@ function nearest(map,p){let best=null;map.edges.forEach(([a,b],i)=>{const A=map.
 function path(map,from,to){const s=nearest(map,from),e=nearest(map,to);if(!s||!e)return[];const nodes={...map.nodes,S:s.p,T:e.p},adj=Object.fromEntries(Object.keys(nodes).map(k=>[k,[]]));const link=(a,b)=>{const d=dist(nodes[a],nodes[b]);adj[a].push([b,d]);adj[b].push([a,d]);};map.edges.forEach(([a,b])=>link(a,b));link('S',s.a);link('S',s.b);link('T',e.a);link('T',e.b);if(s.i===e.i)link('S','T');const ds={S:0},prev={},q=new Set(Object.keys(nodes));while(q.size){let u=null;for(const k of q)if(u===null||(ds[k]??Infinity)<(ds[u]??Infinity))u=k;if(!Number.isFinite(ds[u]))return[];q.delete(u);if(u==='T')break;for(const[v,d]of adj[u])if(ds[u]+d<(ds[v]??Infinity)){ds[v]=ds[u]+d;prev[v]=u;}}const out=[];let u='T';while(u!=='S'){if(!u)return[];out.unshift([...nodes[u]]);u=prev[u];}return out;}
 function behind(mask,p){const[a,b]=mask.line;const y=a[1]+(b[1]-a[1])*(p[0]-a[0])/(b[0]-a[0]);return p[1]<y;}
 function configure(maps){for(const[name,map]of Object.entries(maps)){if(!layouts[name])throw Error('Missing navigation layout: '+name);Object.assign(map,layouts[name]);for(const[a,b]of map.edges)if(!map.nodes[a]||!map.nodes[b]||dist(map.nodes[a],map.nodes[b])<.01)throw Error('Invalid floor lane: '+name);}}
-function depthScale(scene,y){const depth=Math.max(0,Math.min(1,y/1024));return scene==='world'?.40+.35*depth:.48+.44*depth;}
+function depthScale(scene,y){
+ const depth=Math.max(0,Math.min(1,y/1024));
+ const base=scene==='world'?.40+.35*depth:.48+.44*depth;
+ // Interior artwork uses a closer camera than the outdoor hubs.
+ // Scale around the existing feet anchor so paths and occlusion stay aligned.
+ const roomScale=scene==='home'?1.55:scene==='kitchen'?1.9:1;
+ return base*roomScale;
+}
 window.HUDHUDNavigation={version:2,layouts,masks,nearest,path,behind,configure,depthScale};
 })();
+
 
