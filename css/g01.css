@@ -23,3 +23,22 @@
 .g01-card .g01-sprite.g01-card-seed{aspect-ratio:418/460!important}
 @media(orientation:portrait){.g01-dock{max-height:43%;padding:10px 16px;gap:4px}.g01-tool .g01-sprite{height:64px;width:64px}.g01-dialog .g01-tool{padding:2px 8px}.g01-status:empty{min-height:0}.g01-header strong{font-size:1rem}}
 @media(orientation:landscape) and (max-height:550px){.g01-tool .g01-sprite{height:48px;width:48px}}
+/* Review revision: a single square coordinate space for background and objects. */
+.g01-scene,.g01-light-scene{background:#e5ead8!important;display:grid;place-items:center;container-type:size}
+.g01-stage{position:relative;width:min(100cqw,100cqh);height:min(100cqw,100cqh);background:url('../assets/g01/bench-square-v2.webp') center/100% 100%;direction:ltr;overflow:hidden;isolation:isolate}
+.g01-workbench{inset:0;transform:none;width:100%;height:100%}
+.g01-dialog .g01-workbench .g01-pot{left:44%;top:34%;width:52%;height:57%;background:none;z-index:2}
+.g01-pot-shadow{left:50%;top:83%;width:40%;height:7%}
+.g01-actor{left:3%;top:46%;width:37%;touch-action:none;cursor:grab;pointer-events:auto;user-select:none;-webkit-user-select:none;outline-offset:3px}
+.g01-actor-1{left:5%;top:49%;width:34%}.g01-actor-2{left:15%;top:64%;width:12%}.g01-actor-3{left:3%;top:47%;width:36%}
+.g01-actor:focus-visible{outline:4px solid #eec563;border-radius:16px}.g01-actor.is-dragging{cursor:grabbing;filter:drop-shadow(0 15px 8px #2e241b55)}
+.g01-pot.is-drop-ready{filter:drop-shadow(0 0 7px #fff7b0)}
+.g01-wet-soil{left:52%;top:41%;width:36%;height:20%}
+.g01-hero{left:9%;top:5%;width:82%;height:82%;max-width:none;max-height:none;transform:none;aspect-ratio:1!important}
+.g01-move-pot{left:0;top:39%;bottom:auto;width:46%;max-width:none;transition:none;filter:drop-shadow(0 5px 2px #38281535);touch-action:none}
+.g01-move-pot.is-lit{left:54%}.g01-move-pot .g01-sprite{aspect-ratio:1!important}
+.g01-zone{bottom:3%;min-height:44px!important;width:40%;font-size:clamp(16px,2vw,21px)!important}.g01-shade{left:4%}.g01-lit{right:4%}
+.g01-soil-scoop{position:absolute;left:10%;top:62%;width:26%;height:18%;border-radius:45%;background:radial-gradient(ellipse at 35% 30%,#b0844e 0 5%,transparent 6%),radial-gradient(ellipse at 64% 42%,#8a613a 0 9%,transparent 10%),#583b22;box-shadow:inset 0 -4px 4px #281b11;opacity:0;pointer-events:none}
+.g01-dig-reveal{position:absolute;left:64%;top:48%;width:13%;height:10%;border-radius:50%;background:radial-gradient(ellipse,#24170d 30%,#543821 60%,#836044 80%,transparent 85%);transform:scale(0);z-index:3;pointer-events:none}
+.g01-instruction{font-size:21px;line-height:1.5}.g01-heading{font-size:27px}.g01-progress{font-size:17px}.g01-dialog .g01-next{font-size:23px;min-height:50px}.g01-tools:empty{display:none}.g01-status:empty{display:none}.g01-dock{gap:9px}
+@media(orientation:portrait){.g01-scene{flex:1;min-height:220px}.g01-dock{max-height:42%;padding:12px 16px;gap:6px}.g01-instruction{font-size:20px}.g01-heading{font-size:25px}.g01-hero{height:82%;width:82%}.g01-badge{left:12px;top:12px;font-size:18px}.g01-move-pot{width:46%;bottom:auto}.g01-dialog .g01-tool{font-size:18px}}

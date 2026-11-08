@@ -11,12 +11,17 @@ maps.mosque={art:'assets/world/mosque-hub-v2.webp',nodes:{gate:[770,945],entry:[
 maps.wudu={art:'assets/world/wudu-m2-v1.webp',nodes:{gate:[770,945],entry:[770,780],center:[770,550],left:[460,420],m04:[360,350],upper:[770,360],m05:[770,280],right:[1050,440],m06:[1200,360],lowerRight:[1090,650],m07:[1220,660],lowerLeft:[450,650],m08:[310,650]},edges:[['gate','entry'],['entry','center'],['center','left'],['left','m04'],['center','upper'],['upper','m05'],['center','right'],['right','m06'],['center','lowerRight'],['lowerRight','m07'],['center','lowerLeft'],['lowerLeft','m08']],spawn:'gate',goal:'m04'};
 maps.home={art:'assets/world/home-hub-v1.webp',spawn:'gate',goal:'h2'};
 maps.kitchen={art:'assets/world/kitchen-h2-v1.webp',spawn:'gate',goal:'h05'};
-const homeKeys={home:['h1','h2','h3','h4','h5','h6'],kitchen:['h05','h06','h07','h08','h09']};
+maps.library={art:'assets/world/library-hub-v1.webp',spawn:'gate',goal:'l2'};
+maps.faith={art:'assets/world/faith-l2-v1.webp',spawn:'gate',goal:'l05'};
+const homeKeys={home:['h1','h2','h3','h4','h5','h6'],kitchen:['h05','h06','h07','h08','h09'],library:['l1','l2','l3','l4','l5'],faith:['l05','l06','l07','l08','l09']};
 const homeNames={
  ar:{home:'البيت',kitchen:'المطبخ والمائدة',h1:'المدخل وممر الغرف',h2:'المطبخ والمائدة',h3:'غرفة النوم والملابس',h4:'مكان النظافة',h5:'غرفة الأسرة',h6:'ركن العناية والزيارة',h05:'قبل الطعام وبعده',h06:'آداب المائدة',h07:'آخذ بقدر حاجتي',h08:'أحفظ الطعام',h09:'أساعد في إعداد المائدة',gate:'رجوع'},
  de:{home:'Zuhause',kitchen:'Küche und Esstisch',h1:'Eingang und Flur',h2:'Küche und Esstisch',h3:'Schlafzimmer und Kleidung',h4:'Waschraum',h5:'Familienzimmer',h6:'Pflege und Besuch',h05:'Vor und nach dem Essen',h06:'Am Esstisch',h07:'Nur so viel, wie ich brauche',h08:'Lebensmittel aufbewahren',h09:'Den Tisch decken',gate:'Zurück'},
  en:{home:'Home',kitchen:'Kitchen and dining',h1:'Entrance and hallway',h2:'Kitchen and dining',h3:'Bedroom and clothes',h4:'Washroom',h5:'Family room',h6:'Care and visits',h05:'Before and after eating',h06:'Table manners',h07:'Take only what I need',h08:'Store food carefully',h09:'Help set the table',gate:'Back'}
 };
+Object.assign(homeNames.ar,{"library": "المكتبة", "faith": "جناح الإيمان", "l1": "معرفة الله", "l2": "الإيمان", "l3": "القرآن", "l4": "التمييز والفهم", "l5": "القصص والقيم", "l05": "أركان الإيمان", "l06": "الإيمان بالملائكة", "l07": "الكتب والرسل", "l08": "اليوم الآخر", "l09": "القدر"});
+Object.assign(homeNames.de,{"library": "Bibliothek", "faith": "Glaubensbereich", "l1": "Allah kennenlernen", "l2": "Glaube", "l3": "Koran", "l4": "Unterscheiden und verstehen", "l5": "Geschichten und Werte", "l05": "Säulen des Glaubens", "l06": "Glaube an die Engel", "l07": "Bücher und Gesandte", "l08": "Der Jüngste Tag", "l09": "Vorherbestimmung"});
+Object.assign(homeNames.en,{"library": "Library", "faith": "Faith wing", "l1": "Knowing Allah", "l2": "Faith", "l3": "Quran", "l4": "Discernment and understanding", "l5": "Stories and values", "l05": "Pillars of faith", "l06": "Belief in angels", "l07": "Books and messengers", "l08": "The Last Day", "l09": "Divine decree"});
 const navigation=window.HUDHUDNavigation;
 navigation.configure(maps);
 const mosqueNames={ar:{mosque:'المسجد',wudu:'موضع الوضوء',m1:'المدخل والساحة',m2:'موضع الوضوء',m3:'قاعة الصلاة',m4:'ركن تعلم العبادة',m5:'ساحة المواسم',m04:'أتوضأ',m05:'أراجع وضوئي',m06:'متى أحتاج إلى وضوء؟',m07:'لا أسرف في ماء الوضوء',m08:'التيمم',gate:'رجوع'},de:{mosque:'Moschee',wudu:'Waschbereich',m1:'Eingang und Vorplatz',m2:'Waschbereich',m3:'Gebetssaal',m4:'Lernecke',m5:'Festzeiten-Hof',m04:'Ich lerne Wudu',m05:'Wudu überprüfen',m06:'Wann brauche ich Wudu?',m07:'Wasser sparen',m08:'Tayammum',gate:'Zurück'},en:{mosque:'Mosque',wudu:'Wudu area',m1:'Entrance and courtyard',m2:'Wudu area',m3:'Prayer hall',m4:'Worship learning corner',m5:'Seasonal courtyard',m04:'Learning wudu',m05:'Review my wudu',m06:'When do I need wudu?',m07:'Save wudu water',m08:'Tayammum',gate:'Back'}};
@@ -70,6 +75,10 @@ if(scene==='orchard'&&key==='g04')action=openG04;
 if(scene==='orchard'&&key==='g01')action=openG01;
 move(maps[scene].nodes[key],action,scene==='orchard'?orchardNames[lang][key]:t()[key]);}
 function travel(key){
+if(scene==='world'&&key==='library'){move(maps.world.nodes.library,()=>setScene('library',maps.library.nodes.gate,'entry'),homeNames[lang].library);return;}
+if(scene==='library'&&key==='l2'){move(maps.library.nodes.l2,()=>setScene('faith',maps.faith.nodes.gate,'entry'),homeNames[lang].faith);return;}
+if((scene==='library'||scene==='faith')&&key==='gate'){move(maps[scene].nodes.gate,()=>scene==='faith'?setScene('library',maps.library.nodes.l2,'upper'):setScene('world',maps.world.nodes.library,'libraryFront'),homeNames[lang].gate);return;}
+
 if(scene==='world'&&key==='home'){move(maps.world.nodes.home,()=>setScene('home',maps.home.nodes.gate,'entry'),homeNames[lang].home);return;}
 if(homeKeys[scene]){if(!maps[scene].nodes[key])return;let action=null;
 if(key==='gate')action=()=>scene==='kitchen'?setScene('home',maps.home.nodes.h2,'kitchenFront'):setScene('world',maps.world.nodes.home,'homeFront');
@@ -97,7 +106,7 @@ function faceMovement(dx,dy){
 function tick(now){
  const dt=Math.min((now-last)/1000,.05);last=now;
  if(active){
-  const blocked=!!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open]');
+  const blocked=!!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open]');
   if(route.length&&!blocked){
    let budget=dt*235;
    while(route.length&&budget>0){
@@ -109,7 +118,7 @@ function tick(now){
    }
    if(!route.length){const action=onArrival;onArrival=null;$('world-target').hidden=true;$('world-hint').textContent=scene==='garden'&&done?t().explore:t().walk;save();action?.();}
   }
-  const walking=route.length>0&&!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open]');
+  const walking=route.length>0&&!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open]');
   $('world-avatar').classList.toggle('walking',walking);
   if(walking)walkFrame=Math.floor(now/145)%4;
   const key=profile.character+':'+facing+':'+walkFrame;
@@ -121,8 +130,10 @@ function tick(now){
 }
 const regionMarkers=regionKeys.map(key=>{const button=document.createElement('button');button.className='garden-region-marker';button.type='button';button.dataset.region=key;button.innerHTML='<span class="map-pin-core" aria-hidden="true"></span>';$('world-stage').append(button);button.onclick=()=>travel(key);return button;});
 const gateHotspot=document.createElement('button');gateHotspot.id='world-gate-hotspot';gateHotspot.type='button';$('world-stage').append(gateHotspot);gateHotspot.onclick=()=>travel('gate');
-function openG04(){window.HUDHUDG04.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
-function openG01(){window.HUDHUDG01.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
+function openG04(){window.HUDHUDChallenges.choose('g04',lang,trainG04);}
+function trainG04(){window.HUDHUDG04.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
+function openG01(){window.HUDHUDChallenges.choose('g01',lang,trainG01);}
+function trainG01(){window.HUDHUDG01.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
 const orchardMarkers=['g01','g02','g03','g04'].map(key=>{const b=document.createElement('button');b.type='button';b.className='orchard-stage-marker'+(['g01','g04'].includes(key)?'':' is-planned');b.dataset.stage=key;$('world-stage').append(b);b.onclick=()=>travel(key);return b;});
 function updateLabelsBase(){for(const b of orchardMarkers){const key=b.dataset.stage,P=maps.orchard.nodes[key];b.hidden=scene!=='orchard';b.style.left=P[0]+'px';b.style.top=(P[1]-25)+'px';b.textContent=orchardNames[lang][key]+(['g01','g04'].includes(key)?'':' · '+orchardNames[lang].planned);}
 const c=t();gateHotspot.hidden=scene==='world';gateHotspot.textContent=({ar:'الخروج إلى الحيّ',de:'Zum Viertel',en:'Exit to neighbourhood'}[lang]);gateHotspot.style.left=(maps[scene].nodes.gate?.[0]||770)+'px';gateHotspot.style.top=((maps[scene].nodes.gate?.[1]||865)-15)+'px';if(scene==='orchard')gateHotspot.textContent=orchardNames[lang].gate;
@@ -135,25 +146,31 @@ function nearbyPlaceBase(){if(route.length)return null;const keys=scene==='world
 function updateContextBase(){const key=nearbyPlace(),button=$('world-go'),hint=$('world-hint');const region=regionKeys.includes(key);button.hidden=!key||(region&&key!=='orchard')||(scene==='orchard'&&!['gate','g01','g04'].includes(key));if(key)button.textContent=scene==='orchard'?orchardNames[lang][key]:key==='orchard'?t().orchard:entryLabels[lang][key];hint.hidden=!region&&(!!key||Date.now()>tutorialUntil);if(scene==='orchard'&&key&&!['gate','g01','g04'].includes(key)){hint.hidden=false;hint.textContent=orchardNames[lang][key]+' · '+orchardNames[lang].planned;}else if(region)hint.textContent=t()[key];else if(!hint.hidden)hint.textContent=({ar:'المس الطريق للمشي، واسحب للاستكشاف',de:'Zum Gehen tippen · Zum Erkunden ziehen',en:'Tap a path to walk · Drag to explore'}[lang]);}
 
 
-function openM04(){window.HUDHUDM04.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
-function openH06(){window.HUDHUDH06.open({lang,onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
+function openM04(){window.HUDHUDChallenges.choose('m04',lang,trainM04);}
+function trainM04(){window.HUDHUDM04.open({lang,muted,onMute:value=>{if(muted!==value){muted=value;document.querySelector('#mute').click();}updateLabels();},onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
+function openH06(){window.HUDHUDChallenges.choose('h06',lang,trainH06);}
+function trainH06(){window.HUDHUDH06.open({lang,onClose:()=>{$('world-view').focus({preventScroll:true});updateLabels();},onComplete:()=>{save();updateLabels();}});}
 const mosqueEntry=document.createElement('button');mosqueEntry.type='button';mosqueEntry.className='mosque-stage-marker';mosqueEntry.onclick=()=>travel('mosque');$('world-stage').append(mosqueEntry);
 const mosqueMarkers=[];for(const area of Object.keys(mosqueKeys)){for(const key of mosqueKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker'+(['m2','m04'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);mosqueMarkers.push(b);}}
 const homeEntry=document.createElement('button');homeEntry.type='button';homeEntry.className='mosque-stage-marker';homeEntry.id='home-entry';homeEntry.onclick=()=>travel('home');$('world-stage').append(homeEntry);
-const homeMarkers=[];for(const area of Object.keys(homeKeys))for(const key of homeKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker home-stage-marker'+(['h2','h06'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);homeMarkers.push(b);}
+const libraryEntry=document.createElement('button');libraryEntry.type='button';libraryEntry.id='library-entry';libraryEntry.className='mosque-stage-marker';libraryEntry.onclick=()=>travel('library');$('world-stage').append(libraryEntry);
+const homeMarkers=[];for(const area of Object.keys(homeKeys))for(const key of homeKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker home-stage-marker'+(['h2','h06','l2'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);homeMarkers.push(b);}
 function updateHomeLabels(){
+libraryEntry.hidden=scene!=='world';libraryEntry.textContent=homeNames[lang].library;libraryEntry.style.left=maps.world.nodes.library[0]+'px';libraryEntry.style.top=(maps.world.nodes.library[1]-85)+'px';
 homeEntry.hidden=scene!=='world';homeEntry.textContent=homeNames[lang].home;homeEntry.style.left=maps.world.nodes.home[0]+'px';homeEntry.style.top=(maps.world.nodes.home[1]-85)+'px';
-for(const b of homeMarkers){const key=b.dataset.stage,p=maps[b.dataset.area].nodes[key];b.hidden=scene!==b.dataset.area;b.style.left=p[0]+'px';b.style.top=(p[1]-28)+'px';b.textContent=homeNames[lang][key]+(['h2','h06'].includes(key)?'':' · '+orchardNames[lang].planned);}
-if(homeKeys[scene]){$('world-title').textContent=homeNames[lang][scene];$('world-return').hidden=false;$('world-return').textContent=scene==='kitchen'?homeNames[lang].home:t().world;$('world-return').setAttribute('aria-label',$('world-return').textContent);gateHotspot.hidden=false;gateHotspot.style.left=maps[scene].nodes.gate[0]+'px';gateHotspot.style.top=(maps[scene].nodes.gate[1]-15)+'px';gateHotspot.textContent=$('world-return').textContent;}
+for(const b of homeMarkers){const key=b.dataset.stage,p=maps[b.dataset.area].nodes[key];b.hidden=scene!==b.dataset.area;b.style.left=p[0]+'px';b.style.top=(p[1]-28)+'px';b.textContent=homeNames[lang][key]+(['h2','h06','l2'].includes(key)?'':' · '+orchardNames[lang].planned);}
+if(homeKeys[scene]){$('world-title').textContent=homeNames[lang][scene];$('world-return').hidden=false;$('world-return').textContent=scene==='faith'?homeNames[lang].library:scene==='kitchen'?homeNames[lang].home:t().world;$('world-return').setAttribute('aria-label',$('world-return').textContent);gateHotspot.hidden=false;gateHotspot.style.left=maps[scene].nodes.gate[0]+'px';gateHotspot.style.top=(maps[scene].nodes.gate[1]-15)+'px';gateHotspot.textContent=$('world-return').textContent;}
 }
 function updateLabels(){updateLabelsBase();updateHomeLabels();mosqueEntry.hidden=scene!=='world';mosqueEntry.textContent=mosqueNames[lang].mosque;mosqueEntry.style.left=maps.world.nodes.mosque[0]+'px';mosqueEntry.style.top=(maps.world.nodes.mosque[1]-85)+'px';for(const b of mosqueMarkers){const area=b.dataset.area,key=b.dataset.stage,p=maps[area].nodes[key];b.hidden=scene!==area;b.style.left=p[0]+'px';b.style.top=(p[1]-25)+'px';b.textContent=mosqueNames[lang][key]+(['m2','m04'].includes(key)?'':' · '+orchardNames[lang].planned);}
-if(mosqueKeys[scene]){$('world-title').textContent=mosqueNames[lang][scene];$('world-return').hidden=false;$('world-return').textContent=scene==='wudu'?mosqueNames[lang].mosque:t().world;$('world-return').setAttribute('aria-label',$('world-return').textContent);gateHotspot.hidden=false;gateHotspot.style.left=maps[scene].nodes.gate[0]+'px';gateHotspot.style.top=(maps[scene].nodes.gate[1]-15)+'px';gateHotspot.textContent=$('world-return').textContent;}updateContext();}
+if(mosqueKeys[scene]){$('world-title').textContent=mosqueNames[lang][scene];$('world-return').hidden=false;$('world-return').textContent=scene==='wudu'?mosqueNames[lang].mosque:t().world;$('world-return').setAttribute('aria-label',$('world-return').textContent);gateHotspot.hidden=false;gateHotspot.style.left=maps[scene].nodes.gate[0]+'px';gateHotspot.style.top=(maps[scene].nodes.gate[1]-15)+'px';gateHotspot.textContent=$('world-return').textContent;}updateContext();updateChallengeBadges();}
 function nearbyPlace(){
+if(scene==='world'&&!route.length&&distance(pos,maps.world.nodes.library)<75)return 'library';
 if(homeKeys[scene]){if(route.length)return null;return ['gate',...homeKeys[scene]].sort((a,b)=>distance(pos,maps[scene].nodes[a])-distance(pos,maps[scene].nodes[b])).find(k=>distance(pos,maps[scene].nodes[k])<80)||null;}
 if(scene==='world'&&!route.length&&distance(pos,maps.world.nodes.home)<100)return 'home';
 if(mosqueKeys[scene]){if(route.length)return null;return ['gate',...mosqueKeys[scene]].sort((a,b)=>distance(pos,maps[scene].nodes[a])-distance(pos,maps[scene].nodes[b])).find(k=>distance(pos,maps[scene].nodes[k])<100)||null;}if(scene==='world'&&!route.length&&distance(pos,maps.world.nodes.mosque)<100)return 'mosque';return nearbyPlaceBase();}
 function updateContext(){
-if(homeKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint'),ready=key==='gate'||(scene==='home'&&key==='h2')||(scene==='kitchen'&&key==='h06');b.hidden=!ready;if(ready)b.textContent=key==='gate'?(scene==='home'?t().world:homeNames[lang].home):homeNames[lang][key];h.hidden=!key||ready;if(!h.hidden)h.textContent=homeNames[lang][key]+' · '+orchardNames[lang].planned;return;}
+if(scene==='world'&&nearbyPlace()==='library'){$('world-go').hidden=false;$('world-go').textContent=homeNames[lang].library;$('world-hint').hidden=true;return;}
+if(homeKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint'),ready=key==='gate'||(scene==='home'&&key==='h2')||(scene==='kitchen'&&key==='h06')||(scene==='library'&&key==='l2');b.hidden=!ready;if(ready)b.textContent=key==='gate'?(scene==='faith'?homeNames[lang].library:scene==='kitchen'?homeNames[lang].home:t().world):homeNames[lang][key];h.hidden=!key||ready;if(!h.hidden)h.textContent=homeNames[lang][key]+' · '+orchardNames[lang].planned;return;}
 if(scene==='world'&&nearbyPlace()==='home'){$('world-go').hidden=false;$('world-go').textContent=homeNames[lang].home;$('world-hint').hidden=true;return;}
 if(mosqueKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint');b.hidden=!['gate','m2','m04'].includes(key);if(key)b.textContent=mosqueNames[lang][key];h.hidden=!key||['gate','m2','m04'].includes(key);if(!h.hidden)h.textContent=mosqueNames[lang][key]+' · '+orchardNames[lang].planned;return;}updateContextBase();if(scene==='world'&&nearbyPlace()==='mosque'){$('world-go').hidden=false;$('world-go').textContent=mosqueNames[lang].mosque;}}
 function enter(event){profile=event.detail;lang=texts[profile.language]?profile.language:'de';muted=profile.muted;const d=read();done=Array.isArray(d?.completedSteps)&&d.completedSteps.includes('plant');watered=Array.isArray(d?.completedSteps)&&d.completedSteps.includes('watering');$('opening-screen').hidden=true;$('game-shell').hidden=true;$('world-screen').hidden=false;document.body.classList.remove('opening-active');document.body.classList.add('world-active');facing=['front','right','back','left'].includes(d?.facing)?d.facing:'front';walkFrame=1;lastFrame='';displayDirection=directions.indexOf(facing)*2;strideDistance=0;loadSmooth(profile.character==='girl'?'girl':'boy');
@@ -164,7 +181,7 @@ active=true;if(!tutorialShown){try{tutorialShown=localStorage.getItem('hudhud-ma
 window.addEventListener('hudhud:profile-ready',enter);window.addEventListener('hudhud:resume',enter);
 $('world-return').onclick=()=>{if(scene==='world')return;drag=null;travel('gate');$('world-view').focus({preventScroll:true});};
 $('world-go').onclick=()=>{const key=nearbyPlace();if(key)travel(key);};$('world-hotspot').onclick=()=>travel(maps[scene].goal);
-$('world-map').onclick=()=>{$('overview-art').src=maps[scene].art;const keys=homeKeys[scene]?['gate',...homeKeys[scene]]:scene==='world'?['home','library','mosque','school','south','play','plaza','garden']:scene==='orchard'?['gate','g01','g02','g03','g04']:mosqueKeys[scene]?['gate',...mosqueKeys[scene]]:['gate',...regionKeys];$('destinations').replaceChildren(...keys.map(key=>{const b=document.createElement('button');b.type='button';b.textContent=homeKeys[scene]?homeNames[lang][key]+(key!=='gate'&&key!=='h2'&&key!=='h06'?' · '+orchardNames[lang].planned:''):scene==='orchard'?orchardNames[lang][key]:mosqueKeys[scene]?mosqueNames[lang][key]:t()[key];b.dataset.destination=key;b.onclick=()=>{$('world-overview').close();travel(key);};return b;}));$('world-overview').showModal();};
+$('world-map').onclick=()=>{$('overview-art').src=maps[scene].art;const keys=homeKeys[scene]?['gate',...homeKeys[scene]]:scene==='world'?['home','library','mosque','school','south','play','plaza','garden']:scene==='orchard'?['gate','g01','g02','g03','g04']:mosqueKeys[scene]?['gate',...mosqueKeys[scene]]:['gate',...regionKeys];$('destinations').replaceChildren(...keys.map(key=>{const b=document.createElement('button');b.type='button';b.textContent=homeKeys[scene]?homeNames[lang][key]+(key!=='gate'&&key!=='h2'&&key!=='h06'&&key!=='l2'?' · '+orchardNames[lang].planned:''):scene==='orchard'?orchardNames[lang][key]:mosqueKeys[scene]?mosqueNames[lang][key]:t()[key];b.dataset.destination=key;b.onclick=()=>{$('world-overview').close();travel(key);};return b;}));$('world-overview').showModal();};
 $('world-menu').onclick=()=>{updateLabels();$('world-settings').showModal();};document.querySelectorAll('.close-world-dialog').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 document.querySelectorAll('[data-world-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.worldLang;document.querySelector('[data-lang="'+lang+'"]').click();updateLabels();});
 $('world-sound').onclick=()=>{muted=!muted;document.querySelector('#mute').click();updateLabels();if(!muted)ping();};
@@ -227,6 +244,17 @@ function advancePlant(){
 }
 $('plant-dialog').addEventListener('close',()=>{plantSession++;clearTimeout(plantTimer);plantBusy=false;});
 window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden)save();});window.addEventListener('pagehide',save);requestAnimationFrame(tick);
+
+function updateChallengeBadges(){
+ if(!window.HUDHUDChallenges)return;
+ for(const b of [...orchardMarkers,...mosqueMarkers,...homeMarkers]){
+  b.querySelector('.hc-complete-label')?.remove();
+  const id=b.dataset.stage;if(!['g04','g01','m04','h06'].includes(id))continue;
+  const label=HUDHUDChallenges.status(id,lang);if(label){const n=document.createElement('span');n.className='hc-complete-label';n.textContent=label;b.append(n);}
+ }
+}
+window.addEventListener('hudhud:challenge-progress',()=>{if(active)updateChallengeBadges();});
+
 // Read-only snapshot aids QA without mutating game state.
 window.HUDHUDWorld={getState:()=>({active,scene,position:[...pos],moving:route.length>0,facing,completed:done,camera:{...camera},scale,navigationVersion:navigation.version,occluders:occlusionItems.filter(x=>!x.node.hidden).map(x=>x.id)})};
 })();

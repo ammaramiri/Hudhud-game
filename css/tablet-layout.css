@@ -1,0 +1,15 @@
+/* Shared tablet frame: avoid stretching a stage to the whole display. Mobile rules remain primary. */
+@media(min-width:700px) and (min-height:600px){
+.g01-dialog,.m04-dialog,.g04-dialog,.h06-dialog{width:min(100vw,1180px);height:min(100dvh,1100px);max-height:100dvh;inset:0;margin:auto;border-radius:20px}
+.g01-header,.m04-header{min-height:64px;padding:10px 18px}.g01-header strong,.m04-header strong{font-size:25px}.g01-header button,.m04-header button{font-size:18px;min-height:46px}
+.g01-dock,.m04-dock{padding:20px;gap:12px;overscroll-behavior:contain}.g01-instruction,.m04-explanation{font-size:24px;line-height:1.55}.g01-heading,.m04-title{font-size:29px}
+.g01-dialog button,.m04-dialog button{min-height:48px}.g01-dialog .g01-tool{font-size:20px}
+.h06-dialog{max-width:900px}.h06-scene{flex:none;height:auto;aspect-ratio:1;max-height:none}.h06-shell{min-height:0}.h06-food{width:84%;left:8%;top:8%}.h06-food.vegetables{width:76%;left:12%;top:14%}.h06-hand{width:65%;right:-9%;bottom:-17%}.h06-target.near{top:61%}.h06-target.far{top:36%}.h06-target.side{left:26%;top:48%}.h06-panel{flex:1}.h06-progress{top:15px}
+}
+@media(min-width:700px) and (min-height:600px) and (orientation:portrait){
+.g01-layout,.m04-layout{display:flex;flex-direction:column}.g01-scene,.m04-scene{flex:1;min-height:300px}.g01-dock,.m04-dock{flex:none;max-height:40%;overflow:auto}.h06-dialog{max-width:780px}.h06-scene{width:min(100%,66dvh);margin-inline:auto}
+}
+@media(min-width:700px) and (min-height:600px) and (orientation:landscape){
+.g01-layout,.m04-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,36%);min-height:0}.g01-dock,.m04-dock{max-height:none;overflow:auto}
+.h06-dialog{max-width:1180px;overflow:hidden}.h06-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,36%);grid-template-rows:66px minmax(0,1fr);height:100%;direction:ltr}.h06-dialog header{grid-column:1/-1;direction:inherit}.h06-dialog[dir=rtl] header,.h06-dialog[dir=rtl] .h06-panel{direction:rtl}.h06-scene{width:100%;height:auto;aspect-ratio:1;align-self:center;max-height:100%}.h06-panel{overflow:auto;align-self:stretch;margin-top:0;border-radius:0;min-height:0;padding:20px}
+}
