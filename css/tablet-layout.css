@@ -13,3 +13,22 @@
 .g01-layout,.m04-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,36%);min-height:0}.g01-dock,.m04-dock{max-height:none;overflow:auto}
 .h06-dialog{max-width:1180px;overflow:hidden}.h06-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,36%);grid-template-rows:66px minmax(0,1fr);height:100%;direction:ltr}.h06-dialog header{grid-column:1/-1;direction:inherit}.h06-dialog[dir=rtl] header,.h06-dialog[dir=rtl] .h06-panel{direction:rtl}.h06-scene{width:100%;height:auto;aspect-ratio:1;align-self:center;max-height:100%}.h06-panel{overflow:auto;align-self:stretch;margin-top:0;border-radius:0;min-height:0;padding:20px}
 }
+/* 0.27.1: tool choices must fit their panel, not share three narrow columns. */
+.g01-dock{min-width:0}.g01-tools{display:grid;grid-template-columns:1fr;gap:10px;width:100%}
+.g01-dialog .g01-tool{width:100%;min-width:0;min-height:62px;display:flex;flex-direction:row;justify-content:center;gap:14px;padding:8px 14px;font-size:21px;line-height:1.4;overflow-wrap:anywhere}
+.g01-tool .g01-sprite{width:62px;height:62px;flex:0 0 62px}.g01-tool span:not(.g01-sprite){min-width:0}
+.g01-dialog[data-step="7"] .g01-next{margin-top:12px}
+@media(min-width:700px) and (orientation:landscape){
+.g01-layout{grid-template-columns:minmax(0,1fr) minmax(340px,40%)}
+.g01-dock{justify-content:center;padding:22px;gap:14px}.g01-heading{font-size:29px}.g01-instruction{font-size:24px;line-height:1.55}
+}
+@media(orientation:portrait){
+.g01-layout{overflow:auto}.g01-scene{flex:none;min-height:0;height:min(100vw,52dvh)}
+.g01-dock{max-height:none;overflow:visible;flex:1;padding:16px;gap:10px}
+.g01-dialog .g01-tool{min-height:56px;font-size:21px;padding:6px 12px}.g01-tool .g01-sprite{width:48px;height:48px;flex-basis:48px}
+}
+@media(orientation:landscape) and (max-height:550px){
+.g01-dock{justify-content:flex-start;padding:12px;gap:8px}.g01-dialog .g01-tool{min-height:48px;padding:4px 10px;font-size:19px}.g01-tool .g01-sprite{width:42px;height:42px;flex-basis:42px}
+}
+.g01-dialog[data-step="7"] .g01-stage::before{content:"";position:absolute;left:28%;top:81%;width:44%;height:6%;border-radius:50%;background:#3d281b4d;filter:blur(8px)}
+.g01-dialog[data-step="7"] .g01-hero{z-index:1}

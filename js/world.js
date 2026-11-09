@@ -84,6 +84,7 @@ if(homeKeys[scene]){if(!maps[scene].nodes[key])return;let action=null;
 if(key==='gate')action=()=>scene==='kitchen'?setScene('home',maps.home.nodes.h2,'kitchenFront'):setScene('world',maps.world.nodes.home,'homeFront');
 if(scene==='home'&&key==='h2')action=()=>setScene('kitchen',maps.kitchen.nodes.gate,'entry');
 if(scene==='kitchen'&&key==='h06')action=openH06;
+if(scene==='faith'&&key==='l05')action=()=>window.HUDHUDL05.open({lang,onClose:()=>{updateLabels();$('world-view').focus({preventScroll:true});},onComplete:()=>{save();updateLabels();}});
 move(maps[scene].nodes[key],action,homeNames[lang][key]);return;}
 
 if(scene==='world'&&key==='mosque'){move(maps.world.nodes.mosque,()=>setScene('mosque',maps.mosque.nodes.gate,'entry'),mosqueNames[lang].mosque);return;}
@@ -106,7 +107,7 @@ function faceMovement(dx,dy){
 function tick(now){
  const dt=Math.min((now-last)/1000,.05);last=now;
  if(active){
-  const blocked=!!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open]');
+  const blocked=!!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open], .l05-dialog[open]');
   if(route.length&&!blocked){
    let budget=dt*235;
    while(route.length&&budget>0){
@@ -118,7 +119,7 @@ function tick(now){
    }
    if(!route.length){const action=onArrival;onArrival=null;$('world-target').hidden=true;$('world-hint').textContent=scene==='garden'&&done?t().explore:t().walk;save();action?.();}
   }
-  const walking=route.length>0&&!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open]');
+  const walking=route.length>0&&!document.querySelector('.world-dialog[open], .g04-dialog[open], .g01-dialog[open], .m04-dialog[open], .h06-dialog[open], .hc-dialog[open], .l05-dialog[open]');
   $('world-avatar').classList.toggle('walking',walking);
   if(walking)walkFrame=Math.floor(now/145)%4;
   const key=profile.character+':'+facing+':'+walkFrame;
@@ -154,11 +155,11 @@ const mosqueEntry=document.createElement('button');mosqueEntry.type='button';mos
 const mosqueMarkers=[];for(const area of Object.keys(mosqueKeys)){for(const key of mosqueKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker'+(['m2','m04'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);mosqueMarkers.push(b);}}
 const homeEntry=document.createElement('button');homeEntry.type='button';homeEntry.className='mosque-stage-marker';homeEntry.id='home-entry';homeEntry.onclick=()=>travel('home');$('world-stage').append(homeEntry);
 const libraryEntry=document.createElement('button');libraryEntry.type='button';libraryEntry.id='library-entry';libraryEntry.className='mosque-stage-marker';libraryEntry.onclick=()=>travel('library');$('world-stage').append(libraryEntry);
-const homeMarkers=[];for(const area of Object.keys(homeKeys))for(const key of homeKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker home-stage-marker'+(['h2','h06','l2'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);homeMarkers.push(b);}
+const homeMarkers=[];for(const area of Object.keys(homeKeys))for(const key of homeKeys[area]){const b=document.createElement('button');b.type='button';b.className='mosque-stage-marker home-stage-marker'+(['h2','h06','l2','l05'].includes(key)?'':' is-planned');b.dataset.area=area;b.dataset.stage=key;b.onclick=()=>travel(key);$('world-stage').append(b);homeMarkers.push(b);}
 function updateHomeLabels(){
 libraryEntry.hidden=scene!=='world';libraryEntry.textContent=homeNames[lang].library;libraryEntry.style.left=maps.world.nodes.library[0]+'px';libraryEntry.style.top=(maps.world.nodes.library[1]-85)+'px';
 homeEntry.hidden=scene!=='world';homeEntry.textContent=homeNames[lang].home;homeEntry.style.left=maps.world.nodes.home[0]+'px';homeEntry.style.top=(maps.world.nodes.home[1]-85)+'px';
-for(const b of homeMarkers){const key=b.dataset.stage,p=maps[b.dataset.area].nodes[key];b.hidden=scene!==b.dataset.area;b.style.left=p[0]+'px';b.style.top=(p[1]-28)+'px';b.textContent=homeNames[lang][key]+(['h2','h06','l2'].includes(key)?'':' · '+orchardNames[lang].planned);}
+for(const b of homeMarkers){const key=b.dataset.stage,p=maps[b.dataset.area].nodes[key];b.hidden=scene!==b.dataset.area;b.style.left=p[0]+'px';b.style.top=(p[1]-28)+'px';b.textContent=homeNames[lang][key]+(['h2','h06','l2','l05'].includes(key)?'':' · '+orchardNames[lang].planned);}
 if(homeKeys[scene]){$('world-title').textContent=homeNames[lang][scene];$('world-return').hidden=false;$('world-return').textContent=scene==='faith'?homeNames[lang].library:scene==='kitchen'?homeNames[lang].home:t().world;$('world-return').setAttribute('aria-label',$('world-return').textContent);gateHotspot.hidden=false;gateHotspot.style.left=maps[scene].nodes.gate[0]+'px';gateHotspot.style.top=(maps[scene].nodes.gate[1]-15)+'px';gateHotspot.textContent=$('world-return').textContent;}
 }
 function updateLabels(){updateLabelsBase();updateHomeLabels();mosqueEntry.hidden=scene!=='world';mosqueEntry.textContent=mosqueNames[lang].mosque;mosqueEntry.style.left=maps.world.nodes.mosque[0]+'px';mosqueEntry.style.top=(maps.world.nodes.mosque[1]-85)+'px';for(const b of mosqueMarkers){const area=b.dataset.area,key=b.dataset.stage,p=maps[area].nodes[key];b.hidden=scene!==area;b.style.left=p[0]+'px';b.style.top=(p[1]-25)+'px';b.textContent=mosqueNames[lang][key]+(['m2','m04'].includes(key)?'':' · '+orchardNames[lang].planned);}
@@ -170,7 +171,7 @@ if(scene==='world'&&!route.length&&distance(pos,maps.world.nodes.home)<100)retur
 if(mosqueKeys[scene]){if(route.length)return null;return ['gate',...mosqueKeys[scene]].sort((a,b)=>distance(pos,maps[scene].nodes[a])-distance(pos,maps[scene].nodes[b])).find(k=>distance(pos,maps[scene].nodes[k])<100)||null;}if(scene==='world'&&!route.length&&distance(pos,maps.world.nodes.mosque)<100)return 'mosque';return nearbyPlaceBase();}
 function updateContext(){
 if(scene==='world'&&nearbyPlace()==='library'){$('world-go').hidden=false;$('world-go').textContent=homeNames[lang].library;$('world-hint').hidden=true;return;}
-if(homeKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint'),ready=key==='gate'||(scene==='home'&&key==='h2')||(scene==='kitchen'&&key==='h06')||(scene==='library'&&key==='l2');b.hidden=!ready;if(ready)b.textContent=key==='gate'?(scene==='faith'?homeNames[lang].library:scene==='kitchen'?homeNames[lang].home:t().world):homeNames[lang][key];h.hidden=!key||ready;if(!h.hidden)h.textContent=homeNames[lang][key]+' · '+orchardNames[lang].planned;return;}
+if(homeKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint'),ready=key==='gate'||(scene==='home'&&key==='h2')||(scene==='kitchen'&&key==='h06')||(scene==='library'&&key==='l2')||(scene==='faith'&&key==='l05');b.hidden=!ready;if(ready)b.textContent=key==='gate'?(scene==='faith'?homeNames[lang].library:scene==='kitchen'?homeNames[lang].home:t().world):homeNames[lang][key];h.hidden=!key||ready;if(!h.hidden)h.textContent=homeNames[lang][key]+' · '+orchardNames[lang].planned;return;}
 if(scene==='world'&&nearbyPlace()==='home'){$('world-go').hidden=false;$('world-go').textContent=homeNames[lang].home;$('world-hint').hidden=true;return;}
 if(mosqueKeys[scene]){const key=nearbyPlace(),b=$('world-go'),h=$('world-hint');b.hidden=!['gate','m2','m04'].includes(key);if(key)b.textContent=mosqueNames[lang][key];h.hidden=!key||['gate','m2','m04'].includes(key);if(!h.hidden)h.textContent=mosqueNames[lang][key]+' · '+orchardNames[lang].planned;return;}updateContextBase();if(scene==='world'&&nearbyPlace()==='mosque'){$('world-go').hidden=false;$('world-go').textContent=mosqueNames[lang].mosque;}}
 function enter(event){profile=event.detail;lang=texts[profile.language]?profile.language:'de';muted=profile.muted;const d=read();done=Array.isArray(d?.completedSteps)&&d.completedSteps.includes('plant');watered=Array.isArray(d?.completedSteps)&&d.completedSteps.includes('watering');$('opening-screen').hidden=true;$('game-shell').hidden=true;$('world-screen').hidden=false;document.body.classList.remove('opening-active');document.body.classList.add('world-active');facing=['front','right','back','left'].includes(d?.facing)?d.facing:'front';walkFrame=1;lastFrame='';displayDirection=directions.indexOf(facing)*2;strideDistance=0;loadSmooth(profile.character==='girl'?'girl':'boy');
@@ -181,7 +182,7 @@ active=true;if(!tutorialShown){try{tutorialShown=localStorage.getItem('hudhud-ma
 window.addEventListener('hudhud:profile-ready',enter);window.addEventListener('hudhud:resume',enter);
 $('world-return').onclick=()=>{if(scene==='world')return;drag=null;travel('gate');$('world-view').focus({preventScroll:true});};
 $('world-go').onclick=()=>{const key=nearbyPlace();if(key)travel(key);};$('world-hotspot').onclick=()=>travel(maps[scene].goal);
-$('world-map').onclick=()=>{$('overview-art').src=maps[scene].art;const keys=homeKeys[scene]?['gate',...homeKeys[scene]]:scene==='world'?['home','library','mosque','school','south','play','plaza','garden']:scene==='orchard'?['gate','g01','g02','g03','g04']:mosqueKeys[scene]?['gate',...mosqueKeys[scene]]:['gate',...regionKeys];$('destinations').replaceChildren(...keys.map(key=>{const b=document.createElement('button');b.type='button';b.textContent=homeKeys[scene]?homeNames[lang][key]+(key!=='gate'&&key!=='h2'&&key!=='h06'&&key!=='l2'?' · '+orchardNames[lang].planned:''):scene==='orchard'?orchardNames[lang][key]:mosqueKeys[scene]?mosqueNames[lang][key]:t()[key];b.dataset.destination=key;b.onclick=()=>{$('world-overview').close();travel(key);};return b;}));$('world-overview').showModal();};
+$('world-map').onclick=()=>{$('overview-art').src=maps[scene].art;const keys=homeKeys[scene]?['gate',...homeKeys[scene]]:scene==='world'?['home','library','mosque','school','south','play','plaza','garden']:scene==='orchard'?['gate','g01','g02','g03','g04']:mosqueKeys[scene]?['gate',...mosqueKeys[scene]]:['gate',...regionKeys];$('destinations').replaceChildren(...keys.map(key=>{const b=document.createElement('button');b.type='button';b.textContent=homeKeys[scene]?homeNames[lang][key]+(key!=='gate'&&key!=='h2'&&key!=='h06'&&key!=='l2'&&key!=='l05'?' · '+orchardNames[lang].planned:''):scene==='orchard'?orchardNames[lang][key]:mosqueKeys[scene]?mosqueNames[lang][key]:t()[key];b.dataset.destination=key;b.onclick=()=>{$('world-overview').close();travel(key);};return b;}));$('world-overview').showModal();};
 $('world-menu').onclick=()=>{updateLabels();$('world-settings').showModal();};document.querySelectorAll('.close-world-dialog').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 document.querySelectorAll('[data-world-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.worldLang;document.querySelector('[data-lang="'+lang+'"]').click();updateLabels();});
 $('world-sound').onclick=()=>{muted=!muted;document.querySelector('#mute').click();updateLabels();if(!muted)ping();};
