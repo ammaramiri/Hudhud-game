@@ -1,0 +1,4 @@
+.world-heading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0}
+#world-progress{display:block;position:relative;white-space:nowrap;max-width:100%;font-size:13px;font-weight:600;line-height:1.7;color:#365d49;background:linear-gradient(to right,#cbdcba var(--earned),#f1f3e7 var(--earned));border:1px solid #d7dfcc;border-radius:12px;padding:0 10px;unicode-bidi:plaintext}
+#world-progress[hidden]{display:none}
+@media(min-width:768px){#world-progress{font-size:14px}}
