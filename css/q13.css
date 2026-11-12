@@ -7,3 +7,13 @@
 @media(max-width:700px){.q13-person{bottom:14%;height:65%}.q13-delivered{bottom:30%}.q13-next{position:sticky;bottom:0;z-index:2;box-shadow:0 0 0 5px #fff8e9}}
 
 .q13-zone.is-correct{background:#cfe9da!important;border-style:solid!important;opacity:1!important}.q13-item:disabled{opacity:1}
+
+/* The same large object persists from preparation to the visitor's hands. */
+.q13-worktable{position:absolute;left:48%;top:67%;width:46%;height:6%;border-radius:45% 45% 12px 12px;background:linear-gradient(#e2b679,#bc874e);box-shadow:0 6px 0 #936334,0 12px 12px #33221020}
+.q13-worktable::before,.q13-worktable::after{content:"";position:absolute;top:95%;width:6%;height:65px;background:#aa7645;border-radius:0 0 5px 5px}.q13-worktable::before{left:10%}.q13-worktable::after{right:10%}
+.q13-stage-object{position:absolute;width:27%;height:32%;object-fit:contain;transform:translate(-50%,-100%);filter:drop-shadow(0 4px 3px #38281124);pointer-events:none;z-index:2}
+.q13-scene-target{position:absolute;left:51%;right:3%;bottom:4%;font-size:clamp(17px,2vw,23px)!important;background:#fff9e8eb!important;border:2px dashed #327c61!important;padding:8px!important;z-index:3}
+.q13-scene-note{display:none}.q13-person{left:4%;max-width:47%}.q13-item img{height:165px}.q13-drag{box-shadow:none;border-radius:0;width:145px;height:145px}
+@media(max-width:999px){.q13-person{left:4%;max-width:44%}.q13-worktable::before,.q13-worktable::after{height:38px}.q13-speech{left:44%;right:3%;font-size:21px;top:3%}.q13-item img{height:110px}.q13-scene-target{font-size:17px!important;min-height:42px!important}.q13-scene{min-height:280px}}
+
+.q13-stage-object{height:23%;object-position:center bottom}

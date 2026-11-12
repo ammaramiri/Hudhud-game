@@ -4,3 +4,11 @@
 @media(prefers-reduced-motion:reduce){.p08-dialog *{scroll-behavior:auto!important}}
 
 .p08-counter{direction:ltr;unicode-bidi:isolate}.p08-dialog[dir=rtl] .p08-counter{text-align:right}
+
+/* Feet anchored to the course; actual directional eight-frame walking. */
+.p08-person{width:14%;height:auto;aspect-ratio:2/3;filter:none;isolation:isolate}
+.p08-person::before{content:"";position:absolute;left:19%;right:19%;bottom:0;height:5%;background:#473e2c30;border-radius:50%;filter:blur(2px);z-index:-1}
+.p08-walker{display:block;width:100%;height:100%;aspect-ratio:2/3;background-size:800% 500%;background-repeat:no-repeat}
+.p08-ball{width:24%;aspect-ratio:1.8;min-height:0!important;z-index:80;filter:drop-shadow(0 3px 2px #473e2c35);transform:translate(-50%,-85%)}
+.p08-safe{z-index:100}.p08-circle{border:3px dashed #307563}
+@media(max-width:900px){.p08-person{width:15%;height:auto}}
