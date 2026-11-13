@@ -30,7 +30,7 @@ async function motion(n,points,ms=1300){
  busy=true;const token=epoch,skin=n.querySelector('.p08-walker'),reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
  d.querySelectorAll('.p08-actions button,.p08-draggable').forEach(b=>b.disabled=true);
  const lengths=points.slice(1).map((p,i)=>Math.hypot(p[0]-points[i][0],(p[1]-points[i][1])*2/3));const total=lengths.reduce((a,b)=>a+b,0);
- const duration=reduce?120:skin?Math.max(650,total*95):ms;
+ const duration=reduce?120:skin?Math.max(350,total*1536/100/235*1000):ms;
  return new Promise(resolve=>{let started,lastDirection=0;
  function frame(now){if(token!==epoch||!d){resolve(false);return}started??=now;const progress=Math.min(1,(now-started)/duration);let remaining=progress*total,index=0;
  while(index<lengths.length-1&&remaining>lengths[index])remaining-=lengths[index++];
@@ -68,5 +68,5 @@ panel.append(E('p','p08-counter',(s.mode==='challenge'?t().round+' ':'')+(s.step
 const actions=E('div','p08-actions');if(kind==='wait'&&!s.solved){if(!s.waited)actions.append(button('wait',t().waitBtn,waitForFriend),button('rush',t().rush,()=>wrong('retryWait'),'p08-secondary'));else actions.append(button('cross',t().cross,cross))}if(s.solved)actions.append(button('next',t().next,next));else if(s.mode==='challenge')actions.append(button('hint',t().hint,()=>{hinted=true;if(!s.faults.includes(s.step))s.faults.push(s.step);persist();render()},'p08-secondary'));
 const status=E('p','p08-feedback',feedback);status.setAttribute('role','status');status.setAttribute('aria-live','polite');panel.append(actions,status);if(kind!=='wait'&&!s.solved&&showHint)panel.append(E('p','p08-muted',t().helpClick));if(saveFailed)panel.append(E('p','p08-muted',t().save));body.append(scene,panel);d.append(body)}
 function open(o={}){if(d)return;opts=o;lang=C[o.lang]?o.lang:'ar';const old=read();s=valid(old)?old:initial(old);s.positions??={me:task()==='clear'?[23,70]:[12,82],friend:s.waited?[90,57]:[25,55]};feedback='';hinted=false;busy=false;saveFailed=false;d=E('dialog','p08-dialog');d.setAttribute('aria-label',t().title);document.body.append(d);d.oncancel=e=>{e.preventDefault();close()};d.showModal();render()}
-window.HUDHUDP08={open,version:'0.31.2'};
+window.HUDHUDP08={open,version:'0.31.3'};
 })();
