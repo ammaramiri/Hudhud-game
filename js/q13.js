@@ -1,4 +1,4 @@
-/* HUDHUD Q13 v0.32.0 — kindness, privacy, actual phone lowering, current-player avatar.
+/* HUDHUD Q13 v0.32.1 — kindness, privacy, actual phone lowering, current-player avatar.
    Self-contained replacement for js/q13.js. Uses already-approved WEBP assets. No camera access. */
 (()=>{'use strict';
 const KEY='hudhud-q13-v2',LEGACY='hudhud-q13-v1';
@@ -66,7 +66,58 @@ const STYLE=`
 @media(max-width:900px){.hud-q13{width:100%;height:100dvh;border-radius:0}.hud-layout{display:flex;flex-direction:column;min-height:0}.hud-stage{height:35dvh;max-height:400px;min-height:225px;flex:none}.hud-panel{padding:12px 16px;gap:7px}.hud-panel h1{font-size:clamp(21px,4vw,28px)}.hud-needy{height:68%;bottom:8%}.hud-player{height:58%;bottom:8%}.hud-panel .hud-option img{height:65px}.hud-object-source img{height:55px}.hud-actions{gap:7px}.hud-q13 button{min-height:45px;padding:7px 10px}.hud-muted{font-size:16px}.hud-dialogue{font-size:17px;top:2%}.hud-feedback{font-size:17px;min-height:0}.hud-counter{font-size:15px}.hud-end-image{height:110px}}
 @media(orientation:landscape) and (max-height:560px){.hud-layout{display:grid;grid-template-columns:55% 45%;height:calc(100dvh - 60px)}.hud-stage{height:100%;min-height:0;max-height:none}.hud-panel{overflow:auto;padding:10px 14px}.hud-header{padding:5px 14px}.hud-panel h1{font-size:21px}.hud-q13 button{min-height:40px;font-size:16px!important}.hud-actions{gap:5px}.hud-item-list>.hud-option img{height:53px}.hud-feedback{font-size:15px}.hud-dialogue{font-size:15px}.hud-end-image{height:80px}}
 @media(prefers-reduced-motion:reduce){.hud-phone-button,.hud-placed{transition-duration:.01s}}
+
+/* v0.32.1: one predictable full-width scene. Portrait phone is the reference. */
+.hud-q13[open]{display:flex;flex-direction:column;overflow:hidden}
+.hud-q13 .hud-header{flex:0 0 auto;min-width:0}
+.hud-q13 .hud-layout{flex:1 1 auto;min-height:0;width:100%;overflow:hidden}
+.hud-q13 .hud-stage{width:100%;min-width:0;min-height:0;aspect-ratio:4/3;align-self:center;isolation:isolate}
+.hud-q13 .hud-bg{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center 53%}
+.hud-q13 .hud-panel{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.hud-q13 .hud-needy{width:40%;height:76%;left:4%;bottom:7%;object-fit:contain;object-position:center bottom}
+.hud-q13 .hud-player{width:37%;height:72%;right:4%;bottom:7%;object-fit:contain;object-position:center bottom}
+.hud-q13 .hud-placed{left:46%;top:72%;width:22%;height:25%}
+.hud-q13 .hud-placed.hud-transferred{left:23%;top:72%;width:16%}
+.hud-q13 .hud-phone-button{right:9%;bottom:17%;height:24%;width:17%}
+.hud-q13 .hud-dialogue{max-width:62%;left:auto;right:3%;top:3%;width:59%;font-size:clamp(15px,2vw,23px);line-height:1.35}
+.hud-q13 .hud-target{left:34%;bottom:3%;width:35%}
+@media(min-width:901px){
+ .hud-q13 .hud-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(340px,.9fr);align-items:center}
+ .hud-q13 .hud-stage{height:auto;max-height:min(78dvh,690px)}
+ .hud-q13 .hud-panel{max-height:100%;justify-content:safe center}
+}
+@media(max-width:900px) and (orientation:portrait){
+ .hud-q13{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0}
+ .hud-q13 .hud-layout{display:flex;flex-direction:column;align-items:stretch;min-height:0}
+ .hud-q13 .hud-stage{width:100%;height:clamp(265px,45dvh,415px);max-height:51dvh;min-height:0;aspect-ratio:auto;flex:0 0 auto;align-self:stretch}
+ .hud-q13 .hud-panel{flex:1 1 auto;max-height:none;padding:clamp(11px,2.6dvh,18px) 16px;gap:clamp(7px,1.1dvh,12px);justify-content:flex-start}
+ .hud-q13 .hud-panel h1{font-size:clamp(20px,5.1vw,28px);line-height:1.35}
+ .hud-q13 .hud-counter{font-size:15px}
+ .hud-q13 .hud-needy{width:46%;height:84%;left:2%;bottom:5%}
+ .hud-q13 .hud-player{width:42%;height:80%;right:2%;bottom:5%}
+ .hud-q13 .hud-dialogue{width:58%;max-width:58%;font-size:clamp(15px,3.8vw,19px);padding:8px 9px}
+ .hud-q13 .hud-phone-button{height:25%;width:19%;right:7%;bottom:14%}
+ .hud-q13 .hud-option img{height:clamp(57px,9.4dvh,94px)}
+ .hud-q13 .hud-object-source img{height:clamp(48px,7.7dvh,69px)}
+ .hud-q13 .hud-muted{font-size:clamp(15px,3.8vw,18px)}
+ .hud-q13 .hud-target{font-size:clamp(14px,3.7vw,18px)!important}
+ .hud-q13 .hud-end{overflow-y:auto;max-width:100%;min-height:0}
+}
+@media(max-width:370px) and (orientation:portrait){
+ .hud-q13 .hud-stage{max-height:39dvh}
+ .hud-q13 .hud-panel{padding:9px 12px;gap:6px}
+ .hud-q13 button{font-size:clamp(16px,4.5vw,20px);min-height:42px}
+ .hud-q13 .hud-item-list{gap:7px}
+}
+@media(orientation:landscape) and (max-height:560px){
+ .hud-q13 .hud-layout{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(250px,1fr);height:auto;min-height:0;align-items:center}
+ .hud-q13 .hud-stage{height:auto;min-height:0;max-height:calc(100dvh - 58px);aspect-ratio:4/3}
+ .hud-q13 .hud-panel{max-height:calc(100dvh - 58px);justify-content:flex-start;overflow:auto}
+ .hud-q13 .hud-needy{width:39%;height:75%}
+ .hud-q13 .hud-player{width:36%;height:70%}
+}
+
 `;
 function open(options={}){if(d)return;opts=options;lang=L[options.lang]?options.lang:'ar';character=getCharacter();init();status='';busy=false;saveFail=false;selected='';if(!document.getElementById('hud-q13-style')){const style=E('style');style.id='hud-q13-style';style.textContent=STYLE;document.head.append(style)}d=E('dialog','q13-dialog hud-q13');d.setAttribute('aria-label',t().title);document.body.append(d);d.addEventListener('cancel',e=>{e.preventDefault();close()});d.showModal();render()}
-window.HUDHUDQ13={open,version:'0.32.0'};
+window.HUDHUDQ13={open,version:'0.32.1'};
 })();

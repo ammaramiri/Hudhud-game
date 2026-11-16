@@ -1,4 +1,4 @@
-/* HUDHUD P08 v0.32.0 — extended cooperative playground stage, 11 meaningful interactions.
+/* HUDHUD P08 v0.32.1 — extended cooperative playground stage, 11 meaningful interactions.
    Uses existing course, toy train, ball, and approved directional boy/girl sprites. No audio/timers. */
 (()=>{'use strict';
 const KEY='hudhud-p08-v2',LEGACY='hudhud-p08-v1';
@@ -59,7 +59,49 @@ const CSS=`
 @media(max-width:900px){.hud-p08{width:100%;height:100dvh;border-radius:0}.hud-p08-layout{display:flex;flex-direction:column}.hud-p08-scene{height:37dvh;max-height:420px;min-height:220px;aspect-ratio:auto;flex:none;align-self:stretch}.hud-p08-panel{padding:12px 16px;gap:8px}.hud-p08-panel h1{font-size:clamp(22px,4vw,28px)}.hud-p08-counter{font-size:15px}.hud-p08-feedback{font-size:18px;min-height:0}.hud-p08-muted{font-size:16px}.hud-p08-actions{gap:7px}.hud-p08-end>img{height:120px}}
 @media(orientation:landscape) and (max-height:560px){.hud-p08-header{padding:5px 12px}.hud-p08-layout{display:grid;grid-template-columns:57% 43%;height:calc(100dvh - 58px)}.hud-p08-scene{height:100%;max-height:none;min-height:0}.hud-p08-panel{overflow:auto;padding:10px 15px;gap:6px}.hud-p08-panel h1{font-size:21px}.hud-p08 button{font-size:17px!important;min-height:38px}.hud-p08-feedback{font-size:15px}.hud-p08-muted{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.hud-p08-toy{transition-duration:.01s!important}}
+
+/* v0.32.1: artwork and interaction share the same 3:2 coordinate plane. */
+.hud-p08[open]{display:flex;flex-direction:column;overflow:hidden}
+.hud-p08 .hud-p08-header{flex:0 0 auto;min-width:0}
+.hud-p08 .hud-p08-layout{flex:1 1 auto;min-height:0;width:100%;overflow:hidden}
+.hud-p08 .hud-p08-scene{width:100%;min-width:0;min-height:0;aspect-ratio:3/2;align-self:center}
+.hud-p08 .hud-p08-background{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.hud-p08 .hud-p08-panel{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+@media(min-width:901px){
+ .hud-p08 .hud-p08-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,.9fr);align-items:center}
+ .hud-p08 .hud-p08-scene{height:auto;max-height:min(75dvh,670px)}
+ .hud-p08 .hud-p08-panel{max-height:100%;justify-content:safe center}
+}
+@media(max-width:900px) and (orientation:portrait){
+ .hud-p08{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0}
+ .hud-p08 .hud-p08-layout{display:flex;flex-direction:column;align-items:stretch}
+ .hud-p08 .hud-p08-scene{width:100%;height:auto;max-height:45dvh;min-height:0;aspect-ratio:3/2;flex:0 0 auto;align-self:stretch}
+ .hud-p08 .hud-p08-panel{flex:1 1 auto;padding:clamp(12px,2.4dvh,20px) 16px;gap:clamp(7px,1.2dvh,13px);justify-content:flex-start}
+ .hud-p08 .hud-p08-panel h1{font-size:clamp(20px,5.1vw,28px);line-height:1.35}
+ .hud-p08 .hud-p08-actor{width:21%;height:auto}
+ .hud-p08 .hud-p08-toy{width:25%}
+ .hud-p08 .hud-p08-tap-actor{width:22%;height:44%}
+ .hud-p08 .hud-p08-tray{font-size:clamp(12px,3.5vw,18px)}
+ .hud-p08 .hud-p08-muted{font-size:clamp(15px,3.9vw,18px)}
+ .hud-p08 .hud-p08-actions{margin-top:4px}
+ .hud-p08 .hud-p08-check{font-size:clamp(13px,3.8vw,18px)}
+ .hud-p08 .hud-p08-end{min-height:0;overflow-y:auto}
+}
+@media(max-width:370px) and (orientation:portrait){
+ .hud-p08 .hud-p08-scene{max-height:40dvh}
+ .hud-p08 .hud-p08-panel{padding:9px 12px;gap:6px}
+ .hud-p08 .hud-p08-actor{width:20%}
+ .hud-p08 .hud-p08-toy{width:23%}
+ .hud-p08 button{min-height:42px}
+}
+@media(orientation:landscape) and (max-height:560px){
+ .hud-p08 .hud-p08-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr);min-height:0;align-items:center}
+ .hud-p08 .hud-p08-scene{height:auto;max-height:calc(100dvh - 58px);min-height:0;aspect-ratio:3/2}
+ .hud-p08 .hud-p08-panel{max-height:calc(100dvh - 58px);justify-content:flex-start;overflow-y:auto}
+ .hud-p08 .hud-p08-actor{width:16%}
+}
+
 `;
 function open(options={}){if(d)return;opt=options;lang=L[options.lang]?options.lang:'ar';player=character();init();busy=false;feedback='';saveFailed=false;if(!document.getElementById('hud-p08-style')){const style=E('style');style.id='hud-p08-style';style.textContent=CSS;document.head.append(style)}d=E('dialog','p08-dialog hud-p08');d.setAttribute('aria-label',t().title);document.body.append(d);d.addEventListener('cancel',e=>{e.preventDefault();close()});d.showModal();render()}
-window.HUDHUDP08={open,version:'0.32.0'};
+window.HUDHUDP08={open,version:'0.32.1'};
 })();
