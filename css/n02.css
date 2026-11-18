@@ -13,7 +13,7 @@
 .hn02-stage{width:100%;aspect-ratio:4/3;max-height:calc(96dvh - 68px);position:relative;isolation:isolate;overflow:hidden}
 .hn02-background{width:100%;height:100%;object-fit:cover;display:block}
 .hn02-player{position:absolute;bottom:7%;left:9%;width:15%;height:35%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 4px 3px #322b261f)}
-.hn02-neighbor{width:20%;height:46%;right:12%;top:19%;object-fit:contain;object-position:center bottom}
+.hn02-neighbor{width:14%;height:30%;right:17%;top:35%;object-fit:contain;object-position:center bottom}
 .hn02-prop{position:absolute;object-fit:contain;filter:drop-shadow(0 6px 3px #322b2636);transition:transform .45s ease,opacity .45s ease,filter .3s ease;transform:translate(var(--dx,0px),var(--dy,0px));cursor:pointer;z-index:2;max-width:none}
 .hn02-bike{width:29%;height:32%;left:40%;bottom:7%}
 .hn02-radio{width:20%;height:28%;left:42%;bottom:11%}
@@ -47,7 +47,7 @@
 .hn02-stage{height:100%;aspect-ratio:auto;max-height:none}
 .hn02-background{object-fit:cover;object-position:center}
 .hn02-player{left:7%;width:16%;height:38%}
-.hn02-neighbor{right:8%;width:25%;height:49%}
+.hn02-neighbor{right:16%;width:16%;height:32%;top:34%}
 .hn02-bike{width:35%;height:36%;left:38%}
 .hn02-radio{width:25%;height:30%;left:40%}
 .hn02-bag{width:23%;height:30%;left:40%}
@@ -61,3 +61,18 @@
 }
 @media(max-width:700px) and (orientation:landscape){.hn02-dialog{width:99vw;max-width:none;max-height:100dvh}.hn02-layout{grid-template-columns:minmax(0,1.3fr) minmax(230px,1fr)}.hn02-panel{padding:11px;gap:8px}.hn02-question{font-size:19px}}
 @media(prefers-reduced-motion:reduce){.hn02-dialog *{transition-duration:.01ms!important;animation:none!important}}
+
+/* HUDHUD N02 0.34.2 — smaller neighbour and step-specific 2.5D details. */
+.hn02-neighbor{z-index:3;transition:transform .4s ease}
+.hn02-neighbor.hn02-carry{right:16%;top:34%;width:16%;height:33%}
+.hn02-door{width:20%;height:31%;right:0%;top:24%;z-index:2;pointer-events:none}
+.hn02-greeting{position:absolute;right:27%;top:29%;border-radius:30px;padding:3px 10px;background:#fff6e5f0;border:1px solid #d5b87c;box-shadow:0 3px 6px #322b2622;z-index:4;font-weight:700;font-size:clamp(11px,1.8vw,17px);max-width:32%;text-align:center}
+.hn02-stage.is-correct .hn02-neighbor{transform:translateX(-8%)}
+.hn02-tidy{left:63%;bottom:10%;width:12%;height:19%;opacity:.93;pointer-events:none}
+@media(max-width:700px) and (orientation:portrait){
+ .hn02-neighbor{right:14%;width:16%;height:32%;top:34%}
+ .hn02-neighbor.hn02-carry{right:14%;top:34%;width:17%;height:33%}
+ .hn02-door{right:0%;top:25%;width:24%;height:32%}
+ .hn02-greeting{right:27%;top:30%;font-size:12px}
+ .hn02-tidy{left:64%;width:16%;height:21%}
+}
