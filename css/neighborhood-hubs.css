@@ -23,3 +23,11 @@
 .hnh-stage-item:disabled{opacity:.65;cursor:default}
 .hnh-note{margin:13px 16px;font-size:16px}
 @media(max-width:620px){.hnh-dialog{width:100vw;max-width:100vw;max-height:95dvh;border-radius:14px}.hnh-submap{aspect-ratio:4/3}.hnh-stage-list{grid-template-columns:1fr;padding:9px;gap:6px}.hnh-stage-item{padding:8px 10px;min-height:39px}.hnh-head{padding:8px 10px}.hnh-stage-pin{width:38px;height:38px;min-height:36px!important;font-size:16px!important}}
+
+/* 0.34.1: central plaza is a faithful crop of the approved main map. */
+.hnh-hotspot[data-neighborhood="n1"]::after{border-color:#93a87e;background:#93a87eb8}
+.hnh-note{margin:9px 16px;color:#635646;font-size:clamp(13px,2vw,15px)}
+.hnh-available{margin:2px 15px 17px;padding:11px 13px;border-top:1px solid #d6b77e;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hnh-available p{margin:0;font-size:clamp(13px,2.5vw,15px);flex:1;min-width:170px}
+.hnh-available-action{border:1px solid #93a87e!important;background:#e6eedb!important;border-radius:10px;padding:8px 11px;color:#322b26;min-height:44px!important;font-weight:700!important}
+@media(max-width:620px){.hnh-available{margin:2px 9px 12px;padding:9px 6px}.hnh-available-action{width:100%}}

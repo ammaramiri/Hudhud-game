@@ -10,21 +10,13 @@ function render(area,lang='ar'){const host=document.querySelector('.world-headin
 for(const id of ['g01','g04','m04','h06','l05','q13','s03','p08']){const api=window['HUDHUD'+id.toUpperCase()];if(!api?.open)continue;const open=api.open;api.open=function(o={}){const done=o.onComplete;return open.call(this,{...o,onComplete:(...a)=>{mark(id);done?.(...a)}})}}
 importOld();window.HUDHUDProgress={mark,stats,render};
 })();
-/* HUDHUD 0.33.1: load only four compact neighborhood hotspots on the ORIGINAL map.
-   No new background images or geometry modifications. */
-(()=>{'use strict';
- if(document.getElementById('hudhud-neighborhood-script'))return;
- const style=document.createElement('link');style.id='hudhud-neighborhood-style';style.rel='stylesheet';style.href='css/neighborhood-hubs.css?v=0.33.1';document.head.append(style);
- const script=document.createElement('script');script.id='hudhud-neighborhood-script';script.src='js/neighborhood-hubs.js?v=0.33.1';script.defer=true;document.body.append(script);
-})();
 
-
-/* v0.34.0 loader: old production index.html already loads progress.js.
-   Load neighbourhood UI, N02 interactive stage, and styles without editing index.html. */
+/* HUDHUD 0.34.1 — one loading path. Existing production index already loads progress.js. */
 (()=>{'use strict';
-const base=new URL('../',document.currentScript.src);
-function style(rel){if(document.querySelector('[data-hudhud-style="'+rel+'"]'))return;const l=document.createElement('link');l.rel='stylesheet';l.href=new URL(rel,base).href;l.dataset.hudhudStyle=rel;document.head.append(l)}
-function script(rel){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=new URL(rel,base).href;s.onload=resolve;s.onerror=()=>{console.error('HUDHUD: failed to load '+rel);reject(new Error(rel))};document.head.append(s)})}
-style('css/neighborhood-hubs.css');style('css/n02.css');
-script('js/n02.js').then(()=>script('js/neighborhood-hubs.js')).catch(e=>console.error('HUDHUD neighborhood unavailable:',e.message));
+const B=new URL('../',document.currentScript.src);
+function addCss(path){const id='hudhud-'+path.replace(/[^a-z0-9]+/gi,'-');if(document.getElementById(id))return;const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=new URL(path+'?v=0.34.1',B).href;document.head.append(link)}
+function addJs(path){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=new URL(path+'?v=0.34.1',B).href;s.onload=resolve;s.onerror=reject;document.head.append(s)})}
+addCss('css/neighborhood-hubs.css');addCss('css/n02.css');
+const load=()=>addJs('js/n02.js').then(()=>addJs('js/neighborhood-hubs.js')).catch(e=>console.error('HUDHUD neighborhood assets not loaded',e));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
