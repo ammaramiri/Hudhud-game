@@ -31,3 +31,18 @@
 .hnh-available p{margin:0;font-size:clamp(13px,2.5vw,15px);flex:1;min-width:170px}
 .hnh-available-action{border:1px solid #93a87e!important;background:#e6eedb!important;border-radius:10px;padding:8px 11px;color:#322b26;min-height:44px!important;font-weight:700!important}
 @media(max-width:620px){.hnh-available{margin:2px 9px 12px;padding:9px 6px}.hnh-available-action{width:100%}}
+
+/* v0.34.3 — match legacy mosque-stage-marker semantics: READY = dark green, PLANNED = cream. */
+.hnh-stage-pin.is-playable,.hnh-stage-item.is-playable,.hnh-overview-item.is-playable{
+  background:#237d6b!important;border-color:#fff8e9!important;color:#fff8e9!important;
+  font-weight:700;opacity:1;box-shadow:0 3px 7px #21392b55;
+}
+.hnh-stage-pin.is-playable:hover,.hnh-stage-item.is-playable:hover{background:#1b6557!important}
+.hnh-stage-pin.is-finished,.hnh-stage-item.is-finished,.hnh-overview-item.is-finished{
+  background:#1c554b!important;border-color:#b9dfcb!important;color:#fff8e9!important;
+}
+.hnh-stage-pin.is-finished::after{content:'✓';position:absolute;right:-5px;top:-8px;
+  width:19px;height:19px;line-height:17px;background:#fff8e9;color:#1c554b;
+  border:1px solid #1c554b;border-radius:50%;font:bold 13px/18px system-ui;text-align:center}
+.hnh-stage-item.is-finished::after{content:' ✓';font-weight:800}
+.hnh-stage-pin:disabled{opacity:.8}

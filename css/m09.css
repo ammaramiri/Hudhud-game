@@ -1,0 +1,86 @@
+/* M09 / prayer hall — same HUDHUD palette and mobile-first stage geometry. */
+.m09-dialog{position:fixed;inset:0;margin:auto;width:min(1120px,98vw);max-width:1120px;max-height:96dvh;overflow:hidden;padding:0;box-sizing:border-box;border:0;border-radius:17px;background:#fff6e5;color:#322b26;font:17px/1.45 system-ui,Tahoma,sans-serif;box-shadow:0 16px 44px #322b2655}
+.m09-dialog::backdrop{background:#322b2675}
+.m09-dialog *{box-sizing:border-box}
+.m09-header{min-height:56px;padding:8px 14px;display:flex;align-items:center;gap:12px;justify-content:space-between;background:#fff9ed;border-bottom:1px solid #d9caa9}
+.m09-title{font-size:clamp(18px,2.5vw,26px);text-align:center;flex:1}
+.m09-count{font-size:15px;white-space:nowrap;direction:ltr;color:#6b5949}
+.m09-dialog button{font:inherit;color:#322b26;touch-action:manipulation;cursor:pointer}
+.m09-dialog button:focus-visible{outline:3px solid #e9ad42;outline-offset:2px}
+.m09-back{border:1px solid #d0b17c;background:#fffaf1;border-radius:12px;font-size:14px!important;min-height:39px;padding:7px 11px}
+.m09-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(325px,.8fr);max-height:calc(96dvh - 56px);min-height:0}
+.m09-view{overflow:hidden;background:#f2dfc0;min-width:0;display:grid;align-content:center}
+.m09-stage{position:relative;aspect-ratio:4/3;width:100%;max-height:calc(96dvh - 60px);overflow:hidden;isolation:isolate}
+.m09-art{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.m09-avatar{position:absolute;bottom:11%;left:18%;width:12%;height:31%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 2px 2px #44332233);transition:left .55s,bottom .55s;pointer-events:none}
+.m09-avatar-ready{left:43%;bottom:22%}
+.m09-prop{position:absolute;object-fit:contain;z-index:3;max-height:29%;cursor:grab;touch-action:none;filter:drop-shadow(0 5px 3px #3b33253d);user-select:none;-webkit-user-drag:none}
+.m09-prop:active{cursor:grabbing}
+.m09-prop.basket{z-index:1;pointer-events:none}
+.m09-marker{position:absolute;transform:translate(-50%,-50%);z-index:2;max-width:26%;min-height:35px;border:2px dashed #c39855;border-radius:14px;background:#fff6e5dc;font-size:clamp(11px,1.65vw,15px)!important;font-weight:650;padding:5px 8px;box-shadow:0 2px 8px #43372525}
+.m09-marker.m09-hit{background:#dce8cf;border-color:#6f9064}
+.m09-choice-marker{border-style:solid;background:#fff6e5f0}
+.m09-wrong-marker{border-color:#bdb59d;background:#fff6e5bb}
+.m09-qibla{top:29%;left:49%;z-index:5}
+.m09-stage.is-done{filter:none}
+.m09-panel{background:#fff6e5;min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:18px 21px;overflow-y:auto}
+.m09-subtitle{margin:0;font-size:clamp(19px,2.4vw,26px);line-height:1.25;text-align:center}
+.m09-prompt{margin:0;font-size:clamp(16px,2vw,20px);line-height:1.5;text-align:center}
+.m09-choices{display:grid;gap:10px}
+.m09-choice,.m09-action{display:block;width:100%;border:2px solid #d5b87c;border-radius:14px;min-height:52px;padding:11px 12px;background:#fffdf7;font-size:clamp(15px,1.8vw,19px)!important;text-align:center}
+.m09-action{border-color:#93a87e;background:#eaf0e2;font-weight:650}
+.m09-choice:hover,.m09-action:hover{background:#f8ecca}
+.m09-feedback{font-size:clamp(13px,1.8vw,17px);line-height:1.4;min-height:2.6em;margin:0;text-align:center;color:#4c6147}
+.m09-next{border:0;border-radius:14px;background:#237d6b;color:#fffdf6!important;padding:11px;font-weight:750!important;font-size:20px!important;min-height:51px;margin-top:1px}
+.m09-next:disabled{background:#9aada2;color:#f4f4f0!important;opacity:.56;cursor:default}
+.m09-scenic-two{position:absolute;left:39%;bottom:11%;width:47%;display:flex;gap:4%;height:29%;align-items:center;pointer-events:none}
+.m09-scenic-two img{width:48%;height:95%;object-fit:contain;filter:drop-shadow(0 3px 2px #54463730)}
+.m09-scenic-two .m09-item-bad{filter:grayscale(.75) sepia(.32) brightness(.64) drop-shadow(0 3px 2px #54463733)}
+.m09-wudu-symbol{position:absolute;left:56%;top:56%;width:20%;height:23%;background:linear-gradient(130deg,#eaf7f5,#7cc6be);border:3px solid #fff6e5;border-radius:40% 40% 60% 60%;box-shadow:0 2px 7px #58483366;transform:rotate(-12deg)}
+.m09-paper{position:absolute;z-index:3;width:9%;height:10%;background:#fffbf2;border:2px solid #ddc79f;border-radius:5px;transform:rotate(15deg);box-shadow:0 3px 4px #322b2626}
+.m09-rug{z-index:3}
+.m09-clock{position:absolute;left:62%;top:43%;width:17%;aspect-ratio:1;border-radius:50%;border:6px solid #f0a95c;background:#fff6e5;box-shadow:0 2px 7px #322b2666}
+.m09-clock:before,.m09-clock:after{content:'';position:absolute;left:50%;top:17%;width:3px;height:34%;background:#6d5d48;transform-origin:bottom;transform:rotate(27deg)}
+.m09-clock:after{height:24%;top:27%;transform:rotate(-92deg);background:#9c764f}
+.m09-checklist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m09-check{min-height:52px;border:2px solid #dac69e;border-radius:12px;background:#fffdfa;padding:8px;font-size:15px!important}
+.m09-check.checked{background:#d9e9ce;border-color:#6f9064;font-weight:700}
+.m09-check.checked:before{content:'✓ ';font-weight:bold}
+.m09-finish{min-height:300px;padding:26px;display:flex;flex-direction:column;justify-content:center;gap:18px;align-items:center;text-align:center}
+.m09-finish h2{font-size:clamp(23px,4vw,32px);margin:0}.m09-finish p{max-width:520px;font-size:18px;margin:0;line-height:1.6}
+.m09-replay{border:0;background:#237d6b;color:#fffdf6!important;border-radius:14px;min-height:48px;padding:12px 22px;font-weight:700}
+/* Prayer-hall level selection. Existing world map and mosque geometry stay untouched. */
+.m09-hall-dialog{position:fixed;inset:0;margin:auto;width:min(880px,97vw);max-width:880px;max-height:95dvh;padding:0;overflow-y:auto;border:0;border-radius:18px;background:#fff6e5;color:#322b26;font:17px/1.4 system-ui,Tahoma,sans-serif;box-shadow:0 18px 45px #322b2655}
+.m09-hall-dialog::backdrop{background:#322b2679}
+.m09-hall-dialog *{box-sizing:border-box}
+.m09-hall-head{padding:10px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.m09-hall-head h2{margin:0;font-size:22px;flex:1;text-align:center}
+.m09-hall-head button{background:#fffdf7;border:1px solid #c7a574;border-radius:10px;padding:8px 11px;font-size:15px;min-height:43px}
+.m09-hall-map{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#f2dfc0}
+.m09-hall-map img{display:block;width:100%;height:100%;object-fit:cover}
+.m09-hall-map button{position:absolute;transform:translate(-50%,-50%);border:2px solid #d1b889;border-radius:50%;width:43px;height:43px;min-height:43px;background:#fff6e5eb;font:700 14px/1.2 system-ui,Tahoma,sans-serif;color:#322b26;padding:4px;white-space:nowrap;box-shadow:0 2px 5px #322b2633}
+.m09-hall-map button.is-playable{background:#237d6b;color:#fffdf6;border-color:#fff6e5}
+.m09-hall-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:11px;gap:9px}
+.m09-hall-list button{border:1px solid #dcc8a8;background:#fffaf1;text-align:start;border-radius:13px;padding:10px;min-height:47px;color:#322b26;font:600 15px/1.35 system-ui,Tahoma,sans-serif}
+.m09-hall-list button:disabled{opacity:.67}
+.m09-hall-list button.is-playable{background:#237d6b;color:#fffdf6}
+.m09-prayer-path{margin:0 12px 12px;padding:10px 13px;border:1px solid #dec79c;border-radius:13px;background:#fffaf0}
+.m09-prayer-path h3{font-size:17px;margin:0 0 6px}
+.m09-prayer-path p{font-size:14px;margin:0;color:#655844}
+@media(max-width:730px) and (orientation:portrait){
+.m09-dialog{inset:0;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0;display:flex;flex-direction:column}
+.m09-header{min-height:55px;flex:0 0 55px;padding:7px 11px}
+.m09-layout{display:flex;flex:1 1 auto;flex-direction:column;max-height:none;min-height:0;overflow:hidden}
+.m09-view{flex:0 0 auto;max-height:45dvh;display:flex;align-items:center;justify-content:center}
+.m09-stage{height:min(45dvh,108vw);width:100%;aspect-ratio:auto;max-height:45dvh;flex:none}
+.m09-panel{flex:1 1 auto;padding:12px 16px 16px;gap:10px;justify-content:flex-start;min-height:0;overflow-y:auto}
+.m09-subtitle{font-size:21px}.m09-prompt{font-size:16px}.m09-choice,.m09-action{min-height:47px;padding:9px;font-size:16px!important}
+.m09-feedback{min-height:30px}.m09-next{min-height:48px;margin-top:auto}
+.m09-marker{font-size:11px!important;min-height:28px;padding:4px 5px;max-width:25%}
+.m09-check{font-size:13px!important;min-height:48px}
+.m09-hall-dialog{width:100vw;max-width:100vw;max-height:95dvh;border-radius:13px}
+.m09-hall-list{grid-template-columns:1fr;gap:6px}
+.m09-hall-map button{font-size:12px;padding:3px;width:36px;height:36px;min-height:36px}
+}
+@media(max-height:650px) and (orientation:landscape){.m09-dialog{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0}.m09-layout{max-height:calc(100dvh - 56px)}.m09-panel{padding:10px;gap:6px}.m09-choice,.m09-action{min-height:37px;padding:5px}.m09-next{min-height:40px}}
+@media(prefers-reduced-motion:reduce){.m09-prop,.m09-avatar{transition:none!important}}
