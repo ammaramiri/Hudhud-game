@@ -1,73 +1,100 @@
-/* HUDHUD M11 — أبدأ صلاتي. First playable lesson inside seven-lesson Learn-to-pray path.
- * Fourteen meaningful interactions: preparing to begin, opening takbir, upright recitation,
- * al-Fatiha (written review), order and independent rehearsal. No audio; no claim to verify recitation.
- * Do not modify M04. Text should receive qualified religious/Arabic review before final publication.
- */
-(()=>{'use strict';if(window.HUDHUDM11)return;
-const AS='assets/m11/',HALL='assets/m09/hall-v1.webp',SAVE='hudhud-m11-v1',TOTAL=14;
-const FAT=[
-'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
+/* HUDHUD M11 v0.34.8 — front-camera moving takbir and hand positions.
+   Keeps progress key hudhud-m11-v1 and stage code m11. No changes to M04/M09/M10.
+   Valid fiqh variants are accepted, not marked wrong. */
+(()=>{'use strict';
+const BASE='assets/m11/', HALL='assets/m10/hall-no-rug-v2.webp';
+const SAVE='hudhud-m11-v1',TOTAL=14;
+const P={rest:'front-rest-v2.webp',mid:'front-hands-mid-v2.webp',up:'front-takbir-ears-v2.webp',lower:'front-hands-lowering-v2.webp',fold:'front-folded-v2.webp',fold2:'front-folded-alt-v2.webp',reversed:'front-folded-mirror-demo-v2.webp',one:'front-one-hand-demo-v2.webp'};
+const VER='0.34.8',FAT=[
+'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
-'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'
+'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\nغَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'];
+const lessons=[
+['أستقبل القبلة','راجعنا اتجاه القبلة في M10؛ هنا نوضح حركة الصلاة بكاميرا أمامية.','review','rest'],
+['أنوي الصلاة بقلبي','أستحضر الصلاة التي سأصليها دون أن أُلزم نفسي بنطق نية مخصوصة.','choice','rest'],
+['أقف معتدلاً','أقف في موضعي بسكينة قبل التكبير.','choice','rest'],
+['إلى أي ارتفاع أرفع يديّ؟','اختر هيئة وردت في السنة. لرفع اليدين إلى الكتفين أو الأذنين أصل صحيح.','height','up'],
+['أميّز الخطأ في الرفع','اختر الطريقة السليمة: أرفع اليدين معاً، لا يد واحدة ولا أكتفي بتحريكهما قرب الخصر.','posechoice','mid'],
+['أقول: الله أكبر','كبّر عند رفع اليدين. شاهد ارتفاعهما في اللقطة المتتابعة.','motion','rest'],
+['أنزل يدي بعد التكبير','أكمل الحركة إلى الوقوف بهدوء ثم ضمّ اليدين.','motion','mid'],
+['أي يد تكون فوق الأخرى؟','في هيئة القبض تكون اليد اليمنى فوق اليسرى.','hand','fold'],
+['أين أضع اليدين؟','الصدر وفوق السرة من الهيئات الفقهية المشهورة. لا نضع اختلاف المذاهب ضمن الأخطاء.','placement','fold2'],
+['أقف بخشوع','لا أعبث بثيابي أو يديّ أثناء القيام، وأنظر بهدوء.','choice','fold'],
+['أبدأ بقراءة الفاتحة','راجع الكلمات واقرأها مع معلّم أو قارئ متقن. هذه اللعبة لا تفحص صحة التلاوة.','fat1','fold'],
+['أتابع الفاتحة','أقرأ آيات الفاتحة بتأنٍّ دون استعجال.','fat2','fold'],
+['أختم الفاتحة','أتمّ مراجعة الفاتحة كاملة. الركوع والسجود يأتيان في الدروس التالية.','fat3','fold'],
+['أتدرّب من البداية','أطبّق خطوات بداية الصلاة بالترتيب: نية القلب، التكبير والرفع، إنزال اليدين، وضع اليمنى فوق اليسرى، القراءة.','sequence','rest']
 ];
-const DATA={
-ar:{title:'أبدأ صلاتي',back:'إلى تعليم الصلاة',next:'أكمل',again:'أعيد الدرس',completed:'أتممت درس البداية',completeText:'تعلّمت الاستعداد لتكبيرة الإحرام، ومعنى القيام والقراءة. الركوع والسجود في الدروس التالية. تعلّم نطق الفاتحة مع معلّم أو قارئ متقن.',good:'أحسنت. ',retry:'فكّر مرة أخرى.',start:'ابدأ',tip:'تدريب بصري ونصي دون صوت، لا يستطيع تقييم صحة تلاوتك.',say:'أراجع النص',tap:'أضغط هنا',terms:['النية بالقلب','تكبيرة الإحرام','القيام والقراءة'],parts:['بداية الفاتحة','وسط الفاتحة','خاتمة الفاتحة'],final:['أنوي الصلاة بقلبي','أكبر تكبيرة الإحرام','أقرأ الفاتحة وأنا قائم','أستعد للركوع بعد القراءة'],screens:[
-['أجد جهة الصلاة','المحراب أمامي في هذه القاعة. المس المحراب لتتأكد من الاتجاه.','أتجه إلى القبلة قبل بداية الصلاة.'],
-['النيّة في القلب','كيف أنوي بدء الصلاة؟','النيّة محلّها القلب، وليست جملة أُلزم نفسي بقولها بصوت.'],
-['أقف بهدوء','اختر موضع الوقوف أمام المحراب، واترك الممر خالياً.','أقف مستقبلاً القبلة ومستعداً للصلاة.'],
-['تكبيرة الإحرام','المس صورة الشخصية التي ترفع يديها لتبدأ الصلاة.','أبدأ بتكبيرة الإحرام، ثم أقف للقراءة.'],
-['كلمات التكبير','ما الكلمات التي أبدأ بها الصلاة؟','أقول: الله أكبر.'],
-['ترتيب البداية','اضغط الأفعال الثلاثة بالترتيب الصحيح.','أستحضر النية في قلبي ثم أكبر ثم أقرأ وأنا قائم.'],
-['القيام في الصلاة','أي صورة تُظهر الوقوف بهدوء أثناء القراءة؟','أقرأ وأنا قائم إذا كنت قادراً. مواضع اليدين فيها اختلاف فقهي معتبر.'],
-['ماذا أقرأ؟','ما السورة التي أتعلمها أساساً للقراءة في الصلاة؟','أتعلم سورة الفاتحة كاملة، ولا تكفي مشاهدة حركات الصلاة.'],
-['بداية الفاتحة','اقرأ هذا المقطع قراءة هادئة، ثم أكّد أنك راجعته.','أراجع الكلمات حرفاً حرفاً، وأتعلم النطق الصحيح من معلّم متقن.'],
-['أكمل الفاتحة','اقرأ المقطع التالي ثم اضغط «راجعت النص».','القراءة ليست مجرد حركة صامتة في صورة.'],
-['خاتمة الفاتحة','راجع خاتمة السورة دون استعجال.','سورة الفاتحة جزء أساسي من تعلّم الصلاة.'],
-['أجمع أجزاء القراءة','رتّب المقاطع الثلاثة لتكوّن تسلسل القراءة.','قرأت بداية السورة ثم وسطها ثم خاتمتها.'],
-['ما الذي يلي الفاتحة؟','بعد الفاتحة يمكن قراءة ما تيسر من القرآن، ثم يأتي الركوع. أي الخيارين أنسب؟','أنتقل من القيام والقراءة إلى الركوع؛ سنتعلمه في M23.'],
-['أطبق البداية بنفسي','نفّذ خطوات البداية الأربع دون مساعدة في ترتيبها.','انتهى درس بداية الصلاة؛ يمكنني إعادته ومراجعته متى شئت.']
-],choices:{intention:['أنوي في قلبي','أجهر بعبارة ثابتة على أنها شرط'],start:['الله أكبر','سبحان ربي الأعلى'],read:['الفاتحة','أنظر إلى المحراب فقط'],after:['أتهيأ للركوع بعد القراءة','أبدأ بالسجود قبل الركوع']},finish:'راجعت النص',standing:'وقوف هادئ',takbir:'تكبيرة الإحرام',place:'موضع الصلاة',mihrab:'المحراب',window:'النافذة',orderHint:'اختر العنصر التالي في التسلسل.',reset:'أحاول من جديد'},
-de:{title:'Ich beginne mein Gebet',back:'Zum Gebetslernweg',next:'Weiter',again:'Lektion wiederholen',completed:'Beginn des Gebets gelernt',completeText:'Ich lernte den Beginn mit Takbir, Stehen und Rezitation. Verbeugen und Niederwerfen folgen in anderen Lektionen. Übe Al-Fatiha mit einer qualifizierten Lehrperson.',good:'Gut. ',retry:'Versuche es noch einmal.',start:'Starten',tip:'Visuelle Textübung ohne Ton; die App kann deine Aussprache nicht prüfen.',say:'Text überprüft',tap:'Hier tippen',terms:['Absicht im Herzen','Eröffnungstakbir','Stehen und Rezitieren'],parts:['Anfang der Fatiha','Mittelteil der Fatiha','Ende der Fatiha'],final:['Absicht im Herzen','Eröffnungstakbir','Fatiha im Stehen','Nach dem Lesen auf Ruku vorbereiten'],screens:[['Gebetsrichtung finden','Berühre die Gebetsnische als Richtungshinweis in dieser Halle.','Ich wende mich zur Qibla.'],['Absicht im Herzen','Wie fasse ich die Absicht zum Gebet?','Die Absicht liegt im Herzen; ich muss keine feste Formel aussprechen.'],['Ruhig stehen','Wähle einen geeigneten Platz vor der Nische.','Ich stehe zur Qibla gewandt.'],['Takbir beginnen','Tippe auf die Figur, die ihre Hände zum Beginn des Gebets hebt.','Ich beginne mit dem Eröffnungstakbir.'],['Worte des Takbir','Welche Worte benutze ich zu Beginn?','Ich sage: Allahu Akbar.'],['Reihenfolge','Wähle die drei Tätigkeiten in der richtigen Reihenfolge.','Absicht, Takbir, Stehen und Lesen.'],['Stehend lesen','Welche Figur zeigt ruhiges Stehen beim Lesen?','Wer kann, rezitiert im Stehen. Handpositionen unterscheiden sich nach Rechtsschule.'],['Was lese ich?','Welche Sure soll ich zum Gebet lernen?','Ich lerne die ganze Sure Al-Fatiha.'],['Anfang der Fatiha','Lies den Abschnitt und bestätige die Wiederholung.','Übe die korrekte Aussprache mit einer Lehrperson.'],['Weiterlesen','Lies den nächsten Abschnitt.','Die Rezitation umfasst gesprochene Worte.'],['Letzter Teil','Lies den letzten Teil der Sure.','Al-Fatiha gehört zum Gebetslernen.'],['Textfolge','Sortiere die drei Teile in der richtigen Reihenfolge.','Anfang, Mitte, Ende.'],['Nach der Fatiha','Nach der Fatiha kann eine weitere Passage gelesen werden. Was folgt danach?','Danach kommt Ruku, in M23.'],['Selbst ausprobieren','Führe vier Schritte in der richtigen Reihenfolge aus.','Du hast den Beginn geübt.'] ],choices:{intention:['Absicht im Herzen','Feste Formel laut aufsagen als Pflicht'],start:['Allahu Akbar','Subhana Rabbiyal Aʿla'],read:['Al-Fatiha','Nur die Gebetsnische ansehen'],after:['Nach dem Lesen auf Ruku vorbereiten','Vor Ruku sofort niederwerfen']},finish:'Text wiederholt',standing:'Ruhiges Stehen',takbir:'Takbir',place:'Gebetsplatz',mihrab:'Gebetsnische',window:'Fenster',orderHint:'Wähle den nächsten Schritt.',reset:'Neu versuchen'},
-en:{title:'I begin my prayer',back:'To the learn-to-pray path',next:'Continue',again:'Repeat lesson',completed:'Prayer beginning completed',completeText:'I learned the opening takbir, standing, and recitation. Bowing and prostration come later. Practise al-Fatiha with a qualified teacher or reciter.',good:'Well done. ',retry:'Try again.',start:'Start',tip:'Visual and written practice only; the game cannot check pronunciation.',say:'I reviewed the text',tap:'Tap here',terms:['Intention in the heart','Opening takbir','Standing recitation'],parts:['Start of al-Fatiha','Middle of al-Fatiha','End of al-Fatiha'],final:['Intention in my heart','Opening takbir','Read al-Fatiha standing','Prepare for bowing after recitation'],screens:[['Find the prayer direction','Tap the mihrab indicating qibla in this room.','I face the qibla.'],['Intention in my heart','How do I form my intention?','The intention belongs in my heart; I do not need to recite a fixed formula out loud.'],['Stand calmly','Choose a proper place to stand facing the mihrab.','I stand ready to pray.'],['Opening takbir','Tap the character raising both hands for the opening takbir.','I start with the opening takbir.'],['Words of takbir','What do I say to start the prayer?','I say Allahu Akbar.'],['Put the steps in order','Tap these three acts in the right order.','Intention, takbir, then standing recitation.'],['Standing and reading','Which character shows calm standing while reciting?','I recite standing if able; hand positions vary by school of law.'],['What do I recite?','Which surah should I learn for prayer?','I learn all of al-Fatiha.'],['Beginning of al-Fatiha','Read the words and confirm you reviewed them.','Learn accurate pronunciation from a qualified teacher.'],['Continue al-Fatiha','Read the next section.','Reading is not just a silent visual gesture.'],['End of al-Fatiha','Review the final passage.','Learning al-Fatiha is essential to prayer learning.'],['Order the passage','Put the three portions of the text in order.','Beginning, middle and end.'],['What comes next?','After al-Fatiha one may read more Quran. What follows recitation?','Bowing is taught in M23.'],['Practise the beginning','Perform the four opening actions in order.','You finished the opening lesson.']],choices:{intention:['Intention in my heart','A fixed spoken formula is compulsory'],start:['Allahu Akbar','Subhana Rabbiyal Aʿla'],read:['Al-Fatiha','Only look at the mihrab'],after:['Prepare for bowing after recitation','Prostrate before bowing']},finish:'I reviewed the text',standing:'Standing calmly',takbir:'Opening takbir',place:'Prayer place',mihrab:'Mihrab',window:'Window',orderHint:'Choose the next step.',reset:'Try again'}
+const choices={
+1:[['أنوي الصلاة في قلبي',true,'صحيح، النية محلها القلب.'],['أتلفّظ بجملة محددة أعتقد أن الصلاة لا تصح بدونها',false,'ليس مطلوباً التلفظ بنية مخصوصة.']],
+2:[['أقف معتدلاً ساكناً',true,'أحسنت، أبدأ في هدوء.'],['أظل أتحرك وأعبث بأشيائي',false,'أهيئ نفسي للصلاة بهدوء.']],
+9:[['أثبت بهدوء دون عبث',true,'السكينة جزء مهم من التعلم.'],['أشدّ حقيبتي وأعبث بيدي باستمرار',false,'أترك الأشياء التي تشغلني عن الصلاة.']]
 };
-const $=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n};
-const btn=(txt,fn,cls)=>{const n=$('button',cls,txt);n.type='button';n.onclick=fn;return n};
-const img=(src,cls,alt='')=>{const n=$('img',cls);n.src=src;n.alt=alt;n.draggable=false;return n};
-let dlg=null,opts={},lang='ar',part=0,solved=false,complete=false,sub=0,selected=[],status='',character='girl';
-const T=()=>DATA[lang];
-function save(){try{localStorage.setItem(SAVE,JSON.stringify({part,sub,solved,complete}))}catch{}}
-function feedback(t){status=t;const n=dlg?.querySelector('.m11-feedback');if(n)n.textContent=t}
-function success(){if(solved)return;solved=true;save();feedback(T().good+T().screens[part][2]);dlg?.querySelector('.m11-next')?.removeAttribute('disabled')}
-function wrong(){feedback(T().retry)}
-function close(){if(!dlg)return;const d=dlg;dlg=null;d.close();d.remove();opts.onClose?.()}
-function next(){if(!solved)return;if(part===TOTAL-1){complete=true;part=TOTAL;save();window.HUDHUDProgress?.mark?.('m11');opts.onComplete?.();draw();return}part++;sub=0;selected=[];solved=false;status='';save();draw()}
-function startOver(){part=0;sub=0;selected=[];solved=false;complete=false;status='';save();draw()}
-function choice(panel,label,correct){panel.append(btn(label,()=>correct?success():wrong(),'m11-choice'))}
-function options(panel,list,correct=0){const root=$('div','m11-choices');list.forEach((s,i)=>choice(root,s,i===correct));panel.append(root)}
-function avatar(scene,pose='stand',x=52,bottom=7,cls=''){const a=img(`${AS}${character}-${pose}-v1.webp`,'m11-character '+cls,'');a.style.left=x+'%';a.style.bottom=bottom+'%';scene.append(a);return a}
-function textCard(scene,s,cls=''){const n=$('div','m11-text-card '+cls,s);n.dir='rtl';scene.append(n);return n}
-function ordered(panel,names,correctOrder){const root=$('div','m11-order');names.forEach((label,i)=>{const b=btn(label,()=>{if(selected.includes(i))return;if(i!==correctOrder[selected.length]){wrong();return}selected.push(i);b.classList.add('is-selected');b.disabled=true;feedback(`${selected.length}/${correctOrder.length}`);if(selected.length===correctOrder.length)success()},'m11-order-option');root.append(b)});panel.append(root)}
-function renderScene(host,panel){const scene=$('div','m11-stage');host.append(scene);scene.append(img(HALL,'m11-hall'));const t=T();
-const mihrab=()=>{const good=btn(t.mihrab,success,'m11-mihrab-hit');good.setAttribute('aria-label',t.mihrab);scene.append(good);const bad=btn(t.window,wrong,'m11-window-hit');scene.append(bad)};
-const player=()=>avatar(scene,'stand',26,7);
-if(part===0){player();mihrab();options(panel,[t.mihrab,t.window]);}
-if(part===1){player();options(panel,t.choices.intention);}
-if(part===2){avatar(scene,'stand',27,9);const zone=btn(t.place,success,'m11-floor-hit');scene.append(zone);panel.append(btn(t.place,success,'m11-action'));}
-if(part===3){const stand=avatar(scene,'stand',28,9);const tak=avatar(scene,'takbir',66,9,'m11-interactive');tak.setAttribute('role','button');tak.tabIndex=0;tak.setAttribute('aria-label',t.takbir);tak.onclick=success;tak.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();success()}};stand.classList.add('m11-muted');options(panel,[t.standing,t.takbir],1);}
-if(part===4){avatar(scene,'takbir',53,7);textCard(scene,'اللَّهُ أَكْبَرُ','m11-takbir-card');options(panel,t.choices.start);}
-if(part===5){avatar(scene,'stand',27,9);ordered(panel,[t.terms[1],t.terms[2],t.terms[0]],[2,0,1]);}
-if(part===6){avatar(scene,'quiet',50,9);textCard(scene,t.standing,'m11-note-card');const c=$('div','m11-choices');c.append(btn(t.standing,success,'m11-choice'),btn(t.tap+' — '+t.takbir,wrong,'m11-choice'));panel.append(c)}
-if(part===7){avatar(scene,'quiet',30,9);options(panel,t.choices.read);}
-if([8,9,10].includes(part)){avatar(scene,'quiet',18,8);const f=part===8?FAT[0]+'\n'+FAT[1]:part===9?FAT[2]:FAT[3];textCard(scene,f,'m11-fatihah-card');panel.append(btn(t.finish,success,'m11-action'))}
-if(part===11){avatar(scene,'quiet',22,8);ordered(panel,[t.parts[1],t.parts[2],t.parts[0]],[2,0,1]);}
-if(part===12){avatar(scene,'quiet',26,7);options(panel,t.choices.after);}
-if(part===13){avatar(scene,sub===1?'takbir':sub>=2?'quiet':'stand',43,8);const c=$('div','m11-choices');t.final.forEach((s,i)=>{const b=btn(s,()=>{if(i!==sub){wrong();return}sub++;selected.push(i);save();if(sub>=4){success()}else {status='';draw()}},'m11-choice '+(i<sub?'is-selected':''));b.disabled=i<sub;c.append(b)});panel.append(c);textCard(scene,`${sub}/4`,'m11-count-card')}
-return scene}
-function draw(){if(!dlg)return;dlg.replaceChildren();const t=T();const head=$('header','m11-header');head.append(btn(t.back,close,'m11-back'),$('strong','m11-title',t.title),$('span','m11-counter',complete?`${TOTAL}/${TOTAL}`:`${part+1}/${TOTAL}`));dlg.append(head);
-if(complete){const fin=$('section','m11-finish');fin.append($('h2','',t.completed),$('p','',t.completeText),btn(t.again,startOver,'m11-replay'));dlg.append(fin);return}
-const layout=$('div','m11-layout'),view=$('div','m11-view'),panel=$('section','m11-panel');const [title,desc]=t.screens[part];panel.append($('h2','m11-heading',title),$('p','m11-prompt',desc));renderScene(view,panel);panel.append($('p','m11-feedback',status));if([8,9,10].includes(part))panel.append($('p','m11-sub-note',t.tip));const nextbtn=btn(t.next,next,'m11-next');nextbtn.disabled=!solved;panel.append(nextbtn);layout.append(view,panel);dlg.append(layout)}
-function open(o={}){if(dlg)close();opts=o;lang=DATA[o.lang]?o.lang:'ar';let profile={};try{profile=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}character=o.character==='boy'||o.character==='girl'?o.character:profile.character==='boy'?'boy':'girl';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}complete=!!saved.complete;part=complete?TOTAL:Math.min(TOTAL-1,Math.max(0,Number(saved.part)||0));sub=Math.min(4,Math.max(0,Number(saved.sub)||0));solved=!!saved.solved;selected=[];status='';dlg=$('dialog','m11-dialog');dlg.lang=lang;dlg.dir=lang==='ar'?'rtl':'ltr';dlg.setAttribute('aria-label',T().title);dlg.addEventListener('cancel',e=>{e.preventDefault();close()});document.body.append(dlg);dlg.showModal();draw();return getState()}
-function getState(){return {part,sub,solved,complete,open:!!dlg}}
-window.HUDHUDM11={open,close,getState,version:'0.34.6'};
+const seq=['أستحضر النيّة في قلبي','أرفع يديّ وأقول الله أكبر','أخفض يدي بعد التكبير','أضع اليمنى فوق اليسرى','أقرأ الفاتحة وأنا قائم'];
+let dlg=null,stage=0,solved=false,complete=false,sub=0,status='',lang='ar',character='boy',opts={},animationId=0;
+const $=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e};
+const btn=(name,fn,cls='')=>{const b=$('button',cls,name);b.type='button';b.addEventListener('click',fn);return b};
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({part:stage,solved,complete,sub}))}catch{}}
+function poseSrc(key){if(character==='girl'){
+ const girl={rest:'girl-stand-v1.webp',mid:'girl-takbir-v1.webp',up:'girl-takbir-v1.webp',lower:'girl-takbir-v1.webp',fold:'girl-quiet-v1.webp',fold2:'girl-quiet-v1.webp',reversed:'girl-quiet-v1.webp',one:'girl-takbir-v1.webp'};
+ return BASE+(girl[key]||girl.rest)}
+ return BASE+(P[key]||P.rest)}
+function figure(key='rest',cls=''){const img=$('img','m11v-avatar '+cls);img.src=poseSrc(key);img.alt='شخصية الطفل في وضعية '+({rest:'الاستعداد',mid:'الرفع التدريجي',up:'رفع اليدين',lower:'خفض اليدين',fold:'ضم اليمنى على اليسرى'}[key]||'القيام');img.draggable=false;return img}
+function feedback(message,good){status=message;const p=dlg?.querySelector('.m11v-feedback');if(p){p.textContent=status;p.classList.toggle('bad',!good)}}
+function good(message){solved=true;save();feedback(message||'أحسنت.',true);const n=dlg?.querySelector('.m11v-next');if(n)n.disabled=false}
+function wrong(message){feedback(message||'أعد المحاولة. لاحظ حركة اليدين جيداً.',false)}
+function next(){if(!solved)return;if(stage===TOTAL-1){complete=true;save();window.HUDHUDProgress?.mark?.('m11');opts.onComplete?.();draw();return}stage++;solved=false;sub=0;status='';save();draw()}
+function back(){const o=opts;close();o.onClose?.()}
+function close(){if(animationId){clearInterval(animationId);animationId=0}if(!dlg)return;const d=dlg;dlg=null;d.close();d.remove()}
+function makeChoiceList(panel,items){const box=$('div','m11v-answers');items.forEach(([label,ok,msg])=>{box.append(btn(label,()=>ok?good(msg):wrong(msg),'m11v-answer'))});panel.append(box)}
+function gallery(scene,panel,items){const row=$('div','m11v-gallery');items.forEach(x=>{
+ const b=btn('',()=>x.ok?good(x.message||'صحيح. هذه هيئة مقبولة.'):wrong(x.message||'هذه ليست الهيئة التي نتدرّب عليها.'),'m11v-gallery-card');
+ const img=figure(x.pose);b.append(img,$('span','',x.name));row.append(b)
+});panel.append(row)}
+function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-avatar');let running=false;const frames=key==='raise'?['rest','lower','mid','up']:['up','mid','lower','fold'];
+ const control=btn(key==='raise'?'شاهد رفع اليدين عند التكبير':'شاهد خفض اليدين ووضعهما',()=>{}, 'm11v-motion-button');
+ control.onclick=()=>{if(running)return;running=true;control.disabled=true;let i=0;hero.src=poseSrc(frames[0]);
+  animationId=setInterval(()=>{i++;if(i<frames.length){hero.src=poseSrc(frames[i]);hero.classList.remove('m11v-pop');void hero.offsetWidth;hero.classList.add('m11v-pop')}
+   else{clearInterval(animationId);animationId=0;control.disabled=false;running=false;good(key==='raise'?'ارتفعت اليدان مع قول: الله أكبر.':'بعد التكبير خفضت اليدين، ثم وضعت اليمنى فوق اليسرى.')}} ,510)
+ };
+ panel.append(control)
+}
+function renderCurrent(scene,panel){
+ const p=stage;
+ const hero=figure(lessons[p][3],'m11v-main-avatar');scene.append(hero);
+ if(p===0){scene.append($('div','m11v-qibla-note','المحراب يدل على جهة القبلة داخل هذه القاعة'));panel.append(btn('راجعت اتجاه القبلة',()=>good('أحسنت. بقية اللقطات أمامية لتوضيح اليدين لا لتغيير جهة الصلاة.'),'m11v-motion-button'))}
+ else if(p===1||p===2||p===9)makeChoiceList(panel,choices[p]);
+ else if(p===3)gallery(scene,panel,[
+ {name:'إلى مستوى الكتفين',pose:'mid',ok:true,message:'ورد الرفع حذو المنكبين.'},
+ {name:'إلى مستوى الأذنين',pose:'up',ok:true,message:'ورد الرفع حذو الأذنين أيضاً.'},
+ {name:'حركة صغيرة عند الخصر فقط',pose:'lower',ok:false,message:'ارفع كفيك إلى مستوى الكتفين أو الأذنين.'}]);
+ else if(p===4)gallery(scene,panel,[
+ {name:'أرفع اليدين معاً',pose:'up',ok:true,message:'رفع اليدين معاً، أحسنت.'},
+ {name:'لا أرفعهما إلا قليلاً',pose:'lower',ok:false,message:'نريد رفع اليدين في بدء التكبير.'},
+ {name:'أحرّك يدًا واحدة فقط',pose:'one',ok:false,message:'نتدرب على رفع اليدين معاً.'}]);
+ else if(p===5||p===6)showMotion(scene,panel,p===5?'raise':'lower');
+ else if(p===7)gallery(scene,panel,[
+ {name:'اليمنى فوق اليسرى',pose:'fold',ok:true,message:'هذا ترتيب اليدين في هيئة القبض.'},
+ {name:'اليسرى فوق اليمنى',pose:'reversed',ok:false,message:'في هيئة القبض تكون اليمنى فوق اليسرى.'},
+ {name:'أعبث بيديّ دون استقرار',pose:'rest',ok:false,message:'أقف بهدوء وأبتعد عن العبث.'}]);
+ else if(p===8)gallery(scene,panel,[
+ {name:'على الصدر',pose:'fold2',ok:true,message:'هيئة معتبرة في الفقه.'},
+ {name:'فوق السرّة',pose:'fold',ok:true,message:'توجد هيئات فقهية معتبرة في موضع اليدين.'},
+ {name:'أشبك أصابعي وأعبث بها',pose:'rest',ok:false,message:'لا نعبث باليدين أثناء القيام.'}]);
+ else if(p>=10&&p<=12){const verses=$('div','m11v-verses',FAT[p-10]);scene.append(verses);panel.append(btn('قرأت المقطع وراجعته',()=>good('أحسنت. تعلّم التلاوة الصحيحة على معلّم متقن.'),'m11v-motion-button'))}
+ else if(p===13){hero.src=poseSrc(['rest','up','lower','fold','fold'][Math.min(4,sub)]);const box=$('div','m11v-answers');seq.forEach((name,i)=>{const b=btn(name,()=>{if(i!==sub){wrong('حاول ترتيب البداية بالخطوات الصحيحة.');return}sub++;status='';solved=sub===seq.length;save();draw()},'m11v-answer'+(i<sub?' done':''));b.disabled=i<sub;box.append(b)});panel.append($('div','m11v-sequence-count',`الخطوة ${Math.min(sub+1,5)} من 5`),box)}
+}
+function draw(){if(!dlg)return;if(animationId){clearInterval(animationId);animationId=0}dlg.replaceChildren();const head=$('header','m11v-head');head.append(btn('إلى تعليم الصلاة',back,'m11v-back'),$('strong','m11v-title','M11 · أبدأ صلاتي'),$('span','m11v-count',complete?'14 / 14':`${stage+1} / ${TOTAL}`));dlg.append(head);
+ if(complete){const end=$('section','m11v-finished');end.append($('h2','','أتممت درس بداية الصلاة'),$('p','','تدرّبت على النية، ورفع اليدين عند التكبير، ووضع اليمنى فوق اليسرى، وقراءة الفاتحة. بقي الركوع والسجود في الدروس التالية.'),btn('أعيد الدرس من البداية',()=>{complete=false;stage=0;solved=false;sub=0;status='';save();draw()},'m11v-next'));dlg.append(end);return}
+ const [title,prompt]=lessons[stage], layout=$('div','m11v-layout'),scene=$('div','m11v-scene'),panel=$('section','m11v-panel');
+ scene.append($('img','m11v-background'));scene.querySelector('.m11v-background').src=HALL;scene.querySelector('.m11v-background').alt='قاعة الصلاة والمحراب';
+ panel.append($('h2','',title),$('p','m11v-prompt',prompt));renderCurrent(scene,panel);const feed=$('p','m11v-feedback',status);panel.append(feed);
+ const nextBtn=btn(stage===TOTAL-1?'إنهاء الدرس':'أكمل',next,'m11v-next');nextBtn.disabled=!solved;panel.append(nextBtn);layout.append(scene,panel);dlg.append(layout);
+}
+function open(o={}){close();opts=o;lang=o.lang||'ar';let profile={};try{profile=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}
+ character=(o.character||profile.character)==='girl'?'girl':'boy';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}
+ complete=!!saved.complete;stage=Math.min(TOTAL-1,Math.max(0,Number(saved.part)||0));solved=!!saved.solved;sub=Math.min(5,Math.max(0,Number(saved.sub)||0));status='';
+ dlg=$('dialog','m11v-dialog');dlg.lang='ar';dlg.dir='rtl';dlg.setAttribute('aria-label','أبدأ صلاتي');dlg.addEventListener('cancel',e=>{e.preventDefault();back()});document.body.append(dlg);dlg.showModal();draw();return getState()}
+function getState(){return {stage,sub,solved,complete,open:!!dlg,version:VER}}
+window.HUDHUDM11={open,close,getState,version:VER};
 })();
