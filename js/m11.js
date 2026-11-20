@@ -1,12 +1,11 @@
-/* HUDHUD M11 v0.35.0 — front-camera moving takbir and hand positions.
+/* HUDHUD M11 v0.35.2 — front-camera moving takbir and hand positions.
    Keeps progress key hudhud-m11-v1 and stage code m11. No changes to M04/M09/M10.
    Valid fiqh variants are accepted, not marked wrong. */
 (()=>{'use strict';
-const BASE='assets/m11/', HALL='assets/m11/prayer-entrance-v3.webp';
-const SCENES={rest:'prayer-entrance-rest-v3.webp',mid:'prayer-entrance-mid-v3.webp',up:'prayer-entrance-up-v3.webp',lower:'prayer-entrance-lower-v3.webp',fold:'prayer-entrance-fold-v3.webp',fold2:'prayer-entrance-fold2-v3.webp',reversed:'prayer-entrance-reversed-v3.webp',one:'prayer-entrance-one-v3.webp'};
+const BASE='assets/m11/';
 const SAVE='hudhud-m11-v1',TOTAL=14;
-const P={rest:'front-rest-clean-v3.webp',mid:'front-hands-mid-clean-v3.webp',up:'front-takbir-ears-clean-v3.webp',lower:'front-hands-lowering-clean-v3.webp',fold:'front-folded-clean-v3.webp',fold2:'front-folded-alt-clean-v3.webp',reversed:'front-folded-mirror-demo-clean-v3.webp',one:'front-one-hand-demo-clean-v3.webp'};
-const VER='0.35.0',FAT=[
+const POSES=['rest','lower','mid','shoulder','up','fold','fold2','reversed','one'];
+const VER='0.35.2',FAT=[
 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\nغَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'];
@@ -36,12 +35,18 @@ let dlg=null,stage=0,solved=false,complete=false,sub=0,status='',lang='ar',chara
 const $=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e};
 const btn=(name,fn,cls='')=>{const b=$('button',cls,name);b.type='button';b.addEventListener('click',fn);return b};
 function save(){try{localStorage.setItem(SAVE,JSON.stringify({part:stage,solved,complete,sub}))}catch{}}
-function poseSrc(key){if(character==='girl'){
- const girl={rest:'girl-stand-v1.webp',mid:'girl-takbir-v1.webp',up:'girl-takbir-v1.webp',lower:'girl-takbir-v1.webp',fold:'girl-quiet-v1.webp',fold2:'girl-quiet-v1.webp',reversed:'girl-quiet-v1.webp',one:'girl-takbir-v1.webp'};
- return BASE+(girl[key]||girl.rest)}
- return BASE+(P[key]||P.rest)}
-function sceneSrc(key){return character==='girl'?poseSrc(key):BASE+(SCENES[key]||SCENES.rest)}
-function figure(key='rest',cls=''){const main=cls.includes('m11v-main-avatar');const femaleMain=main&&character==='girl';const img=$('img',femaleMain?'m11v-avatar m11v-girl-pose '+cls:main?'m11v-scene-pose '+cls:'m11v-avatar '+cls);img.src=main?sceneSrc(key):poseSrc(key);img.alt='شخصية الطفل في وضعية '+({rest:'الاستعداد',mid:'الرفع التدريجي',up:'رفع اليدين',lower:'خفض اليدين',fold:'ضم اليمنى على اليسرى'}[key]||'القيام');img.draggable=false;return img}
+function sceneSrc(key){
+ const pose=POSES.includes(key)?key:'rest';
+ return BASE+'m11-'+character+'-'+pose+'-v4.webp';
+}
+function figure(key='rest',cls=''){
+ const main=cls.includes('m11v-main-avatar');
+ const img=$('img',main?'m11v-scene-pose '+cls:'m11v-avatar '+cls);
+ img.src=sceneSrc(key);
+ img.alt=main?'وضعية بداية الصلاة':'';
+ img.draggable=false;
+ return img;
+}
 function feedback(message,good){status=message;const p=dlg?.querySelector('.m11v-feedback');if(p){p.textContent=status;p.classList.toggle('bad',!good)}}
 function good(message){solved=true;save();feedback(message||'أحسنت.',true);const n=dlg?.querySelector('.m11v-next');if(n)n.disabled=false}
 function wrong(message){feedback(message||'أعد المحاولة. لاحظ حركة اليدين جيداً.',false)}
@@ -53,10 +58,10 @@ function gallery(scene,panel,items){const row=$('div','m11v-gallery');items.forE
  const b=btn('',()=>x.ok?good(x.message||'صحيح. هذه هيئة مقبولة.'):wrong(x.message||'هذه ليست الهيئة التي نتدرّب عليها.'),'m11v-gallery-card');
  const img=figure(x.pose);b.append(img,$('span','',x.name));row.append(b)
 });panel.append(row)}
-function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-avatar');let running=false;const frames=key==='raise'?['rest','lower','mid','up']:['up','mid','lower','fold'];
+function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-main-avatar');let running=false;const frames=key==='raise'?['rest','lower','mid','shoulder','up']:['up','shoulder','mid','lower','fold'];
  const control=btn(key==='raise'?'شاهد رفع اليدين عند التكبير':'شاهد خفض اليدين ووضعهما',()=>{}, 'm11v-motion-button');
  control.onclick=()=>{if(running)return;running=true;control.disabled=true;let i=0;hero.src=sceneSrc(frames[0]);
-  animationId=setInterval(()=>{i++;if(i<frames.length){hero.src=sceneSrc(frames[i]);hero.classList.remove('m11v-pop');void hero.offsetWidth;hero.classList.add('m11v-pop')}
+  animationId=setInterval(()=>{i++;if(i<frames.length){hero.src=sceneSrc(frames[i]);}
    else{clearInterval(animationId);animationId=0;control.disabled=false;running=false;good(key==='raise'?'ارتفعت اليدان مع قول: الله أكبر.':'بعد التكبير خفضت اليدين، ثم وضعت اليمنى فوق اليسرى.')}} ,510)
  };
  panel.append(control)
@@ -64,10 +69,10 @@ function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-avata
 function renderCurrent(scene,panel){
  const p=stage;
  const hero=figure(lessons[p][3],'m11v-main-avatar');scene.append(hero);
- if(p===0){scene.append($('div','m11v-qibla-note','باب المسجد خلف الطفل — والقبلة أمامه خارج إطار الصورة'));panel.append(btn('أقف وظهري إلى الباب',()=>good('القبلة أمام الطفل، والباب خلفه. الكاميرا أمامه لتوضيح الحركة.'),'m11v-motion-button'))}
+ if(p===0){panel.append(btn('أقف وظهري إلى الباب',()=>good('القبلة أمام الطفل، والباب خلفه. الكاميرا أمامه لتوضيح الحركة.'),'m11v-motion-button'))}
  else if(p===1||p===2||p===9)makeChoiceList(panel,choices[p]);
  else if(p===3)gallery(scene,panel,[
- {name:'إلى مستوى الكتفين',pose:'mid',ok:true,message:'ورد الرفع حذو المنكبين.'},
+ {name:'إلى مستوى الكتفين',pose:'shoulder',ok:true,message:'ورد الرفع حذو المنكبين.'},
  {name:'إلى مستوى الأذنين',pose:'up',ok:true,message:'ورد الرفع حذو الأذنين أيضاً.'},
  {name:'حركة صغيرة عند الخصر فقط',pose:'lower',ok:false,message:'ارفع كفيك إلى مستوى الكتفين أو الأذنين.'}]);
  else if(p===4)gallery(scene,panel,[
@@ -89,12 +94,11 @@ function renderCurrent(scene,panel){
 function draw(){if(!dlg)return;if(animationId){clearInterval(animationId);animationId=0}dlg.replaceChildren();const head=$('header','m11v-head');head.append(btn('إلى تعليم الصلاة',back,'m11v-back'),$('strong','m11v-title','M11 · أبدأ صلاتي'),$('span','m11v-count',complete?'14 / 14':`${stage+1} / ${TOTAL}`));dlg.append(head);
  if(complete){const end=$('section','m11v-finished');end.append($('h2','','أتممت درس بداية الصلاة'),$('p','','تدرّبت على النية، ورفع اليدين عند التكبير، ووضع اليمنى فوق اليسرى، وقراءة الفاتحة. بقي الركوع والسجود في الدروس التالية.'),btn('أعيد الدرس من البداية',()=>{complete=false;stage=0;solved=false;sub=0;status='';save();draw()},'m11v-next'));dlg.append(end);return}
  const [title,prompt]=lessons[stage], layout=$('div','m11v-layout'),scene=$('div','m11v-scene'),panel=$('section','m11v-panel');
- scene.append($('img','m11v-background'));scene.querySelector('.m11v-background').src=HALL;scene.querySelector('.m11v-background').alt='داخل المسجد، باب الدخول خلف الطفل. جهة القبلة مقابلة للباب وخارج إطار الكاميرا';
  panel.append($('h2','',title),$('p','m11v-prompt',prompt));renderCurrent(scene,panel);const feed=$('p','m11v-feedback',status);panel.append(feed);
  const nextBtn=btn(stage===TOTAL-1?'إنهاء الدرس':'أكمل',next,'m11v-next');nextBtn.disabled=!solved;panel.append(nextBtn);layout.append(scene,panel);dlg.append(layout);
 }
 function open(o={}){close();opts=o;lang=o.lang||'ar';let profile={};try{profile=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}
- character=(o.character||profile.character)==='girl'?'girl':'boy';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}
+ character=(o.character||profile.character)==='girl'?'girl':'boy';POSES.forEach(pose=>{const frame=new Image();frame.src=sceneSrc(pose)});let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}
  complete=!!saved.complete;stage=Math.min(TOTAL-1,Math.max(0,Number(saved.part)||0));solved=!!saved.solved;sub=Math.min(5,Math.max(0,Number(saved.sub)||0));status='';
  dlg=$('dialog','m11v-dialog');dlg.lang='ar';dlg.dir='rtl';dlg.setAttribute('aria-label','أبدأ صلاتي');dlg.addEventListener('cancel',e=>{e.preventDefault();back()});document.body.append(dlg);dlg.showModal();draw();return getState()}
 function getState(){return {stage,sub,solved,complete,open:!!dlg,version:VER}}
