@@ -1,119 +1,106 @@
-/* HUDHUD M10 — أتعرف إلى القبلة / Find the Qibla
- * Atlas M-3 prayer hall. Fourteen meaningful interactive situations.
- * No camera, device bearing, geolocation, music, avatar facial features, or invented compass readings.
- * In THIS DRAWN mosque the mihrab at the back of the hall indicates the qibla.
+/* HUDHUD 0.34.7 — M10: the CHILD, not a prayer rug, turns toward the mihrab.
+ * Reuses the exact directional sprite family from the approved HUDHUD world.
+ * No compass invention, geolocation, music, device headings or extra prayer rugs.
+ * Existing hudhud-m10-v1 progress and m10 achievement are retained.
  */
-(()=>{'use strict';
-if(window.HUDHUDM10)return;
-const AS='assets/m10/',SAVE='hudhud-m10-v1',TOTAL=14;
-const DATA={
-ar:{title:'أتعرف إلى القبلة',back:'إلى قاعة الصلاة',next:'أكمل',again:'ألعب مرة أخرى',done:'أحسنت! تعرّفت إلى القبلة',doneText:'القبلة جهة المسجد الحرام في مكة. في قاعة المسجد يساعدني المحراب على معرفة اتجاهها، وإذا كنت في مكان آخر أتحقق من الاتجاه بمصدر موثوق.',good:'أحسنت. ',retry:'ليس هذا الاتجاه. حاول مرة أخرى.',turnLeft:'أدير يساراً',turnRight:'أدير يميناً',move:'أنقل السجادة إلى الموضع المحدد',hint:'اسحب السجادة إلى الدائرة، أو استخدم الزر.',check:'أتحقق',mat:'السجادة',mihrab:'المحراب',window:'النافذة',clear:'مكان صلاة مناسب',entrance:'الممر',status:'أصبحت السجادة متجهة إلى المحراب.',levels:[
-['إلى أين أتجه في صلاتي؟','ما المقصود بالقبلة؟','القبلة جهة المسجد الحرام في مكة.',['جهة المسجد الحرام في مكة','أي نافذة تعجبني']],
-['أكتشف المحراب','المس المحراب في جدار قاعة الصلاة، ولا تلمس النافذة.','المحراب في هذا المسجد يدلّ على جهة القبلة.'],
-['أفهم علامة المحراب','ما الدليل الذي أستعين به داخل قاعة المسجد؟','أنظر إلى المحراب المحدد في جدار القبلة.',['المحراب','لون الستارة أو النافذة']],
-['أوجّه سجادتي','السجادة مائلة إلى الجانب. أدرها حتى يصبح رأسها باتجاه المحراب.','أصبح اتجاه السجادة نحو جدار القبلة.'],
-['أصحح الاتجاه المعاكس','السجادة معكوسة! أدرها إلى جهة المحراب.','لا أصلّي وظهري إلى جهة القبلة في هذا المشهد.'],
-['أختار موضعاً للصلاة','انقل السجادة إلى الموضع المخصص بعيداً عن المدخل.','المكان مناسب، والسجادة متجهة نحو المحراب.'],
-['لا أتبع الزخرفة وحدها','هل تكفي زخارف السجادة لتحديد القبلة في أي مكان؟','لا. أتأكد من جهة القبلة أولاً، ثم أوجّه السجادة إليها.',['لا، أتحقق من القبلة أولاً','نعم، لون السجادة يحدد القبلة']],
-['غيّرتُ مكاني','انتقلت إلى الطرف الآخر من القاعة. أعد توجيه سجادتي نحو المحراب.','يتغير موضعي، لكنني أبقى متجهاً إلى القبلة.'],
-['أبتعد عن الممر','المس موضع الصلاة المناسب، ولا تقف عند مدخل القاعة.','أختار موضعاً لا يعيق دخول المصلّين.'],
-['ألاحظ سجادتين','أمامك سجادتان. المس السجادة الموجّهة نحو المحراب.','وجدت السجادة الصحيحة، وليس كل اتجاه مثل الآخر.'],
-['أحافظ على اتجاهي','إذا انتقلت من وسط القاعة إلى طرفها، ماذا أفعل؟','أبقى متوجهاً إلى جهة القبلة.',['أحافظ على جهة القبلة','أغيّر الاتجاه عشوائياً']],
-['أساعد زميلي','سجادة زميلي مائلة. أدرها حتى تتجه نحو المحراب.','أصلحت اتجاه السجادة دون أن أغيّر جهة القبلة.'],
-['إذا لم أرَ محراباً','إذا كنت في مكان لا يوجد فيه محراب، كيف أتحقق من القبلة؟','أسأل شخصاً موثوقاً أو أستخدم وسيلة موثوقة لمعرفة الاتجاه.',['أتحقق من اتجاه موثوق','أختار جهة عشوائية']],
-['التطبيق الأخير','أثبت ما تعلمته: عيّن المحراب، ثم وجّه السجادة وانقلها إلى موضع الصلاة.','تعرفت إلى القبلة ووجهت السجادة واستعملت موضعاً مناسباً.']
-],finalParts:['1 من 3: المس المحراب.','2 من 3: أدر السجادة نحو المحراب.','3 من 3: انقل السجادة إلى موضع الصلاة.']},
-de:{title:'Die Qibla erkennen',back:'Zum Gebetssaal',next:'Weiter',again:'Noch einmal spielen',done:'Du hast die Gebetsrichtung erkannt',doneText:'Die Qibla ist die Richtung der Heiligen Moschee in Mekka. Im Gebetssaal zeigt der Mihrab die Richtung an; an anderen Orten prüfe ich sie zuverlässig.',good:'Gut. ',retry:'Versuche es mit einer anderen Richtung.',turnLeft:'Nach links drehen',turnRight:'Nach rechts drehen',move:'Gebetsteppich zum freien Platz bewegen',hint:'Ziehe den Teppich in den Kreis oder nutze die Taste.',check:'Prüfen',mat:'Gebetsteppich',mihrab:'Mihrab',window:'Fenster',clear:'Freier Gebetsplatz',entrance:'Durchgang',status:'Der Teppich zeigt zum Mihrab.',levels:[
-['Wohin bete ich?','Was ist die Qibla?','Die Qibla ist die Richtung der Heiligen Moschee in Mekka.',['Zur Heiligen Moschee in Mekka','Zu irgendeinem Fenster']],
-['Den Mihrab entdecken','Berühre den Mihrab im Gebetssaal, nicht das Fenster.','Der Mihrab zeigt hier die Qibla an.'],
-['Das Zeichen erkennen','Woran erkenne ich die Gebetsrichtung in diesem Saal?','Der Mihrab ist das Zeichen in der Qibla-Wand.',['Am Mihrab','An der Farbe des Fensters']],
-['Teppich ausrichten','Der Teppich ist seitlich gedreht. Richte sein oberes Ende zum Mihrab.','Der Teppich zeigt nun zur Qibla.'],
-['Umgedreht?','Der Teppich zeigt in die entgegengesetzte Richtung. Drehe ihn.','Der Teppich ist jetzt ausgerichtet.'],
-['Gebetsplatz wählen','Verschiebe den Teppich auf den freien Gebetsplatz, weg vom Eingang.','Der Durchgang bleibt frei.'],
-['Nicht nur das Muster','Reicht das Teppichmuster allein, um überall die Qibla zu erkennen?','Nein. Erst die Richtung bestimmen, dann den Teppich ausrichten.',['Nein, zuerst die Richtung prüfen','Ja, das Teppichmuster genügt']],
-['Neuer Platz','Du stehst jetzt auf der anderen Seite. Richte den Teppich erneut aus.','Der Gebetsplatz ändert sich, nicht die Qibla.'],
-['Eingang freihalten','Wähle den richtigen Gebetsplatz, nicht den Durchgang.','Der Eingang ist frei.'],
-['Zwei Teppiche','Welcher der beiden Teppiche zeigt zum Mihrab?','Dieser Teppich ist richtig ausgerichtet.'],
-['Richtung behalten','Was gilt, wenn ich im Saal meinen Platz wechsle?','Ich halte die Gebetsrichtung bei.',['Ich bleibe zur Qibla ausgerichtet','Ich wähle eine beliebige Richtung']],
-['Einem Freund helfen','Drehe den Teppich deines Freundes zum Mihrab.','Gut ausgerichtet.'],
-['Ohne Mihrab','Wie finde ich die Qibla ohne einen Mihrab?','Ich nutze eine zuverlässige Quelle für die Richtung.',['Zuverlässige Quelle prüfen','Eine Richtung raten']],
-['Abschlussübung','Finde den Mihrab, richte den Teppich aus und lege ihn an einen freien Platz.','Alle drei Aufgaben sind geschafft.']
-],finalParts:['1/3: Mihrab berühren','2/3: Teppich ausrichten','3/3: Teppich zum freien Platz bringen']},
-en:{title:'Find the Qibla',back:'Back to prayer hall',next:'Continue',again:'Play again',done:'You found the prayer direction',doneText:'The Qibla is the direction of the Sacred Mosque in Mecca. Inside a prayer hall the mihrab indicates it; elsewhere I check with a reliable source.',good:'Well done. ',retry:'Try a different direction.',turnLeft:'Turn left',turnRight:'Turn right',move:'Move the rug to the clear space',hint:'Drag the rug into the target or use the button.',check:'Check',mat:'Prayer rug',mihrab:'Mihrab',window:'Window',clear:'Clear prayer space',entrance:'Walkway',status:'The rug now faces the mihrab.',levels:[
-['Where do we face?','What is the Qibla?','The direction of the Sacred Mosque in Mecca.',['Towards the Sacred Mosque in Mecca','Towards any pretty window']],
-['Find the mihrab','Tap the mihrab in the wall, not the window.','The mihrab indicates the Qibla in this mosque.'],
-['Recognize the sign','Which feature in this prayer hall shows the direction?','The mihrab marks the direction in the Qibla wall.',['The mihrab','The window colours']],
-['Turn the rug','The rug is sideways. Point its top towards the mihrab.','Now the rug points towards the Qibla.'],
-['Turn around','The rug is facing backwards. Rotate it towards the mihrab.','The direction is correct now.'],
-['Find a good spot','Move the prayer rug to the marked space, clear of the doorway.','The entrance stays clear.'],
-['Not just decoration','Does a rug pattern alone tell us the Qibla everywhere?','No. First identify the direction; then align the rug.',['No, check the Qibla first','Yes, the rug colour tells us']],
-['Move to a new place','You moved to the other side of the hall. Face the mihrab again.','Your position changed, but the Qibla did not.'],
-['Keep the entrance clear','Tap a suitable prayer space, not the doorway.','The walkway remains clear.'],
-['Two prayer rugs','Tap the rug pointing towards the mihrab.','You chose the correct rug.'],
-['Keep facing the same way','What if I move across the prayer hall?','I keep facing the Qibla.',['I still face the Qibla','I choose any direction']],
-['Help a friend','Turn your friend’s rug towards the mihrab.','The rug now faces the right direction.'],
-['Away from a mosque','How should I find the Qibla where there is no mihrab?','I check the direction using a reliable source.',['Check a reliable source','Guess a direction']],
-['Final activity','Find the mihrab, orient the rug, and move it to a suitable place.','All three activities complete.']
-],finalParts:['1/3: Tap the mihrab','2/3: Rotate the rug','3/3: Move the rug to the clear space']}
+(()=>{'use strict';if(window.HUDHUDM10)return;
+const SAVE='hudhud-m10-v1',TOTAL=14;
+const L={
+ar:{title:'أتعرف إلى القبلة',back:'إلى قاعة الصلاة',next:'أكمل',again:'ألعب مرة أخرى',done:'تعرّفت إلى القبلة',doneText:'القبلة جهة الكعبة المشرفة في مكة. داخل هذه القاعة يدلّ المحراب على جهة القبلة. عندما أغيّر مكاني، أُعيد توجيه نفسي إلى الجهة نفسها.',good:'أحسنت. ',retry:'جرّب مرة أخرى.',left:'أستدير يساراً',right:'أستدير يميناً',move:'أنقل شخصيتي إلى مكان الصلاة',point:'المحراب',window:'النافذة',space:'مكان الوقوف',door:'الممر',player:'شخصيتي',friend:'صديقي',hint:'اسحب الشخصية نحو المكان الصحيح أو اضغط على المكان.',
+steps:[
+['ما القبلة؟','إلى أي جهة يتوجه المسلم عند الصلاة؟','القبلة جهة الكعبة المشرفة في مكة.',['جهة الكعبة المشرفة في مكة','أية جهة أختارها']],
+['أجد المحراب','المس المحراب في جدار قاعة الصلاة، وليس النافذة.','المحراب يدل على جهة القبلة في هذه القاعة.'],
+['علامة في المسجد','ما الذي يدلني على اتجاه القبلة هنا؟','أستعين بالمحراب الذي يحدد جهة القبلة.',['المحراب','النافذة المزخرفة']],
+['أوجّه نفسي','أنا ملتفت إلى اليمين. أدر الشخصية حتى تواجه المحراب.','صرت مستقبلاً القبلة بجسمي.'],
+['لستُ في الاتجاه الصحيح','أنا أواجه مدخل القاعة بدلاً من المحراب. استدر حتى تواجه القبلة.','الآن أواجه المحراب لا المدخل.'],
+['أبتعد عن الممر','شخصيتي تقف عند المدخل. انقلها إلى موضع الوقوف المحدد.','تركت طريق المصلين مفتوحاً.'],
+['ما الذي لا يحدد القبلة؟','هل النافذة أو الزخرفة وحدها تكفي لتحديد جهة القبلة؟','أستدل بعلامة صحيحة مثل المحراب، لا بالألوان والزخارف.',['لا، أحتاج دليلاً على الاتجاه','نعم، أتبع أجمل نافذة']],
+['أغيّر مكاني','انتقلت إلى طرف القاعة. ضع الشخصية في الموضع الجديد، ثم أدرها نحو المحراب.','تغيّر مكاني، لكن جهة القبلة ثابتة.'],
+['أختار مكاناً مناسباً','اضغط على موضع الوقوف ولا تضغط على الممر.','أقف في موضع لا يعيق الآخرين.'],
+['من يتجه إلى القبلة؟','شاهد الشخصيتين واضغط على التي تواجه المحراب.','الشخص الصحيح يتجه بجسمه إلى المحراب.'],
+['المكان والاتجاه','عندما أنتقل إلى صف آخر، ماذا أفعل؟','أحافظ على توجهي إلى القبلة.',['أظل متجهاً نحو المحراب','أدير ظهري إلى المحراب']],
+['أساعد صديقي','صديقي ملتفت إلى اليمين. أدره حتى يقف متجهاً إلى المحراب.','ساعدت صديقي على معرفة الاتجاه.'],
+['إذا كنت خارج المسجد','ولا أرى محراباً، كيف أعرف القبلة؟','أسأل شخصاً موثوقاً أو أستخدم وسيلة موثوقة لمعرفة القبلة.',['أتحقق من جهة القبلة بمصدر موثوق','أختار الاتجاه عشوائياً']],
+['أطبّق بنفسي','أولاً المس المحراب، ثم أدر شخصيتك نحوه، ثم ضعها في مكان الوقوف.','وجدت جهة القبلة ووقفت مواجهًا لها دون سد الطريق.']
+],last:['1 من 3: المس المحراب.','2 من 3: وجّه شخصيتك نحو المحراب.','3 من 3: انقل الشخصية إلى مكان الوقوف.'],relocateFirst:'أولاً: انقل شخصيتك إلى الموضع الجديد.',thenFace:'الآن: أدر شخصيتك لتواجه المحراب.',one:'الشخصية الأولى',two:'الشخصية الثانية'},
+de:{title:'Die Qibla erkennen',back:'Zum Gebetssaal',next:'Weiter',again:'Noch einmal',done:'Du hast die Qibla erkannt',doneText:'Die Qibla ist die Richtung der Kaaba in Mekka. Hier weist der Mihrab den Weg. Nach einem Standortwechsel richte ich mich wieder zur Qibla aus.',good:'Richtig. ',retry:'Versuche es noch einmal.',left:'Nach links drehen',right:'Nach rechts drehen',move:'Meine Figur zum Gebetsplatz bewegen',point:'Mihrab',window:'Fenster',space:'Gebetsplatz',door:'Durchgang',player:'Meine Figur',friend:'Freund',hint:'Ziehe die Figur zum freien Platz oder tippe darauf.',
+steps:[
+['Wohin bete ich?','In welche Richtung wenden sich Muslime beim Gebet?','Zur Kaaba in Mekka.',['Zur Kaaba in Mekka','In eine beliebige Richtung']],
+['Finde den Mihrab','Tippe auf den Mihrab in der Wand, nicht auf das Fenster.','Der Mihrab weist hier die Richtung.'],
+['Ein Zeichen im Gebetssaal','Was zeigt mir hier die Qibla?','Der Mihrab in der Qibla-Wand.',['Der Mihrab','Das bunte Fenster']],
+['Dreh dich um','Die Figur schaut nach rechts. Drehe sie zum Mihrab.','Die Figur schaut jetzt zum Mihrab.'],
+['Falsche Richtung','Die Figur schaut zum Eingang. Dreh dich zum Mihrab.','Jetzt zeigt ihr Blick zur Qibla.'],
+['Weg freihalten','Die Figur steht im Eingang. Stelle sie auf einen Gebetsplatz.','Der Durchgang bleibt frei.'],
+['Dekoration genügt nicht','Bestimmen Fenster und Wandfarbe die Qibla?','Nein. Ich orientiere mich an zuverlässigen Hinweisen.',['Nein, ich prüfe die Richtung','Ja, nach dem schönsten Fenster']],
+['Anderer Standort','Bewege die Figur auf die andere Seite und richte sie zum Mihrab.','Der Ort wechselt, die Qibla bleibt gleich.'],
+['Geeigneter Platz','Wähle einen freien Platz, nicht den Durchgang.','Ich blockiere niemanden.'],
+['Wer schaut zum Mihrab?','Wähle die Figur, die zum Mihrab zeigt.','Diese Figur schaut richtig.'],
+['Richtung behalten','Was tue ich in einer anderen Gebetsreihe?','Ich bleibe zur Qibla ausgerichtet.',['Ich richte mich weiter zum Mihrab','Ich drehe ihm den Rücken zu']],
+['Hilf einem Freund','Drehe deinen Freund so, dass er zum Mihrab schaut.','Du hast den richtigen Weg gezeigt.'],
+['Ohne Mihrab','Wie finde ich die Qibla außerhalb einer Moschee?','Mit einer zuverlässigen Auskunft oder Hilfe.',['Mit einer zuverlässigen Quelle','Ich rate die Richtung']],
+['Abschlussübung','Finde den Mihrab, drehe dich zu ihm und gehe zu einem freien Platz.','Du hast dich richtig ausgerichtet.']
+],last:['1/3: Tippe auf den Mihrab.','2/3: Richte deine Figur aus.','3/3: Gehe zu einem freien Platz.'],relocateFirst:'Erst: Wähle den neuen Platz.',thenFace:'Jetzt: Dreh dich zum Mihrab.',one:'Erste Figur',two:'Zweite Figur'},
+en:{title:'Find the Qibla',back:'Back to prayer hall',next:'Continue',again:'Play again',done:'You found the Qibla',doneText:'The Qibla is the direction of the Kaaba in Mecca. In this hall, the mihrab points toward it. If I move, I face that same direction again.',good:'Correct. ',retry:'Try again.',left:'Turn left',right:'Turn right',move:'Move my character to a clear spot',point:'Mihrab',window:'Window',space:'Standing spot',door:'Walkway',player:'My character',friend:'My friend',hint:'Drag the character to the standing spot or tap it.',
+steps:[
+['Where is the Qibla?','Which direction do Muslims face in prayer?','Toward the Kaaba in Mecca.',['Towards the Kaaba in Mecca','Any direction I like']],
+['Find the mihrab','Tap the mihrab in the wall, not the window.','The mihrab indicates the Qibla here.'],
+['A sign in this hall','Which feature here shows the prayer direction?','The mihrab in the Qibla wall.',['The mihrab','The coloured window']],
+['Face the right way','You face right. Turn your character toward the mihrab.','Now you face the mihrab.'],
+['Turn around','You are facing the entrance. Turn to the mihrab.','Now you face the Qibla.'],
+['Keep the walkway clear','Move your character away from the entrance to a clear standing spot.','The entrance stays clear.'],
+['Not just decoration','Does the window colour determine the Qibla?','No, I need a reliable indication.',['No, I check the direction','Yes, I choose the nicest window']],
+['Change your place','Move to the other side of the hall, then face the mihrab.','Your place changed but the Qibla did not.'],
+['Choose a place','Tap a clear standing spot, not the doorway.','You left a clear walkway.'],
+['Who faces the Qibla?','Tap the person facing the mihrab.','That person faces the correct way.'],
+['Keep facing it','If you move to another row, what should you do?','Keep facing the Qibla.',['I face the mihrab again','I turn my back to the mihrab']],
+['Help a friend','Turn your friend until they face the mihrab.','You helped them face the right way.'],
+['Away from a mosque','How do I find the Qibla with no mihrab?','Check a reliable source or ask someone trustworthy.',['Check a reliable source','Guess any direction']],
+['Final activity','Find the mihrab, face it, and move to a suitable place.','You found the direction and left the walkway clear.']
+],last:['1/3: Tap the mihrab.','2/3: Face your character toward it.','3/3: Move your character to a clear spot.'],relocateFirst:'First: move to the new place.',thenFace:'Now: face the mihrab.',one:'First character',two:'Second character'}
 };
-const TYPE=['choice','find','choice','rotate','rotate','move','choice','rotate','spot','compare','choice','rotate','choice','final'];
-const START={3:90,4:180,7:270,11:90,13:180};
-const $=(tag,cls,value)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e};
-const button=(label,handler,cls)=>{const e=$('button',cls,label);e.type='button';e.onclick=handler;return e};
-const img=(url,cls,alt='')=>{const e=$('img',cls);e.src=url;e.alt=alt;e.draggable=false;return e};
-let dlg=null,opts={},language='ar',phase=0,solved=false,complete=false,sub=0,angle=0,status='',player='girl',rug=null,locked=false;
-const T=()=>DATA[language];
-function remember(){try{localStorage.setItem(SAVE,JSON.stringify({phase,solved,complete,sub,angle}))}catch{}}
-function state(){return {phase,solved,complete,sub,angle,open:!!dlg}}
-function feedback(s){status=s;const p=dlg?.querySelector('.m10-feedback');if(p)p.textContent=s}
-function wrong(){if(locked||solved)return;feedback(T().retry)}
-function done(){if(solved||locked)return;solved=true;remember();feedback(T().good+T().levels[phase][2]);dlg?.querySelector('.m10-next')?.removeAttribute('disabled');dlg?.querySelector('.m10-stage')?.classList.add('is-complete')}
-function close(){if(!dlg)return;const d=dlg;dlg=null;d.close();d.remove();opts.onClose?.()}
-function goNext(){if(!solved||locked)return;if(phase===TOTAL-1){complete=true;phase=TOTAL;remember();window.HUDHUDProgress?.mark?.('m10');opts.onComplete?.();draw();return;}phase++;solved=false;sub=0;angle=START[phase]??0;status='';remember();draw()}
-function replay(){phase=0;solved=false;complete=false;sub=0;angle=0;status='';remember();draw()}
-function choice(panel,arr,correct=0){const box=$('div','m10-choices');arr.forEach((label,i)=>box.append(button(label,()=>i===correct?done():wrong(),'m10-choice')));panel.append(box)}
-function spot(scene,x,y,cls,label,handler){const b=button('',handler,'m10-spot '+cls);b.setAttribute('aria-label',label);b.title=label;b.style.left=x+'%';b.style.top=y+'%';scene.append(b);return b}
-function note(scene,t,cls){scene.append($('span','m10-visual-note '+cls,t))}
-function addMihrab(scene,wrongWindow=true,correctHandler=done){spot(scene,49,35,'m10-mihrab',T().mihrab,correctHandler);if(wrongWindow)spot(scene,83,28,'m10-window',T().window,wrong)}
-function rugAt(scene,x=51,y=70,orientation=angle,extra=''){const r=img(AS+'rug-open-v1.webp','m10-rug '+extra,T().mat);r.style.left=x+'%';r.style.top=y+'%';r.style.setProperty('--angle',orientation+'deg');r.setAttribute('aria-label',T().mat);scene.append(r);return r}
-function updateRug(){if(rug)rug.style.setProperty('--angle',angle+'deg')}
-function turn(delta){if(solved||locked)return;angle=(angle+delta+360)%360;updateRug();remember();if(angle===0){feedback(T().status);if(phase===13&&sub===1){locked=true;setTimeout(()=>{if(!dlg)return;locked=false;sub=2;status='';remember();draw()},300)}else done();}else feedback(T().retry)}
-function turnActions(panel,scene){const box=$('div','m10-turns');box.append(button(T().turnLeft,()=>turn(-90),'m10-turn'),button(T().turnRight,()=>turn(90),'m10-turn'));panel.append(box);
-if(rug){rug.classList.add('m10-interactive');rug.setAttribute('role','button');rug.tabIndex=0;rug.addEventListener('click',()=>turn(90));rug.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'||e.key==='Enter'||e.key===' '){e.preventDefault();turn(e.key==='ArrowLeft'?-90:90)}});let start=null,moved=false;rug.addEventListener('pointerdown',e=>{if(solved||locked)return;start={x:e.clientX,id:e.pointerId};moved=false;rug.setPointerCapture?.(e.pointerId)});rug.addEventListener('pointerup',e=>{if(!start||e.pointerId!==start.id)return;const dx=e.clientX-start.x;start=null;if(Math.abs(dx)>28){moved=true;turn(dx>0?90:-90)}});rug.addEventListener('click',e=>{if(moved){e.stopImmediatePropagation();moved=false}},true)}}
-function addMove(panel,scene,sourcePos=[68,70],destPos=[45,74]){rug=rugAt(scene,sourcePos[0],sourcePos[1],0,'m10-interactive');const tgt=spot(scene,destPos[0],destPos[1],'m10-floor-target',T().clear,()=>place());
-const label=$('span','m10-target-caption',T().clear);label.style.left=destPos[0]+'%';label.style.top=(destPos[1]-11)+'%';scene.append(label);
-let pointer=null,dragged=false;
-function place(){if(solved||locked)return;locked=true;rug.classList.add('m10-placed');rug.style.left=destPos[0]+'%';rug.style.top=destPos[1]+'%';rug.style.setProperty('--dx','0px');rug.style.setProperty('--dy','0px');tgt.classList.add('is-right');setTimeout(()=>{if(!dlg)return;locked=false;if(phase===13&&sub===2)done();else done()},350)}
-rug.style.touchAction='none';rug.addEventListener('pointerdown',e=>{if(locked||solved)return;pointer={x:e.clientX,y:e.clientY,id:e.pointerId};dragged=false;rug.setPointerCapture?.(e.pointerId)});
-rug.addEventListener('pointermove',e=>{if(!pointer||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;dragged=dragged||Math.hypot(dx,dy)>12;rug.style.setProperty('--dx',dx+'px');rug.style.setProperty('--dy',dy+'px')});
-rug.addEventListener('pointerup',e=>{if(!pointer)return;pointer=null;const rect=tgt.getBoundingClientRect();const inside=e.clientX>=rect.left-48&&e.clientX<=rect.right+48&&e.clientY>=rect.top-48&&e.clientY<=rect.bottom+48;rug.style.setProperty('--dx','0px');rug.style.setProperty('--dy','0px');if(inside)place();else if(dragged)feedback(T().hint)});
-rug.addEventListener('pointercancel',()=>{pointer=null;rug.style.setProperty('--dx','0px');rug.style.setProperty('--dy','0px')});
-rug.tabIndex=0;rug.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();place()}});
-panel.append(button(T().move,place,'m10-action'));
-}
-function drawScene(view,panel){const scene=$('div','m10-stage');scene.dataset.phase=phase;view.append(scene);scene.append(img('assets/m09/hall-v1.webp','m10-background',''));
-const avatar=img('assets/HUDHUD_HOME_'+(player==='boy'?'BOY':'GIRL')+'_CUTOUT_v001.webp','m10-avatar');scene.append(avatar);
-const kind=TYPE[phase];rug=null;
-if(kind==='choice'){
- if(phase===0||phase===12){spot(scene,49,35,'m10-mihrab m10-mihrab-hint',T().mihrab,()=>{});note(scene,T().mihrab,'m10-note-mihrab')}
- if(phase===6||phase===10)rug=rugAt(scene,53,72,phase===6?90:0);
- choice(panel,T().levels[phase][3]);
-}
-if(kind==='find'){addMihrab(scene,true,done);note(scene,T().mihrab,'m10-note-mihrab')}
-if(kind==='rotate'){rug=rugAt(scene,phase===7?68:phase===11?43:51,phase===7?68:72,angle);spot(scene,49,35,'m10-mihrab m10-mihrab-hint',T().mihrab,()=>{});turnActions(panel,scene)}
-if(kind==='move'){addMove(panel,scene,[71,71],[44,73])}
-if(kind==='spot'){spot(scene,44,70,'m10-floor-target',T().clear,done);spot(scene,47,91,'m10-walkway',T().entrance,wrong);note(scene,T().clear,'m10-note-clear')}
-if(kind==='compare'){const one=rugAt(scene,37,73,0,'m10-rug-choice'),two=rugAt(scene,67,73,90,'m10-rug-choice');one.tabIndex=0;one.setAttribute('role','button');one.setAttribute('aria-label',T().good+T().mat);one.onclick=done;one.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();done()}});two.tabIndex=0;two.setAttribute('role','button');two.setAttribute('aria-label',T().retry+T().mat);two.onclick=wrong;two.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();wrong()}});note(scene,'1','m10-note-one');note(scene,'2','m10-note-two');panel.append(button(language==='ar'?'السجادة ١':language==='de'?'Teppich 1':'Rug 1',done,'m10-mini-choice'),button(language==='ar'?'السجادة ٢':language==='de'?'Teppich 2':'Rug 2',wrong,'m10-mini-choice'));}
-if(kind==='final'){
- const title=panel.querySelector('.m10-prompt');title.textContent=T().finalParts[sub];
- if(sub===0){addMihrab(scene,true,()=>{sub=1;angle=START[13];status='';remember();draw()})}
- if(sub===1){rug=rugAt(scene,51,73,angle);spot(scene,49,35,'m10-mihrab m10-mihrab-hint',T().mihrab,()=>{});turnActions(panel,scene)}
- if(sub===2){addMove(panel,scene,[72,74],[46,71])}
-}
+const KINDS=['choice','find','choice','turn','turn','move','choice','relocate','spot','compare','choice','turnFriend','choice','final'];
+const START={3:90,4:180,7:90,11:90,13:180};
+const DIR={0:'back',90:'right',180:'front',270:'left'};
+const $=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e};
+const btn=(txt,fn,cls='')=>{const e=$('button',cls,txt);e.type='button';e.addEventListener('click',fn);return e};
+const img=(src,cls,alt='')=>{const e=$('img',cls);e.src=src;e.alt=alt;e.draggable=false;return e};
+let dialog=null,opts={},lang='ar',phase=0,solved=false,complete=false,sub=0,angle=0,status='',player='girl',activeCharacter=null,locked=false,ticket=0;
+const T=()=>L[lang], sprite=(gender,deg)=>`assets/walk-directional/${gender}-${DIR[deg]||'back'}-0.webp`;
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({phase,solved,complete,sub,angle}))}catch{}}
+function state(){return {phase,solved,complete,sub,angle,open:!!dialog,version:'0.34.7'}}
+function message(s){status=s;const p=dialog?.querySelector('.m10-feedback');if(p)p.textContent=s}
+function wrong(){if(locked||solved)return;message(T().retry)}
+function success(){if(solved||locked)return;solved=true;save();message(T().good+T().steps[phase][2]);dialog?.querySelector('.m10-next')?.removeAttribute('disabled');dialog?.querySelector('.m10-stage')?.classList.add('is-complete')}
+function close(){ticket++;if(!dialog)return;const d=dialog;dialog=null;d.close();d.remove();opts.onClose?.()}
+function advance(){if(!solved||locked)return;ticket++;if(phase===TOTAL-1){complete=true;phase=TOTAL;save();window.HUDHUDProgress?.mark?.('m10');opts.onComplete?.();render();return}phase++;sub=0;solved=false;angle=START[phase]??0;status='';save();render()}
+function replay(){ticket++;phase=0;solved=false;complete=false;sub=0;angle=0;status='';save();render()}
+function choices(panel,items){const g=$('div','m10-choices');items.forEach((x,i)=>g.append(btn(x,()=>i===0?success():wrong(),'m10-choice')));panel.append(g)}
+function hotspot(scene,x,y,cls,label,fn){const e=btn('',fn,'m10-hotspot '+cls);e.style.left=x+'%';e.style.top=y+'%';e.setAttribute('aria-label',label);e.title=label;scene.append(e);return e}
+function label(scene,s,cls){scene.append($('span','m10-label '+cls,s))}
+function mihrab(scene,clickable,fn=success){const e=hotspot(scene,49,35,'m10-mihrab',T().point,clickable?fn:()=>{});if(!clickable)e.disabled=true;label(scene,T().point,'m10-label-mihrab');if(clickable)hotspot(scene,82,32,'m10-window',T().window,wrong);return e}
+function character(scene,gender=player,deg=angle,x=45,y=10,extra=''){const e=img(sprite(gender,deg),'m10-avatar '+extra,T().player);e.style.left=x+'%';e.style.bottom=y+'%';e.dataset.gender=gender;scene.append(e);return e}
+function orient(){if(activeCharacter)activeCharacter.src=sprite(activeCharacter.dataset.gender||player,angle)}
+function turn(delta){if(locked||solved)return;angle=(angle+delta+360)%360;orient();save();if(angle===0){if(phase===13&&sub===1){sub++;status='';save();render()}else success()}else message(T().retry)}
+function turns(panel,el){const g=$('div','m10-turns');g.append(btn(T().left,()=>turn(-90),'m10-turn'),btn(T().right,()=>turn(90),'m10-turn'));panel.append(g);
+if(!el)return;el.classList.add('m10-controllable');el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',T().player+' — '+T().left+' / '+T().right);el.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Enter',' '].includes(e.key)){e.preventDefault();turn(e.key==='ArrowLeft'?-90:90)}});let ptr=null,skipClick=false;el.addEventListener('pointerdown',e=>{if(solved||locked)return;ptr={id:e.pointerId,x:e.clientX};el.setPointerCapture?.(e.pointerId)});el.addEventListener('pointerup',e=>{if(!ptr||ptr.id!==e.pointerId)return;const d=e.clientX-ptr.x;ptr=null;if(Math.abs(d)>24){skipClick=true;turn(d>0?90:-90)}});el.addEventListener('click',e=>{if(skipClick){skipClick=false;return}turn(90)})}
+function changeSub(){sub++;status='';save();render()}
+function moveCharacter(scene,panel,x=72,y=10,targetX=45,targetY=73,after=success){const a=character(scene,player,0,x,y,'m10-controllable');const target=hotspot(scene,targetX,targetY,'m10-floor-target',T().space,()=>go());label(scene,T().space,'m10-label-space');let moving=false,ptr=null;
+function go(){if(moving||locked||solved)return;moving=true;locked=true;a.style.left=targetX+'%';a.style.bottom='20%';target.classList.add('is-right');const my=++ticket;setTimeout(()=>{if(!dialog||my!==ticket)return;locked=false;after()},420)}
+a.style.touchAction='none';a.tabIndex=0;a.setAttribute('role','button');a.setAttribute('aria-label',T().player);a.addEventListener('pointerdown',e=>{if(locked||solved)return;ptr={id:e.pointerId,x:e.clientX,y:e.clientY};a.setPointerCapture?.(e.pointerId)});a.addEventListener('pointermove',e=>{if(!ptr||ptr.id!==e.pointerId)return;a.style.setProperty('--dx',(e.clientX-ptr.x)+'px');a.style.setProperty('--dy',(e.clientY-ptr.y)+'px')});a.addEventListener('pointerup',e=>{if(!ptr)return;ptr=null;const r=target.getBoundingClientRect();const hit=e.clientX>r.left-40&&e.clientX<r.right+40&&e.clientY>r.top-40&&e.clientY<r.bottom+40;a.style.setProperty('--dx','0px');a.style.setProperty('--dy','0px');if(hit)go();else message(T().hint)});a.addEventListener('pointercancel',()=>{ptr=null;a.style.setProperty('--dx','0px');a.style.setProperty('--dy','0px')});a.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});panel.append(btn(T().move,go,'m10-action'));return a}
+function build(view,panel){const scene=$('div','m10-stage');view.append(scene);scene.append(img('assets/m10/hall-no-rug-v2.webp','m10-background',''));activeCharacter=null;
+const kind=KINDS[phase];if(kind!=='compare'&&kind!=='move'&&!(kind==='relocate'&&sub===0)&&!(kind==='final'&&sub===2))activeCharacter=character(scene,player,angle,45,12);
+if(kind==='choice'){if([0,2,6,10,12].includes(phase))mihrab(scene,false);choices(panel,T().steps[phase][3])}
+if(kind==='find'){mihrab(scene,true)}
+if(kind==='turn'){mihrab(scene,false);turns(panel,activeCharacter)}
+if(kind==='move'){mihrab(scene,false);moveCharacter(scene,panel,72,8,45,73);hotspot(scene,47,94,'m10-walkway',T().door,wrong)}
+if(kind==='relocate'){mihrab(scene,false);if(sub===0){panel.querySelector('.m10-prompt').textContent=T().relocateFirst;moveCharacter(scene,panel,67,10,36,68,changeSub)}else{panel.querySelector('.m10-prompt').textContent=T().thenFace;activeCharacter.style.left='36%';turns(panel,activeCharacter)}}
+if(kind==='spot'){mihrab(scene,false);hotspot(scene,45,72,'m10-floor-target',T().space,success);hotspot(scene,46,93,'m10-walkway',T().door,wrong);label(scene,T().space,'m10-label-space')}
+if(kind==='compare'){mihrab(scene,false);const correct=character(scene,player,0,31,10,'m10-compare');const bad=character(scene,player,180,66,10,'m10-compare');correct.tabIndex=0;correct.setAttribute('role','button');correct.setAttribute('aria-label',T().one);correct.classList.add('m10-controllable');correct.addEventListener('click',success);correct.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();success()}});bad.classList.add('m10-controllable');bad.tabIndex=0;bad.setAttribute('role','button');bad.setAttribute('aria-label',T().two);bad.addEventListener('click',wrong);bad.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();wrong()}});const g=$('div','m10-turns');g.append(btn(T().one,success,'m10-turn'),btn(T().two,wrong,'m10-turn'));panel.append(g)}
+if(kind==='turnFriend'){mihrab(scene,false);const friend=player==='girl'?'boy':'girl';activeCharacter?.remove();activeCharacter=character(scene,friend,angle,45,12);turns(panel,activeCharacter)}
+if(kind==='final'){panel.querySelector('.m10-prompt').textContent=T().last[sub];if(sub===0)mihrab(scene,true,changeSub);if(sub===1){mihrab(scene,false);turns(panel,activeCharacter)}if(sub===2){mihrab(scene,false);moveCharacter(scene,panel,72,8,45,73,success)}}
 return scene}
-function draw(){if(!dlg)return;dlg.replaceChildren();const t=T();const hd=$('header','m10-head');hd.append(button(t.back,close,'m10-back'),$('strong','m10-title',t.title),$('span','m10-count',complete?`${TOTAL}/${TOTAL}`:`${phase+1}/${TOTAL}`));dlg.append(hd);
-if(complete){const end=$('section','m10-finish');end.append($('h2','',t.done),$('p','',t.doneText),button(t.again,replay,'m10-replay'));dlg.append(end);return}
-const layout=$('div','m10-layout'),view=$('div','m10-view'),panel=$('section','m10-panel');panel.append($('h2','m10-heading',t.levels[phase][0]),$('p','m10-prompt',t.levels[phase][1]));drawScene(view,panel);panel.append($('p','m10-feedback',status));const next=button(t.next,goNext,'m10-next');next.disabled=!solved;panel.append(next);layout.append(view,panel);dlg.append(layout);if(solved)dlg.querySelector('.m10-stage')?.classList.add('is-complete')}
-function open(o={}){if(dlg)close();opts=o;language=DATA[o.lang]?o.lang:'ar';let profile={};try{profile=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}player=o.character==='boy'||o.character==='girl'?o.character:profile.character==='boy'?'boy':'girl';let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}complete=!!saved.complete;phase=complete?TOTAL:Math.min(TOTAL-1,Math.max(0,parseInt(saved.phase)||0));solved=!!saved.solved;sub=Math.min(2,Math.max(0,parseInt(saved.sub)||0));angle=Number.isFinite(saved.angle)?saved.angle:START[phase]??0;locked=false;status='';dlg=$('dialog','m10-dialog');dlg.lang=language;dlg.dir=language==='ar'?'rtl':'ltr';dlg.setAttribute('aria-label',T().title);dlg.addEventListener('cancel',e=>{e.preventDefault();close()});document.body.append(dlg);dlg.showModal();draw();return state()}
-window.HUDHUDM10={open,close,getState:state,version:'0.34.5'};
+function render(){if(!dialog)return;dialog.replaceChildren();const t=T();const h=$('header','m10-head');h.append(btn(t.back,close,'m10-back'),$('strong','m10-title',t.title),$('span','m10-count',complete?`${TOTAL}/${TOTAL}`:`${phase+1}/${TOTAL}`));dialog.append(h);if(complete){const e=$('section','m10-finish');e.append($('h2','',t.done),$('p','',t.doneText),btn(t.again,replay,'m10-replay'));dialog.append(e);return}
+const layout=$('div','m10-layout'),view=$('div','m10-view'),panel=$('section','m10-panel');panel.append($('h2','m10-heading',t.steps[phase][0]),$('p','m10-prompt',t.steps[phase][1]));build(view,panel);panel.append($('p','m10-feedback',status));const next=btn(t.next,advance,'m10-next');next.disabled=!solved;panel.append(next);layout.append(view,panel);dialog.append(layout);if(solved)dialog.querySelector('.m10-stage')?.classList.add('is-complete')}
+function open(o={}){if(dialog)close();opts=o;lang=L[o.lang]?o.lang:'ar';let p={};try{p=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}player=['boy','girl'].includes(o.character)?o.character:p.character==='boy'?'boy':'girl';let s={};try{s=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}complete=!!s.complete;phase=complete?TOTAL:Math.min(TOTAL-1,Math.max(0,Number(s.phase)||0));solved=!!s.solved;sub=Math.max(0,Math.min(2,Number(s.sub)||0));if(phase!==7&&phase!==13)sub=0;angle=[0,90,180,270].includes(Number(s.angle))?Number(s.angle):START[phase]??0;if((phase===3||phase===4||phase===7||phase===11||phase===13)&&!solved&&angle===0&&sub!==2)angle=START[phase];status='';locked=false;ticket++;const d=$('dialog','m10-dialog');d.lang=lang;d.dir=lang==='ar'?'rtl':'ltr';d.setAttribute('aria-label',T().title);d.addEventListener('cancel',e=>{e.preventDefault();close()});document.body.append(d);dialog=d;d.showModal();render();return state()}
+window.HUDHUDM10={open,close,getState:state,version:'0.34.7'};
 })();

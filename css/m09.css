@@ -91,3 +91,7 @@
 .m09-marker.m09-destination::before{content:attr(data-label);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);display:block;min-width:86px;max-width:146px;width:max-content;padding:6px 7px;font:650 clamp(11px,1.5vw,14px)/1.35 system-ui,Tahoma,sans-serif;color:#322b26;text-align:center;background:#fff6e5ed;border:1px solid #c49e62;border-radius:12px;box-shadow:0 2px 5px #322b2626;white-space:normal;pointer-events:none}
 .m09-marker.m09-destination.m09-hit{background:#93a87e38;border-color:#6f9064}
 @media(max-width:730px) and (orientation:portrait){.m09-marker.m09-destination{height:42px;width:42px;min-height:0}.m09-marker.m09-destination::before{font-size:11px;min-width:78px;padding:4px 5px;max-width:108px}}
+
+/* 0.34.7 shared visual proportion: child no longer looks miniature beside furniture. */
+.m09-dialog .m09-avatar{width:19%;height:43%}
+.m09-dialog .m09-avatar-ready{left:43%;bottom:18%}
