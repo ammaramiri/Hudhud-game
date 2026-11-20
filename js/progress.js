@@ -11,11 +11,11 @@ for(const id of ['g01','g04','m04','h06','l05','q13','s03','p08']){const api=win
 importOld();window.HUDHUDProgress={mark,stats,render,isCompleted:(id)=>!!earned[id]};
 })();
 
-/* HUDHUD 0.34.8 — one loading path. Existing production index already loads progress.js. */
+/* HUDHUD 0.34.9 — updated loader and stable M11 refresh path. Existing production index already loads progress.js. */
 (()=>{'use strict';
 const B=new URL('../',document.currentScript.src);
-function addCss(path){const id='hudhud-'+path.replace(/[^a-z0-9]+/gi,'-');if(document.getElementById(id))return;const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=new URL(path+'?v=0.34.8',B).href;document.head.append(link)}
-function addJs(path){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=new URL(path+'?v=0.34.8',B).href;s.onload=resolve;s.onerror=reject;document.head.append(s)})}
+function addCss(path){const id='hudhud-'+path.replace(/[^a-z0-9]+/gi,'-');if(document.getElementById(id))return;const link=document.createElement('link');link.id=id;link.rel='stylesheet';link.href=new URL(path+'?v=0.34.9',B).href;document.head.append(link)}
+function addJs(path){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=new URL(path+'?v=0.34.9',B).href;s.onload=resolve;s.onerror=reject;document.head.append(s)})}
 addCss('css/neighborhood-hubs.css');addCss('css/n02.css');addCss('css/m09.css');addCss('css/m10.css');addCss('css/m11.css');
 const load=()=>Promise.all([addJs('js/n02.js').then(()=>addJs('js/neighborhood-hubs.js')),Promise.all([addJs('js/m09.js'),addJs('js/m10.js'),addJs('js/m11.js')]).then(()=>addJs('js/m09-hall.js'))]).catch(e=>console.error('HUDHUD optional stage load failed',e));
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
