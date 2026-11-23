@@ -53,7 +53,7 @@ node.addEventListener('pointercancel',()=>{p=null;node.style.transform=''}) ;nod
 function choices(panel,entries,correct){const list=create('div','m09-choices');entries.forEach((s,i)=>list.append(button(s,()=>{if(solved||moving)return;i===correct?approve():fail()},'m09-choice')));panel.append(list)}
 function startFinishButton(panel,n){const b=button(txt().next,advance,'m09-next');b.disabled=!solved;panel.append(b)}
 function buildScene(host,panel){const s=create('div','m09-stage');host.append(s);s.append(img('hall-v1.webp','m09-art'));
-const user=img('assets/HUDHUD_HOME_'+(character==='boy'?'BOY':'GIRL')+'_CUTOUT_v001.webp','m09-avatar');s.append(user);
+const user=img(`assets/prayer-avatars/${character}-front.webp`,'m09-avatar');s.append(user);
 function addAction(file,cls,x,y,w,tx,ty,text,after){const ob=prop(s,file,cls,x,y,w);const dest=marker(s,tx,ty,text,'m09-destination');const act=()=>put(ob,dest,after||approve);dest.onclick=act;drag(ob,dest,after||approve);panel.append(button(txt().motion[phase===0?0:phase===1?1:phase===2?2:phase===3?3:phase===6?4:5],act,'m09-action'));}
 s.dataset.phase=phase;
 switch(phase){

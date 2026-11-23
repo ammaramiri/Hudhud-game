@@ -95,3 +95,10 @@
 /* 0.34.7 shared visual proportion: child no longer looks miniature beside furniture. */
 .m09-dialog .m09-avatar{width:19%;height:43%}
 .m09-dialog .m09-avatar-ready{left:43%;bottom:18%}
+
+@media(max-width:730px) and (orientation:portrait){
+ .m09-view{flex:1 1 auto;min-height:0;container-type:size;max-height:45dvh}
+ .m09-stage{width:min(100cqw,133.333cqh);height:auto;aspect-ratio:4/3;max-height:100cqh}
+ .m09-panel{flex:none;overflow:visible;padding:6px 10px 10px;gap:6px}
+ .m09-feedback{min-height:0}
+}

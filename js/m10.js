@@ -65,7 +65,7 @@ const $=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=c
 const btn=(txt,fn,cls='')=>{const e=$('button',cls,txt);e.type='button';e.addEventListener('click',fn);return e};
 const img=(src,cls,alt='')=>{const e=$('img',cls);e.src=src;e.alt=alt;e.draggable=false;return e};
 let dialog=null,opts={},lang='ar',phase=0,solved=false,complete=false,sub=0,angle=0,status='',player='girl',activeCharacter=null,locked=false,ticket=0;
-const T=()=>L[lang], sprite=(gender,deg)=>`assets/walk-directional/${gender}-${DIR[deg]||'back'}-0.webp`;
+const T=()=>L[lang], sprite=(gender,deg)=>`assets/prayer-avatars/${gender}-${DIR[deg]||'back'}.webp`;
 function save(){try{localStorage.setItem(SAVE,JSON.stringify({phase,solved,complete,sub,angle}))}catch{}}
 function state(){return {phase,solved,complete,sub,angle,open:!!dialog,version:'0.34.7'}}
 function message(s){status=s;const p=dialog?.querySelector('.m10-feedback');if(p)p.textContent=s}

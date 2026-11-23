@@ -1,4 +1,4 @@
-/* HUDHUD M11 0.35.2 front view. CSS scoped, never changes other stages. */
+/* HUDHUD M11 0.35.5 front view. CSS scoped, never changes other stages. */
 .m11v-dialog{border:0;border-radius:22px;padding:0;max-width:min(1080px,96vw);width:100%;max-height:94dvh;overflow:auto;color:#322b26;background:#fff6e5;box-shadow:0 24px 70px #322b265e;font-family:system-ui,Tahoma,sans-serif}
 .m11v-dialog::backdrop{background:#261c17a6;backdrop-filter:blur(5px)}
 .m11v-head{position:sticky;top:0;z-index:12;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;background:#fff9efee;padding:11px 14px;border-bottom:1px solid #d0b17c;min-height:62px}
@@ -25,3 +25,36 @@
 .m09-prayer-path .m11-route-list button.is-ready{font-weight:750}
 
 .m11v-gallery-card .m11v-avatar{object-fit:cover;object-position:50% 52%}
+
+.m11v-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+.m11v-head{flex:none;box-sizing:border-box}
+.m11v-layout{min-height:0}
+.m11v-panel{max-height:none;overflow:visible}
+.m11v-layout-choices{display:block}
+.m11v-gallery-card .m11v-avatar{height:auto;aspect-ratio:390/435;object-fit:contain;max-height:45dvh;border-radius:9px}
+.m11v-gallery-card{font-size:clamp(12px,2.5vw,17px)}
+.m11v-feedback:empty{min-height:0}
+@media(max-width:730px){
+ .m11v-dialog[open]{height:100dvh;max-height:100dvh;max-width:100vw;margin:0;border-radius:0;box-sizing:border-box}
+ .m11v-head{min-height:48px;padding:5px 8px}
+ .m11v-layout{display:flex;flex-direction:column;min-height:0;flex:1}
+ .m11v-scene{width:min(100%,44dvh);margin-inline:auto;flex:0 1 auto;min-height:0;overflow:hidden}
+ .m11v-main-avatar,.m11v-scene-pose{object-fit:contain}
+ .m11v-panel{flex:none;padding:8px 10px;gap:6px}
+ .m11v-panel h2{font-size:20px}
+ .m11v-prompt{font-size:15px;line-height:1.45}
+ .m11v-answer,.m11v-motion-button,.m11v-next{min-height:38px;padding:4px 7px}
+ .m11v-answers{gap:5px}
+ .m11v-feedback{min-height:0;font-size:13px}
+ .m11v-verses{margin:0;padding:3px 6px;line-height:1.55}
+}
+@media(max-width:730px){.m11v-dialog[open]{inset:0}}
+@media(max-height:550px) and (orientation:landscape){
+ .m11v-dialog[open]{inset:0;max-height:100dvh;height:100dvh}
+ .m11v-scene{aspect-ratio:auto;height:100%;max-height:none}
+ .m11v-layout:not(.m11v-layout-choices){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .m11v-panel{padding:5px 8px;gap:4px}
+ .m11v-answer,.m11v-motion-button,.m11v-next{min-height:30px;padding:3px 5px;font-size:14px}
+ .m11v-answers{gap:3px}
+ .m11v-verses{line-height:1.35;margin:0;padding:4px}
+}

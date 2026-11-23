@@ -1,16 +1,16 @@
-/* HUDHUD M11 v0.35.2 — front-camera moving takbir and hand positions.
+/* HUDHUD M11 v0.35.5 — front-camera moving takbir and hand positions.
    Keeps progress key hudhud-m11-v1 and stage code m11. No changes to M04/M09/M10.
    Valid fiqh variants are accepted, not marked wrong. */
 (()=>{'use strict';
 const BASE='assets/m11/';
 const SAVE='hudhud-m11-v1',TOTAL=14;
 const POSES=['rest','lower','mid','shoulder','up','fold','fold2','reversed','one'];
-const VER='0.35.2',FAT=[
+const VER='0.35.5',FAT=[
 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\nغَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'];
 const lessons=[
-['الباب خلفي والقبلة أمامي','تعلمت جهة القبلة في M10. أقف الآن للصلاة وظهري إلى باب المسجد؛ نشاهد حركات يديّ من الأمام.','review','rest'],
+['الباب خلفي والقبلة أمامي','تعلمت جهة القبلة في الدرس السابق. أقف الآن للصلاة وظهري إلى باب المسجد؛ نشاهد حركات يديّ من الأمام.','review','rest'],
 ['أنوي الصلاة بقلبي','أستحضر الصلاة التي سأصليها دون أن أُلزم نفسي بنطق نية مخصوصة.','choice','rest'],
 ['أقف معتدلاً','أقف في موضعي بسكينة قبل التكبير.','choice','rest'],
 ['إلى أي ارتفاع أرفع يديّ؟','اختر هيئة وردت في السنة. لرفع اليدين إلى الكتفين أو الأذنين أصل صحيح.','height','up'],
@@ -54,9 +54,9 @@ function next(){if(!solved)return;if(stage===TOTAL-1){complete=true;save();windo
 function back(){const o=opts;close();o.onClose?.()}
 function close(){if(animationId){clearInterval(animationId);animationId=0}if(!dlg)return;const d=dlg;dlg=null;d.close();d.remove()}
 function makeChoiceList(panel,items){const box=$('div','m11v-answers');items.forEach(([label,ok,msg])=>{box.append(btn(label,()=>ok?good(msg):wrong(msg),'m11v-answer'))});panel.append(box)}
-function gallery(scene,panel,items){const row=$('div','m11v-gallery');items.forEach(x=>{
+function gallery(panel,items){const row=$('div','m11v-gallery');items.forEach(x=>{
  const b=btn('',()=>x.ok?good(x.message||'صحيح. هذه هيئة مقبولة.'):wrong(x.message||'هذه ليست الهيئة التي نتدرّب عليها.'),'m11v-gallery-card');
- const img=figure(x.pose);b.append(img,$('span','',x.name));row.append(b)
+ const img=figure(x.pose);img.src=sceneSrc(x.pose).replace('-v4.webp','-detail-v5.webp');b.append(img,$('span','',x.name));row.append(b)
 });panel.append(row)}
 function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-main-avatar');let running=false;const frames=key==='raise'?['rest','lower','mid','shoulder','up']:['up','shoulder','mid','lower','fold'];
  const control=btn(key==='raise'?'شاهد رفع اليدين عند التكبير':'شاهد خفض اليدين ووضعهما',()=>{}, 'm11v-motion-button');
@@ -68,34 +68,35 @@ function showMotion(scene,panel,key){const hero=scene.querySelector('.m11v-main-
 }
 function renderCurrent(scene,panel){
  const p=stage;
- const hero=figure(lessons[p][3],'m11v-main-avatar');scene.append(hero);
+ const hero=scene ? figure(lessons[p][3],'m11v-main-avatar') : null;
+ if(hero)scene.append(hero);
  if(p===0){panel.append(btn('أقف وظهري إلى الباب',()=>good('القبلة أمام الطفل، والباب خلفه. الكاميرا أمامه لتوضيح الحركة.'),'m11v-motion-button'))}
  else if(p===1||p===2||p===9)makeChoiceList(panel,choices[p]);
- else if(p===3)gallery(scene,panel,[
+ else if(p===3)gallery(panel,[
  {name:'إلى مستوى الكتفين',pose:'shoulder',ok:true,message:'ورد الرفع حذو المنكبين.'},
  {name:'إلى مستوى الأذنين',pose:'up',ok:true,message:'ورد الرفع حذو الأذنين أيضاً.'},
  {name:'حركة صغيرة عند الخصر فقط',pose:'lower',ok:false,message:'ارفع كفيك إلى مستوى الكتفين أو الأذنين.'}]);
- else if(p===4)gallery(scene,panel,[
+ else if(p===4)gallery(panel,[
  {name:'أرفع اليدين معاً',pose:'up',ok:true,message:'رفع اليدين معاً، أحسنت.'},
  {name:'لا أرفعهما إلا قليلاً',pose:'lower',ok:false,message:'نريد رفع اليدين في بدء التكبير.'},
  {name:'أحرّك يدًا واحدة فقط',pose:'one',ok:false,message:'نتدرب على رفع اليدين معاً.'}]);
  else if(p===5||p===6)showMotion(scene,panel,p===5?'raise':'lower');
- else if(p===7)gallery(scene,panel,[
+ else if(p===7)gallery(panel,[
  {name:'اليمنى فوق اليسرى',pose:'fold',ok:true,message:'هذا ترتيب اليدين في هيئة القبض.'},
  {name:'اليسرى فوق اليمنى',pose:'reversed',ok:false,message:'في هيئة القبض تكون اليمنى فوق اليسرى.'},
  {name:'أعبث بيديّ دون استقرار',pose:'rest',ok:false,message:'أقف بهدوء وأبتعد عن العبث.'}]);
- else if(p===8)gallery(scene,panel,[
+ else if(p===8)gallery(panel,[
  {name:'على الصدر',pose:'fold2',ok:true,message:'هيئة معتبرة في الفقه.'},
  {name:'فوق السرّة',pose:'fold',ok:true,message:'توجد هيئات فقهية معتبرة في موضع اليدين.'},
  {name:'أشبك أصابعي وأعبث بها',pose:'rest',ok:false,message:'لا نعبث باليدين أثناء القيام.'}]);
  else if(p>=10&&p<=12){const verses=$('div','m11v-verses',FAT[p-10]);panel.append(verses);panel.append(btn('قرأت المقطع وراجعته',()=>good('أحسنت. تعلّم التلاوة الصحيحة على معلّم متقن.'),'m11v-motion-button'))}
  else if(p===13){hero.src=sceneSrc(['rest','up','lower','fold','fold'][Math.min(4,sub)]);const box=$('div','m11v-answers');seq.forEach((name,i)=>{const b=btn(name,()=>{if(i!==sub){wrong('حاول ترتيب البداية بالخطوات الصحيحة.');return}sub++;status='';solved=sub===seq.length;save();draw()},'m11v-answer'+(i<sub?' done':''));b.disabled=i<sub;box.append(b)});panel.append($('div','m11v-sequence-count',`الخطوة ${Math.min(sub+1,5)} من 5`),box)}
 }
-function draw(){if(!dlg)return;if(animationId){clearInterval(animationId);animationId=0}dlg.replaceChildren();const head=$('header','m11v-head');head.append(btn('إلى تعليم الصلاة',back,'m11v-back'),$('strong','m11v-title','M11 · أبدأ صلاتي'),$('span','m11v-count',complete?'14 / 14':`${stage+1} / ${TOTAL}`));dlg.append(head);
+function draw(){if(!dlg)return;if(animationId){clearInterval(animationId);animationId=0}dlg.replaceChildren();const head=$('header','m11v-head');head.append(btn('إلى تعليم الصلاة',back,'m11v-back'),$('strong','m11v-title','أبدأ صلاتي'),$('span','m11v-count',complete?'14 / 14':`${stage+1} / ${TOTAL}`));dlg.append(head);
  if(complete){const end=$('section','m11v-finished');end.append($('h2','','أتممت درس بداية الصلاة'),$('p','','تدرّبت على النية، ورفع اليدين عند التكبير، ووضع اليمنى فوق اليسرى، وقراءة الفاتحة. بقي الركوع والسجود في الدروس التالية.'),btn('أعيد الدرس من البداية',()=>{complete=false;stage=0;solved=false;sub=0;status='';save();draw()},'m11v-next'));dlg.append(end);return}
- const [title,prompt]=lessons[stage], layout=$('div','m11v-layout'),scene=$('div','m11v-scene'),panel=$('section','m11v-panel');
+ const [title,prompt]=lessons[stage], layout=$('div','m11v-layout'),scene=[3,4,7,8].includes(stage)?null:$('div','m11v-scene'),panel=$('section','m11v-panel');
  panel.append($('h2','',title),$('p','m11v-prompt',prompt));renderCurrent(scene,panel);const feed=$('p','m11v-feedback',status);panel.append(feed);
- const nextBtn=btn(stage===TOTAL-1?'إنهاء الدرس':'أكمل',next,'m11v-next');nextBtn.disabled=!solved;panel.append(nextBtn);layout.append(scene,panel);dlg.append(layout);
+ const nextBtn=btn(stage===TOTAL-1?'إنهاء الدرس':'أكمل',next,'m11v-next');nextBtn.disabled=!solved;panel.append(nextBtn);if(scene)layout.append(scene);else layout.classList.add('m11v-layout-choices');layout.append(panel);dlg.append(layout);
 }
 function open(o={}){close();opts=o;lang=o.lang||'ar';let profile={};try{profile=JSON.parse(localStorage.getItem('hudhud-home-profile-v1')||'{}')||{}}catch{}
  character=(o.character||profile.character)==='girl'?'girl':'boy';POSES.forEach(pose=>{const frame=new Image();frame.src=sceneSrc(pose)});let saved={};try{saved=JSON.parse(localStorage.getItem(SAVE)||'{}')||{}}catch{}
