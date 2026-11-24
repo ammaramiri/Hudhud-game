@@ -1,11 +1,11 @@
-/* HUDHUD M11 v0.35.7 — front-camera moving takbir and hand positions.
+/* HUDHUD M11 v0.35.8 — front-camera moving takbir and hand positions.
    Keeps progress key hudhud-m11-v1 and stage code m11. No changes to M04/M09/M10.
    Valid fiqh variants are accepted, not marked wrong. */
 (()=>{'use strict';
 const BASE='assets/m11/';
 const SAVE='hudhud-m11-v1',TOTAL=14;
 const POSES=['rest','lower','mid','shoulder','up','fold','fold2','reversed','one'];
-const VER='0.35.7',FAT=[
+const VER='0.35.8',FAT=[
 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\nغَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'];
