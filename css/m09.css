@@ -36,7 +36,9 @@
 .m09-scenic-two{position:absolute;left:39%;bottom:11%;width:47%;display:flex;gap:4%;height:29%;align-items:center;pointer-events:none}
 .m09-scenic-two img{width:48%;height:95%;object-fit:contain;filter:drop-shadow(0 3px 2px #54463730)}
 .m09-scenic-two .m09-item-bad{filter:grayscale(.75) sepia(.32) brightness(.64) drop-shadow(0 3px 2px #54463733)}
-.m09-wudu-symbol{position:absolute;left:56%;top:56%;width:20%;height:23%;background:linear-gradient(130deg,#eaf7f5,#7cc6be);border:3px solid #fff6e5;border-radius:40% 40% 60% 60%;box-shadow:0 2px 7px #58483366;transform:rotate(-12deg)}
+.m09-wudu-card{position:absolute;right:8%;bottom:12%;width:33%;margin:0;overflow:hidden;border:2px solid #d1b889;border-radius:12px;background:#fff6e5;text-align:center;box-shadow:0 3px 12px #322b2640}
+.m09-wudu-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.m09-wudu-card figcaption{font-size:clamp(11px,1.8vw,16px);font-weight:700;padding:3px}
 .m09-paper{position:absolute;z-index:3;width:9%;height:10%;background:#fffbf2;border:2px solid #ddc79f;border-radius:5px;transform:rotate(15deg);box-shadow:0 3px 4px #322b2626}
 .m09-rug{z-index:3}
 .m09-clock{position:absolute;left:62%;top:43%;width:17%;aspect-ratio:1;border-radius:50%;border:6px solid #f0a95c;background:#fff6e5;box-shadow:0 2px 7px #322b2666}
@@ -102,3 +104,13 @@
  .m09-panel{flex:none;overflow:visible;padding:6px 10px 10px;gap:6px}
  .m09-feedback{min-height:0}
 }
+
+
+.m09-prayer-path{padding:16px;background:#fff6e5}
+.m09-prayer-path h3{margin:0 0 12px;font-size:20px}
+.m11-route-list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0}
+.m11-route-list button{width:100%;min-height:48px;padding:8px 12px;text-align:start;border:1px solid #d3ba91;border-radius:12px;background:#fffdf7;color:#322b26;font:650 15px/1.4 system-ui,sans-serif}
+.m11-route-list button.is-ready{background:#237d6b;color:#fff}
+.m11-route-list button:disabled{background:#f4ead8;color:#655843}
+.m11-route-list button:focus-visible{outline:3px solid #F0A95C;outline-offset:2px}
+@media(max-width:450px){.m11-route-list{grid-template-columns:1fr}}

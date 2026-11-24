@@ -1,4 +1,4 @@
-/* HUDHUD M11 0.35.5 front view. CSS scoped, never changes other stages. */
+/* HUDHUD M11 0.35.6 front view. CSS scoped, never changes other stages. */
 .m11v-dialog{border:0;border-radius:22px;padding:0;max-width:min(1080px,96vw);width:100%;max-height:94dvh;overflow:auto;color:#322b26;background:#fff6e5;box-shadow:0 24px 70px #322b265e;font-family:system-ui,Tahoma,sans-serif}
 .m11v-dialog::backdrop{background:#261c17a6;backdrop-filter:blur(5px)}
 .m11v-head{position:sticky;top:0;z-index:12;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;background:#fff9efee;padding:11px 14px;border-bottom:1px solid #d0b17c;min-height:62px}

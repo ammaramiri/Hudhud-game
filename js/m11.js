@@ -1,11 +1,11 @@
-/* HUDHUD M11 v0.35.5 — front-camera moving takbir and hand positions.
+/* HUDHUD M11 v0.35.6 — front-camera moving takbir and hand positions.
    Keeps progress key hudhud-m11-v1 and stage code m11. No changes to M04/M09/M10.
    Valid fiqh variants are accepted, not marked wrong. */
 (()=>{'use strict';
 const BASE='assets/m11/';
 const SAVE='hudhud-m11-v1',TOTAL=14;
 const POSES=['rest','lower','mid','shoulder','up','fold','fold2','reversed','one'];
-const VER='0.35.5',FAT=[
+const VER='0.35.6',FAT=[
 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nالرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ\nغَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'];
@@ -28,7 +28,7 @@ const lessons=[
 const choices={
 1:[['أنوي الصلاة في قلبي',true,'صحيح، النية محلها القلب.'],['أتلفّظ بجملة محددة أعتقد أن الصلاة لا تصح بدونها',false,'ليس مطلوباً التلفظ بنية مخصوصة.']],
 2:[['أقف معتدلاً ساكناً',true,'أحسنت، أبدأ في هدوء.'],['أظل أتحرك وأعبث بأشيائي',false,'أهيئ نفسي للصلاة بهدوء.']],
-9:[['أثبت بهدوء دون عبث',true,'السكينة جزء مهم من التعلم.'],['أشدّ حقيبتي وأعبث بيدي باستمرار',false,'أترك الأشياء التي تشغلني عن الصلاة.']]
+9:[['أثبت بهدوء دون عبث',true,'السكينة جزء مهم من التعلم.'],['أحرّك أصابعي باستمرار وأنشغل بها',false,'أترك الأشياء التي تشغلني عن الصلاة.']]
 };
 const seq=['أستحضر النيّة في قلبي','أرفع يديّ وأقول الله أكبر','أخفض يدي بعد التكبير','أضع اليمنى فوق اليسرى','أقرأ الفاتحة وأنا قائم'];
 let dlg=null,stage=0,solved=false,complete=false,sub=0,status='',lang='ar',character='boy',opts={},animationId=0;
