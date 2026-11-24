@@ -10,7 +10,7 @@
     prostrate: pose('prostrate', 'm24'),
     sit: pose('sit', 'm24')
   };
-  const scene = (title, text, image, words) => ({title, text, image, words});
+  const scene = (title, text, image, words, repeat) => ({title, text, image, words, repeat});
   const option = (label, correct, feedback, image) => ({label, correct, feedback, image});
   const quiz = (title, text, options, image) => ({title, text, options, image});
   const contact = (title, text, region) => ({...scene(title, text, shared.prostrate), region});
@@ -23,9 +23,9 @@
         option('الصورة الثانية', true, 'الظهر مبسوط والكفّان على الركبتين.', shared.bow),
         option('الصورة الثالثة', false, 'لاحظ تقوّس الظهر. أبسط ظهري بقدر استطاعتي.', pose('rounded','m23'))
       ]),
-      scene('أطمئنّ في الركوع', 'أستقرّ لحظة في هيئة الركوع وأقول بهدوء.', shared.bow, 'سبحان ربّي العظيم'),
+      scene('أطمئنّ في الركوع', 'أستقرّ لحظة في هيئة الركوع وأقول بهدوء.', shared.bow, 'سبحان ربّي العظيم', 'ثلاث مرات'),
       quiz('ماذا أقول في الركوع؟', 'اختر الذكر المناسب لهذه الهيئة.', [
-        option('سبحان ربّي الأعلى', false, 'هذا ذكر السجود.'), option('سبحان ربّي العظيم', true, 'هذا ذكر الركوع.')
+        option('سبحان ربّي الأعلى', false, 'هذا ذكر السجود.'), option('سبحان ربّي العظيم', true, 'هذا ذكر الركوع. نردّده ثلاث مرات في هذا التدريب.')
       ], shared.bow),
       scene('أرفع من الركوع', 'أرفع رأسي وجذعي حتى أعود إلى الوقوف. هذا تدريب على الصلاة منفرداً.', shared.rising, 'سمع الله لمن حمده'),
       scene('أعتدل قائماً', 'أقف باستقامة وأطمئنّ قبل النزول إلى السجود.', shared.upright, 'ربّنا ولك الحمد'),
@@ -51,12 +51,12 @@
       quiz('كم عضواً أضع على الأرض؟', 'الجبهة والأنف يُحسبان معاً. تذكّر الكفّين والركبتين والقدمين.', [
         option('سبعة', true, 'واحد للجبهة والأنف، واثنان لكلّ من الكفّين والركبتين والقدمين.'), option('أربعة', false, 'احسب اليمنى واليسرى كلاًّ على حدة.')
       ], shared.prostrate),
-      scene('أطمئنّ في السجود', 'أستقرّ في السجود وأقول بهدوء.', shared.prostrate, 'سبحان ربّي الأعلى'),
+      scene('أطمئنّ في السجود', 'أستقرّ في السجود وأقول بهدوء.', shared.prostrate, 'سبحان ربّي الأعلى', 'ثلاث مرات'),
       scene('أرفع وأجلس بين السجدتين', 'أرفع من السجود قائلاً «الله أكبر»، وأستقرّ جالساً وأضع كفّيّ على فخذيّ.', shared.sit, 'ربّ اغفر لي'),
       quiz('هل أسجد مجدداً فوراً؟', 'ما الخطوة بين السجدة الأولى والثانية؟', [
         option('أرفع رأسي قليلاً ثم أسجد', false, 'أجلس حتى أطمئنّ أولاً.'), option('أجلس وأطمئنّ ثم أسجد', true, 'الجلوس بهدوء يفصل بين السجدتين.')
       ], shared.sit),
-      scene('أسجد السجدة الثانية', 'أنزل قائلاً «الله أكبر». أستقرّ في السجدة الثانية كما فعلت في الأولى.', shared.prostrate, 'سبحان ربّي الأعلى')
+      scene('أسجد السجدة الثانية', 'أنزل قائلاً «الله أكبر». أستقرّ في السجدة الثانية كما فعلت في الأولى.', shared.prostrate, 'سبحان ربّي الأعلى', 'ثلاث مرات')
     ]
   };
   const root = document.querySelector('[data-prayer-lesson]');
@@ -94,7 +94,7 @@
     const step = steps[index];
     const heading = create('h2', '', complete ? 'أنهيت الدرس' : step.title);
     heading.tabIndex = -1;
-    const content = create('section','prayer-content');
+    const content = create('section',complete ? 'prayer-content prayer-complete' : 'prayer-content');
     const body = create('div','prayer-body');
     const foot = create('footer','prayer-footer');
     const feedback = create('p','prayer-feedback');
@@ -117,7 +117,11 @@
       body.append(create('p','','يمكنك مراجعة الدرس أو العودة إلى اللعبة.'));
     } else {
       body.append(create('p','prayer-instruction',step.text));
-      if (step.words) body.append(create('p','prayer-words',step.words));
+      if (step.words) {
+        const words = create('p','prayer-words',step.words);
+        if (step.repeat) words.append(create('span','prayer-repeat',step.repeat));
+        body.append(words);
+      }
       if (step.image) {
         const figure = create('figure','prayer-scene');
         figure.append(makeImage(step.image,step.title));
