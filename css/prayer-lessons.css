@@ -21,3 +21,11 @@ button:focus-visible{outline:3px solid #F0A95C;outline-offset:2px}
 .prayer-next{min-width:85px;background:#237d6b;color:white;border-color:#237d6b}
 .prayer-next:disabled{opacity:.55;cursor:default}
 @media(max-width:440px){.prayer-page{padding:6px 8px}.prayer-visual-choices{gap:4px}.prayer-visual-choices button{padding:4px;font-size:13px}}
+
+.prayer-page .prayer-words-long{
+  font-size:clamp(21px,3.8vmin,29px);
+  text-align:start;
+  line-height:1.45;
+}
+
+.prayer-visual-choices:has(> :last-child:nth-child(2)){grid-template-columns:repeat(2,minmax(0,1fr))}

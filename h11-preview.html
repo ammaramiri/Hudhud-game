@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>هدهد | أذكار النوم والاستيقاظ</title>
+<link rel="stylesheet" href="css/l05.css?v=0.31.3">
+<link rel="stylesheet" href="css/l04.css?v=0.36.6">
+<link rel="stylesheet" href="css/child-readable.css?v=0.36.1">
+<style>body{margin:0;background:#fff6e5;color:#322b26}.preview{max-width:900px;margin:auto;padding:12px;text-align:center}
+.room-map{max-width:min(100%,102dvh);position:relative;margin:auto}
+.preview img{display:block;width:100%;height:auto;border-radius:16px}
+.room-mark{position:absolute;transform:translate(-50%,-100%);display:grid;place-items:center;width:32px;height:32px;border:2px solid #fff6e5;border-radius:50%;background:#fff6e5;color:#322b26;box-shadow:0 2px 4px #322b2655;font-weight:700}
+.room-mark.active{background:#237d6b;color:#fff}
+.room-list{list-style:none;padding:0;margin:10px auto;display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center}
+.room-list span{color:#655b50;font-size:.9em}
+.room-mark:empty{display:none}
+.preview button{margin:12px;padding:12px 24px;font:inherit;font-weight:bold;background:#237d6b;color:white;border:0;border-radius:12px}.preview a{color:#235f52}</style>
+</head>
+<body><main class="preview"><h1>غرفة النوم والملابس</h1><div class="room-map" id="room-map"><img src="assets/world/bedroom-h3-v2.webp" width="1200" height="800" alt="غرفة النوم، بمدخل أمامي وسرير على اليسار وخزانة على اليمين"></div>
+<ol class="room-list">
+<li>١. أستعد للنوم <span>· قيد الإعداد</span></li>
+<li>٢. أذكار النوم والاستيقاظ</li>
+<li>٣. أرتدي ملابسي وأعتني بها <span>· قيد الإعداد</span></li>
+<li>٤. ذكر اللباس <span>· قيد الإعداد</span></li>
+</ol><button id="start" type="button">أذكار النوم والاستيقاظ</button><a href="index.html">إلى هدهد</a></main>
+<script src="js/h11.js?v=0.36.6"></script>
+<script src="js/world-navigation.js?v=0.36.6"></script>
+<script>
+const roomMap=document.querySelector('#room-map');
+const nodes=HUDHUDNavigation.layouts.bedroom.nodes;
+for(const [index,key] of ['h10','h11','h12','h13'].entries()){
+  const [x,y]=nodes[key];
+  const pin=document.createElement('span');
+  pin.className=key==='h11'?'room-mark active':'room-mark';
+  pin.style.left=100*x/1536+'%';
+  pin.style.top=100*y/1024+'%';
+  pin.textContent=new Intl.NumberFormat('ar-u-nu-arab').format(index+1);
+  pin.setAttribute('aria-hidden','true');
+  roomMap.append(pin);
+}
+const lang=new URLSearchParams(location.search).get('lang')||'ar';const start=document.querySelector('#start');start.onclick=()=>HUDHUDH11.open({lang,onClose:()=>start.focus()});</script>
+</body>
+</html>
